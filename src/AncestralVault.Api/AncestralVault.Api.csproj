@@ -9,12 +9,14 @@
         <PackageReference Include="Serilog.Sinks.Console" Version="$(SerilogSinksConsoleVersion)" />
 
         <PackageReference Include="GraphQL" Version="3.0.0-preview-1352" />
-
-        <!-- TODO: try downgrading to latest stable version -->
         <PackageReference Include="GraphQL.Server.Core" Version="3.5.0-alpha0027" />
         <PackageReference Include="GraphQL.Server.Transports.AspNetCore" Version="3.5.0-alpha0027" />
         <PackageReference Include="GraphQL.Server.Ui.GraphiQL" Version="3.5.0-alpha0027" />
         <PackageReference Include="GraphQL.Server.Ui.Playground" Version="3.5.0-alpha0027" />
         <PackageReference Include="GraphQL.Server.Ui.Voyager" Version="3.5.0-alpha0027" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\AncestralVault.Models\AncestralVault.Models.csproj" />
     </ItemGroup>
 </Project>

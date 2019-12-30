@@ -7,6 +7,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{D13A7DFD-2F3
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AncestralVault.Api", "src\AncestralVault.Api\AncestralVault.Api.csproj", "{340D33BD-C3C2-4FA4-840A-77893D38F191}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AncestralVault.Models", "src\AncestralVault.Models\AncestralVault.Models.csproj", "{55854436-FBA0-4242-8A48-580BEE7A5181}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -32,8 +34,21 @@ Global
 		{340D33BD-C3C2-4FA4-840A-77893D38F191}.Release|x64.Build.0 = Release|Any CPU
 		{340D33BD-C3C2-4FA4-840A-77893D38F191}.Release|x86.ActiveCfg = Release|Any CPU
 		{340D33BD-C3C2-4FA4-840A-77893D38F191}.Release|x86.Build.0 = Release|Any CPU
+		{55854436-FBA0-4242-8A48-580BEE7A5181}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{55854436-FBA0-4242-8A48-580BEE7A5181}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{55854436-FBA0-4242-8A48-580BEE7A5181}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{55854436-FBA0-4242-8A48-580BEE7A5181}.Debug|x64.Build.0 = Debug|Any CPU
+		{55854436-FBA0-4242-8A48-580BEE7A5181}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{55854436-FBA0-4242-8A48-580BEE7A5181}.Debug|x86.Build.0 = Debug|Any CPU
+		{55854436-FBA0-4242-8A48-580BEE7A5181}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{55854436-FBA0-4242-8A48-580BEE7A5181}.Release|Any CPU.Build.0 = Release|Any CPU
+		{55854436-FBA0-4242-8A48-580BEE7A5181}.Release|x64.ActiveCfg = Release|Any CPU
+		{55854436-FBA0-4242-8A48-580BEE7A5181}.Release|x64.Build.0 = Release|Any CPU
+		{55854436-FBA0-4242-8A48-580BEE7A5181}.Release|x86.ActiveCfg = Release|Any CPU
+		{55854436-FBA0-4242-8A48-580BEE7A5181}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{340D33BD-C3C2-4FA4-840A-77893D38F191} = {D13A7DFD-2F3B-42D3-A823-288BF6715B21}
+		{55854436-FBA0-4242-8A48-580BEE7A5181} = {D13A7DFD-2F3B-42D3-A823-288BF6715B21}
 	EndGlobalSection
 EndGlobal

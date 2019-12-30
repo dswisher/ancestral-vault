@@ -1,6 +1,7 @@
 
 using GraphQL.Types;
 
+using AncestralVault.Models.InMemory;
 
 namespace AncestralVault.Api.Schemas
 {

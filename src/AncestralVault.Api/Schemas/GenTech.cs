@@ -1,6 +1,7 @@
 
 using System.Collections.Generic;
 
+using AncestralVault.Models.InMemory;
 
 namespace AncestralVault.Api.Schemas
 {

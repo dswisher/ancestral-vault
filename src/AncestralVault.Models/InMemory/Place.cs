@@ -1,5 +1,5 @@
 
-namespace AncestralVault.Api.Schemas
+namespace AncestralVault.Models.InMemory
 {
     public class Place
     {
