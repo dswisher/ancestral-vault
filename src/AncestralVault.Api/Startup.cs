@@ -49,7 +49,6 @@ namespace AncestralVault.Api
             services.Configure<ModelOptions>(Configuration.GetSection("model"));
 
             // Register our services
-            services.AddSingleton<IGenTech, GenTech>();
             services.AddSingleton<GenTechSchema>();
 
             services.AddGenTech();
