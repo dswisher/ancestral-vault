@@ -1,4 +1,4 @@
-module github.com/dswisher/ancestral-vault
+module av
 
 go 1.25.5
 
