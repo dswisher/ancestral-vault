@@ -1,0 +1,121 @@
+{
+    "source": "Iowa, U.S., Marriage Records, 1880-1949",
+    "personas": {
+        "walter": {
+            "characteristics": [
+                {
+                    "type": "full-name",
+                    "value": "Walter Dunwoody"
+                },
+                {
+                    "type": "age",
+                    "value": "25",
+                    "note": "Age next birthday, 26"
+                }
+            ],
+            "events": [
+                {
+                    "type": "birth",
+                    "place": "Iowa",
+                    "role": "child"
+                },
+                {
+                    "type": "marriage",
+                    "place": "Oskaloosa, Iowa",
+                    "date": "14-Oct-1909",
+                    "role": "groom"
+                },
+                {
+                    "type": "residence",
+                    "place": "Peoria, Iowa",
+                    "date": "14-Oct-1909"
+                }
+            ]
+        },
+        "emma": {
+            "characteristics": [
+                {
+                    "type": "full-name",
+                    "value": "Emma Leatherman"
+                },
+                {
+                    "type": "age",
+                    "value": "17",
+                    "note": "Age next birthday, 18"
+                }
+            ],
+            "events": [
+                {
+                    "type": "birth",
+                    "place": "Missouri",
+                    "role": "child"
+                },
+                {
+                    "type": "marriage",
+                    "place": "Oskaloosa, Iowa",
+                    "date": "14-Oct-1909",
+                    "role": "bride"
+                },
+                {
+                    "type": "residence",
+                    "place": "Oskaloosa, Iowa",
+                    "date": "14-Oct-1909"
+                }
+            ]
+        },
+        "william": {
+            "characteristics": [
+                {
+                    "type": "full-name",
+                    "value": "William Dunwoody"
+                }
+            ]
+        },
+        "lucinda": {
+            "characteristics": [
+                {
+                    "type": "full-name",
+                    "value": "Lucinda Kinsman"
+                }
+            ]
+        },
+        "noel": {
+            "characteristics": [
+                {
+                    "type": "full-name",
+                    "value": "Noel Leatherman"
+                }
+            ]
+        },
+        "lee": {
+            "characteristics": [
+                {
+                    "type": "full-name",
+                    "value": "Lee Van Skike"
+                }
+            ]
+        }
+    },
+    "relationships": [
+        {
+            "persona1": "william",
+            "persona2": "walter",
+            "relationship": "father"
+        },
+        {
+            "persona1": "lucinda",
+            "persona2": "walter",
+            "relationship": "mother"
+        },
+        {
+            "persona1": "noel",
+            "persona2": "emma",
+            "relationship": "father"
+        },
+        {
+            "persona1": "lee",
+            "persona2": "emma",
+            "relationship": "mother"
+        }
+    ]
+}

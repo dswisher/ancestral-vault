@@ -1,0 +1,102 @@
+{
+    "source": "US Census, 1950, Mahaska County, IA",
+    "personas": {
+        "emma": {
+            "characteristics": [
+                {
+                    "type": "full-name",
+                    "value": "Emma Mae Dunwoody"
+                },
+                {
+                    "type": "sex",
+                    "value": "F"
+                },
+                {
+                    "type": "age",
+                    "value": "57"
+                },
+                {
+                    "type": "marital-status",
+                    "value": "Widowed"
+                }
+            ],
+            "events": [
+                {
+                    "type": "birth",
+                    "place": "Missouri"
+                },
+                {
+                    "type": "residence",
+                    "place": "Mahaska County, Iowa",
+                    "date": "01-Apr-1950"
+                }
+            ]
+        },
+        "floydine": {
+            "characteristics": [
+                {
+                    "type": "full-name",
+                    "value": "Floydine Dunwoody"
+                },
+                {
+                    "type": "sex",
+                    "value": "F"
+                },
+                {
+                    "type": "age",
+                    "value": "24"
+                }
+            ],
+            "events": [
+                {
+                    "type": "birth",
+                    "place": "Iowa"
+                },
+                {
+                    "type": "residence",
+                    "place": "Mahaska County, Iowa",
+                    "date": "01-Apr-1950"
+                }
+            ]
+        },
+        "beverly": {
+            "characteristics": [
+                {
+                    "type": "full-name",
+                    "value": "Beverly Ann Dunwoody"
+                },
+                {
+                    "type": "sex",
+                    "value": "F"
+                },
+                {
+                    "type": "age",
+                    "value": "17"
+                }
+            ],
+            "events": [
+                {
+                    "type": "birth",
+                    "place": "Iowa"
+                },
+                {
+                    "type": "residence",
+                    "place": "Mahaska County, Iowa",
+                    "date": "01-Apr-1950"
+                }
+            ]
+        }
+    },
+    "relationships": [
+        {
+            "persona1": "floydine",
+            "persona2": "emma",
+            "relationship": "daughter"
+        },
+        {
+            "persona1": "beverly",
+            "persona2": "emma",
+            "relationship": "daughter"
+        }
+    ]
+}

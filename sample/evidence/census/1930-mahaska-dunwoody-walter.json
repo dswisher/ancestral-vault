@@ -1,0 +1,326 @@
+{
+    "source": "US Census, 1930, Mahaska County, IA",
+    "personas": {
+        "walter": {
+            "characteristics": [
+                {
+                    "type": "full-name",
+                    "value": "Walter Dunwoody"
+                },
+                {
+                    "type": "sex",
+                    "value": "M"
+                },
+                {
+                    "type": "age",
+                    "value": "45"
+                },
+                {
+                    "type": "marital-status",
+                    "value": "Married"
+                }
+            ],
+            "events": [
+                {
+                    "type": "birth",
+                    "place": "Iowa"
+                },
+                {
+                    "type": "residence",
+                    "place": "Mahaska County, Iowa",
+                    "date": "01-Apr-1930"
+                }
+            ]
+        },
+        "emma": {
+            "characteristics": [
+                {
+                    "type": "full-name",
+                    "value": "Emma M Dunwoody"
+                },
+                {
+                    "type": "sex",
+                    "value": "F"
+                },
+                {
+                    "type": "age",
+                    "value": "37"
+                },
+                {
+                    "type": "marital-status",
+                    "value": "Married"
+                }
+            ],
+            "events": [
+                {
+                    "type": "birth",
+                    "place": "Missouri"
+                },
+                {
+                    "type": "residence",
+                    "place": "Mahaska County, Iowa",
+                    "date": "01-Apr-1930"
+                }
+            ]
+        },
+        "jack": {
+            "characteristics": [
+                {
+                    "type": "full-name",
+                    "value": "Jacquetta Dunwoody"
+                },
+                {
+                    "type": "sex",
+                    "value": "F"
+                },
+                {
+                    "type": "age",
+                    "value": "19"
+                },
+                {
+                    "type": "marital-status",
+                    "value": "Single"
+                }
+            ],
+            "events": [
+                {
+                    "type": "birth",
+                    "place": "Iowa"
+                },
+                {
+                    "type": "residence",
+                    "place": "Mahaska County, Iowa",
+                    "date": "01-Apr-1930"
+                }
+            ]
+        },
+        "bud": {
+            "characteristics": [
+                {
+                    "type": "full-name",
+                    "value": "Lowell H Dunwoody"
+                },
+                {
+                    "type": "sex",
+                    "value": "M"
+                },
+                {
+                    "type": "age",
+                    "value": "17"
+                },
+                {
+                    "type": "marital-status",
+                    "value": "Single"
+                }
+            ],
+            "events": [
+                {
+                    "type": "birth",
+                    "place": "Iowa"
+                },
+                {
+                    "type": "residence",
+                    "place": "Mahaska County, Iowa",
+                    "date": "01-Apr-1930"
+                }
+            ]
+        },
+        "wilma": {
+            "characteristics": [
+                {
+                    "type": "full-name",
+                    "value": "Wilma M Dunwoody"
+                },
+                {
+                    "type": "sex",
+                    "value": "F"
+                },
+                {
+                    "type": "age",
+                    "value": "15"
+                },
+                {
+                    "type": "marital-status",
+                    "value": "Single"
+                }
+            ],
+            "events": [
+                {
+                    "type": "birth",
+                    "place": "Iowa"
+                },
+                {
+                    "type": "residence",
+                    "place": "Mahaska County, Iowa",
+                    "date": "01-Apr-1930"
+                }
+            ]
+        },
+        "maxine": {
+            "characteristics": [
+                {
+                    "type": "full-name",
+                    "value": "Maxine M Dunwoody"
+                },
+                {
+                    "type": "sex",
+                    "value": "F"
+                },
+                {
+                    "type": "age",
+                    "value": "12"
+                },
+                {
+                    "type": "marital-status",
+                    "value": "Single"
+                }
+            ],
+            "events": [
+                {
+                    "type": "birth",
+                    "place": "Iowa"
+                },
+                {
+                    "type": "residence",
+                    "place": "Mahaska County, Iowa",
+                    "date": "01-Apr-1930"
+                }
+            ]
+        },
+        "betty": {
+            "characteristics": [
+                {
+                    "type": "full-name",
+                    "value": "Betty S Dunwoody"
+                },
+                {
+                    "type": "sex",
+                    "value": "F"
+                },
+                {
+                    "type": "age",
+                    "value": "11"
+                },
+                {
+                    "type": "marital-status",
+                    "value": "Single"
+                }
+            ],
+            "events": [
+                {
+                    "type": "birth",
+                    "place": "Iowa"
+                },
+                {
+                    "type": "residence",
+                    "place": "Mahaska County, Iowa",
+                    "date": "01-Apr-1930"
+                }
+            ]
+        },
+        "floydine": {
+            "characteristics": [
+                {
+                    "type": "full-name",
+                    "value": "Floydine Dunwoody"
+                },
+                {
+                    "type": "sex",
+                    "value": "F"
+                },
+                {
+                    "type": "age",
+                    "value": "4 11/12"
+                },
+                {
+                    "type": "marital-status",
+                    "value": "Single"
+                }
+            ],
+            "events": [
+                {
+                    "type": "birth",
+                    "place": "Iowa"
+                },
+                {
+                    "type": "residence",
+                    "place": "Mahaska County, Iowa",
+                    "date": "01-Apr-1930"
+                }
+            ]
+        },
+        "bonnie": {
+            "characteristics": [
+                {
+                    "type": "full-name",
+                    "value": "Bonny Sue Dunwoody"
+                },
+                {
+                    "type": "sex",
+                    "value": "F"
+                },
+                {
+                    "type": "age",
+                    "value": "1 3/12"
+                },
+                {
+                    "type": "marital-status",
+                    "value": "Single"
+                }
+            ],
+            "events": [
+                {
+                    "type": "birth",
+                    "place": "Iowa"
+                },
+                {
+                    "type": "residence",
+                    "place": "Mahaska County, Iowa",
+                    "date": "01-Apr-1930"
+                }
+            ]
+        }
+    },
+    "relationships": [
+        {
+            "persona1": "emma",
+            "persona2": "walter",
+            "relationship": "wife"
+        },
+        {
+            "persona1": "jack",
+            "persona2": "walter",
+            "relationship": "daughter"
+        },
+        {
+            "persona1": "bud",
+            "persona2": "walter",
+            "relationship": "son"
+        },
+        {
+            "persona1": "wilma",
+            "persona2": "walter",
+            "relationship": "daughter"
+        },
+        {
+            "persona1": "maxine",
+            "persona2": "walter",
+            "relationship": "daughter"
+        },
+        {
+            "persona1": "betty",
+            "persona2": "walter",
+            "relationship": "daughter"
+        },
+        {
+            "persona1": "floydine",
+            "persona2": "walter",
+            "relationship": "daughter"
+        },
+        {
+            "persona1": "bonnie",
+            "persona2": "walter",
+            "relationship": "daughter"
+        }
+    ]
+}

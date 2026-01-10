@@ -1,0 +1,182 @@
+{
+    "source": "US Census, 1940, Mahaska County, IA",
+    "personas": {
+        "walter": {
+            "characteristics": [
+                {
+                    "type": "full-name",
+                    "value": "Walter Dunwoody"
+                },
+                {
+                    "type": "sex",
+                    "value": "M"
+                },
+                {
+                    "type": "age",
+                    "value": "56"
+                },
+                {
+                    "type": "marital-status",
+                    "value": "Married"
+                }
+            ],
+            "events": [
+                {
+                    "type": "birth",
+                    "place": "Iowa"
+                },
+                {
+                    "type": "residence",
+                    "place": "Mahaska County, Iowa",
+                    "date": "01-Apr-1940"
+                }
+            ]
+        },
+        "emma": {
+            "characteristics": [
+                {
+                    "type": "full-name",
+                    "value": "Emma Mae Dunwoody"
+                },
+                {
+                    "type": "sex",
+                    "value": "F"
+                },
+                {
+                    "type": "age",
+                    "value": "45"
+                },
+                {
+                    "type": "marital-status",
+                    "value": "Married"
+                }
+            ],
+            "events": [
+                {
+                    "type": "birth",
+                    "place": "Missouri"
+                },
+                {
+                    "type": "residence",
+                    "place": "Mahaska County, Iowa",
+                    "date": "01-Apr-1940"
+                }
+            ]
+        },
+        "floydine": {
+            "characteristics": [
+                {
+                    "type": "full-name",
+                    "value": "Floydean Dunwoody"
+                },
+                {
+                    "type": "sex",
+                    "value": "F"
+                },
+                {
+                    "type": "age",
+                    "value": "14"
+                },
+                {
+                    "type": "marital-status",
+                    "value": "Single"
+                }
+            ],
+            "events": [
+                {
+                    "type": "birth",
+                    "place": "Iowa"
+                },
+                {
+                    "type": "residence",
+                    "place": "Mahaska County, Iowa",
+                    "date": "01-Apr-1940"
+                }
+            ]
+        },
+        "bonnie": {
+            "characteristics": [
+                {
+                    "type": "full-name",
+                    "value": "Bonnie Sue Dunwoody"
+                },
+                {
+                    "type": "sex",
+                    "value": "F"
+                },
+                {
+                    "type": "age",
+                    "value": "11"
+                },
+                {
+                    "type": "marital-status",
+                    "value": "Single"
+                }
+            ],
+            "events": [
+                {
+                    "type": "birth",
+                    "place": "Iowa"
+                },
+                {
+                    "type": "residence",
+                    "place": "Mahaska County, Iowa",
+                    "date": "01-Apr-1940"
+                }
+            ]
+        },
+        "beverly": {
+            "characteristics": [
+                {
+                    "type": "full-name",
+                    "value": "Beverly Ann Dunwoody"
+                },
+                {
+                    "type": "sex",
+                    "value": "F"
+                },
+                {
+                    "type": "age",
+                    "value": "7"
+                },
+                {
+                    "type": "marital-status",
+                    "value": "Single"
+                }
+            ],
+            "events": [
+                {
+                    "type": "birth",
+                    "place": "Iowa"
+                },
+                {
+                    "type": "residence",
+                    "place": "Mahaska County, Iowa",
+                    "date": "01-Apr-1940"
+                }
+            ]
+        }
+    },
+    "relationships": [
+        {
+            "persona1": "emma",
+            "persona2": "walter",
+            "relationship": "wife"
+        },
+        {
+            "persona1": "floydine",
+            "persona2": "walter",
+            "relationship": "daughter"
+        },
+        {
+            "persona1": "bonnie",
+            "persona2": "walter",
+            "relationship": "daughter"
+        },
+        {
+            "persona1": "beverly",
+            "persona2": "walter",
+            "relationship": "daughter"
+        }
+    ]
+}

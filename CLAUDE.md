@@ -14,7 +14,7 @@ I have almost 40 years experience as a developer, so I just need guidance on the
 
 All code should be run through `gofmt` to keep the coding style consistent.
 
-To build the project, use `make build`.
+To build the project, use `make clean build`.
 
 
 ## Project Layout

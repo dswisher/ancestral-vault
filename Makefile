@@ -12,7 +12,7 @@ GOINSTALL=$(GOCMD) install
 # Find all Go source files
 SOURCES=$(shell find . -name '*.go' -type f)
 
-.PHONY: all build install clean test release help
+.PHONY: all build install clean test release samples
 
 # Default target
 all: build
@@ -46,12 +46,11 @@ release: clean
 	GOOS=linux GOARCH=amd64 $(GOBUILD) -o $(BUILD_DIR)/$(BINARY_NAME)-linux-amd64
 	GOOS=windows GOARCH=amd64 $(GOBUILD) -o $(BUILD_DIR)/$(BINARY_NAME)-windows-amd64.exe
 
-# Show available targets
-help:
-	@echo "Available targets:"
-	@echo "  make build   - Build for current platform (only if sources changed)"
-	@echo "  make install - Build and install to GOPATH/bin"
-	@echo "  make test    - Run tests"
-	@echo "  make clean   - Remove build artifacts"
-	@echo "  make release - Build for all platforms (macOS, Linux, Windows)"
-	@echo "  make help    - Show this help message"
+
+# Copy select sample files over from my real vault
+samples:
+	cp ../family/evidence/census/1930-mahaska-dunwoody-walter.json sample/evidence/census
+	cp ../family/evidence/census/1940-mahaska-dunwoody-walter.json sample/evidence/census
+	cp ../family/evidence/census/1950-mahaska-dunwoody-emma.json sample/evidence/census
+	cp ../family/evidence/marriages/1910-mahaska-walter-dunwoody.json sample/evidence/marriages
+
