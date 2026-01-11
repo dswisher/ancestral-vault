@@ -50,8 +50,21 @@ func Run() error {
 
 	// Set up evidence selection handler
 	evidenceListView.SetOnSelected(func(item ui.EvidenceListItem) {
-		// For now, just show the hard-coded family page
-		// TODO: Convert evidence to family model
+		// Convert evidence to family model
+		// The converter will intelligently determine the best view based on the evidence structure
+		family, err := ui.NewFamilyFromEvidence(item.Evidence)
+		if err != nil {
+			log.Printf("Failed to convert evidence to family: %v", err)
+			return
+		}
+
+		// Create a new family page with the converted data
+		familyPage := ui.NewFamilyPage(family)
+
+		// Replace the family page in the pages component
+		pages.AddPage("family", familyPage, true, false)
+
+		// Switch to the family page
 		pages.SwitchToPage("family")
 	})
 

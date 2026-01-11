@@ -20,6 +20,8 @@ To build the project, use `make clean build`.
 ## Project Layout
 
 * `main.go` - the main program
+   * `app` - the application that leverages the other packages to run the app
    * `ui` - the package to build the TUI. Uses a "view model" type paradigm, where each view has a model specific to that page, distinct from the main data model.
+   * `core` - the main data models and code to leverage them
 
 
