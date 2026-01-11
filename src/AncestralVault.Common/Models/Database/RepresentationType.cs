@@ -1,0 +1,49 @@
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
+
+namespace AncestralVault.Common.Models.Database
+{
+    /// <summary>
+    /// Contains a list of the types of representations of evidence, such as text, a TIF bitmap, a GIF bitmap, a WAV file, or other forms.
+    /// </summary>
+    /// <remarks>
+    /// See p. 68 in the GenTech Data Model, v1.1.
+    /// </remarks>
+    [Table("representation_type")]
+    public class RepresentationType
+    {
+        /// <summary>
+        /// A unique key that identifies this REPRESENTATION-TYPE.
+        /// </summary>
+        [Key]
+        [Column("representation_type_id")]
+        [MaxLength(50)]
+        [JsonPropertyName("id")]
+        public required string RepresentationTypeId { get; set; }
+
+        /// <summary>
+        /// The name, such as "Text", "PNG Image", etc.
+        /// </summary>
+        [Required]
+        [Column("name")]
+        [MaxLength(50)]
+        [JsonPropertyName("name")]
+        public required string Name { get; set; }
+
+        /// <summary>
+        /// The data file from which this REPRESENTATION-TYPE was ingested.
+        /// </summary>
+        [Column("data_file_key")]
+        [ForeignKey(nameof(DataFile))]
+        public long DataFileKey { get; set; }
+
+
+        // ----------------- Navigation Properties -----------------
+
+        /// <summary>
+        /// Navigation property to the DataFile entity.
+        /// </summary>
+        public DataFile? DataFile { get; set; }
+    }
+}

@@ -1,0 +1,12 @@
+{
+    "representation-types": [
+        {
+            "id": "image",
+            "name": "image"
+        },
+        {
+            "id": "text",
+            "name": "text"
+        }
+    ]
+}
