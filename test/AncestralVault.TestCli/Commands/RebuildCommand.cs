@@ -71,7 +71,8 @@ namespace AncestralVault.TestCli.Commands
                             continue;
                         }
 
-                        logger.LogInformation("Loaded {NumRepTypes} representation types.", vaultFile.RepresentationTypes?.Count);
+                        logger.LogInformation("Loaded {NumRepTypes} representation types and {NumReps} representations.",
+                            vaultFile.RepresentationTypes?.Count ?? 0, vaultFile.Representations?.Count ?? 0);
 
                         // Create a data file entry
                         var dataFile = new DataFile
@@ -90,8 +91,20 @@ namespace AncestralVault.TestCli.Commands
 
                                 repType.DataFile = dataFile;
 
-                                // TODO - set the data file key
                                 context.RepresentationTypes.Add(repType);
+                            }
+                        }
+
+                        // Add representations to the database
+                        if (vaultFile.Representations != null)
+                        {
+                            foreach (var rep in vaultFile.Representations)
+                            {
+                                logger.LogInformation("...adding representation {FileCode}...", rep.PhysicalFileCode);
+
+                                rep.DataFile = dataFile;
+
+                                context.Representations.Add(rep);
                             }
                         }
                     }

@@ -8,5 +8,8 @@ namespace AncestralVault.Common.Models.Datafiles
     {
         [JsonPropertyName("representation-types")]
         public List<RepresentationType>? RepresentationTypes { get; set; }
+
+        [JsonPropertyName("representations")]
+        public List<Representation>? Representations { get; set; }
     }
 }

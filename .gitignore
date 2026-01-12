@@ -3,6 +3,7 @@ bin
 obj
 
 .idea
+.DS_Store
 
 sample-vault/.db
 

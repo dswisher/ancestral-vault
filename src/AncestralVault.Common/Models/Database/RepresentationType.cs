@@ -41,9 +41,6 @@ namespace AncestralVault.Common.Models.Database
 
         // ----------------- Navigation Properties -----------------
 
-        /// <summary>
-        /// Navigation property to the DataFile entity.
-        /// </summary>
         public DataFile? DataFile { get; set; }
     }
 }

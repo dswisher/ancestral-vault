@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="gdmxml.xsl"?>
+<!-- see http://fugal.net/andreas/first_fugl/main.htm -->
+<gdmxml xmlns="http://gdmxml.fugal.net/1.0">
+  <!-- Administrative submodel -->
+  <project id="project1">
+    <name>Andreas Fugl line</name>
+    <description>The beginnings of our Fugl line</description>
+    <research-objective id="project1objective1">
+      <name>Find Karen's marriage</name>
+      <description>Find records for Karen Andreasdatter Fugl's marriage</description>
+      <priority>medium</priority>
+      <status>completed</status>
+    </research-objective>
+  </project>
+  <researcher id="researcher1">
+    <name>John Researcher</name>
+    <address place-ref="slc">
+      1234 Somestreet
+      Salt Lake City, UT
+    </address>
+    <comments>Imaginary researcher</comments>
+  </researcher>
+  <researcher-project researcher-ref="researcher1" project-ref="project1">
+    <role>primary</role>
+  </researcher-project>
+  <activity id="activity1" researcher-ref="researcher1">
+    <search repository-source-ref="fhl_film0049002">
+      <searched-for>Karen Andreasdatter Fugl</searched-for>
+    </search>
+    <status>completed</status>
+    <priority>medium</priority>
+    <scheduled-date>1998</scheduled-date>
+    <description>Search for Karen Andreasdatter Fugl's marriage record in Fladstrand Parish records.</description>
+    <comments>Parish records in Danish.</comments>
+  </activity>
+  <activity id="activity2" researcher-ref="researcher1">
+    <administrative-task/>
+    <status>completed</status>
+    <priority>high</priority>
+    <scheduled-date>1998</scheduled-date>
+    <description>Schedule trip to FHC</description>
+    <comments>Bring money for parking</comments>
+  </activity>
+  <research-objective-activity research-objective-ref="project1objective1" activity-ref="activity1"/>
+  <surety-scheme id="binary">
+    <name>Binary surety scheme</name>
+    <description>This is a simple binary surety scheme for demonstration. Real schemes would likely have more than two levels</description>
+    <surety-scheme-part id="sure">
+      <name>sure</name>
+      <description>You are more sure than unsure</description>
+    </surety-scheme-part>
+    <surety-scheme-part id="unsure">
+      <name>unsure</name>
+      <description>You are more unsure than sure</description>
+    </surety-scheme-part>
+  </surety-scheme>
+  <source-group id="source-group1">
+    <name>Fladstrand Parish records</name>
+    <source-group-source source-ref="film0049002"/>
+  </source-group>
+  <!-- Evidence Submodel -->
+  <citation-part-type id="title">
+    <name>Title</name>
+  </citation-part-type>
+  <citation-part-type id="film">
+    <name>Film Number</name>
+  </citation-part-type>
+  <citation-part-type id="page">
+    <name>Page</name>
+  </citation-part-type>
+  <citation-part-type id="entry">
+    <name>Entry</name>
+  </citation-part-type>
+  <source id="film0049002">
+    <citation-part citation-part-type-ref="film">0049002</citation-part>
+  </source>
+  <repository-source id="fhl_film0049002" source-ref="film0049002" repository-ref="fhl">
+    <!-- in this particular instance, it's not a call number, it's a film
+    number. are we flexible enough? is this redundant information inherent in
+    the format or just in this instance? -->
+    <call-number>0049002</call-number>
+    <!-- I don't know if the film really is all about Fladstrand parish, this
+    is just a guess -->
+    <description>Fladstrand Parish</description>
+  </repository-source>
+  <source id="fladstrandmarriages" higher-source-ref="film0049002">
+    <citation-part citation-part-type-ref="title">
+      Marriages in Fladstrand Parish
+    </citation-part>
+  </source>
+  <source id="p199" higher-source-ref="fladstrandmarriages" subject-place-ref="fladstrand" jurisdiction-place-ref="fladstrand" researcher-ref="researcher1">
+    <citation-part citation-part-type-ref="page">199</citation-part>
+    <subject-date>Dec 1786</subject-date>
+  </source>
+  <source id="karensmarriage" higher-source-ref="p199" subject-place-ref="fladstrand" jurisdiction-place-ref="fladstrand" researcher-ref="researcher1">
+    <!-- I do not know if this is the fifth from the top of the page - this
+    is just for demonstration. -->
+    <citation-part citation-part-type-ref="entry">Fifth from top of page</citation-part>
+    <subject-date>8 Dec 1786</subject-date>
+    <representation representation-type-ref="image">
+      <medium>electronic</medium>
+      <comments>scanned</comments>
+      <physical-file-code>http://fugal.net/andreas/first_fugl/marriag1.jpg</physical-file-code>
+    </representation>
+    <representation representation-type-ref="text">
+      <content>
+  Troelovede Constabel Ole Pedersen Biorloe og Enke Koene Karen
+  Andreasdatter Fugl. Forloverne Bombardier Niels Egelund Hoyer og
+  Segeant Fugl. Aegteviede den 8 Dec: 1786
+      </content>
+      <comments>Danish</comments>
+    </representation>
+  </source>
+  <source id="census1787" higher-source-ref="film0038995" subject-place-ref="fladstrand" jurisdiction-place-ref="fladstrand" researcher-ref="researcher1">
+    <citation-part citation-part-type-ref="title">
+      Census of Fladstrand, 1787
+    </citation-part>
+    <subject-date>1787</subject-date>
+  </source>
+  <source id="film0038995" subject-place-ref="fladstrand" jurisdiction-place-ref="fladstrand" researcher-ref="researcher1">
+    <citation-part citation-part-type-ref="film">0038995</citation-part>
+    <subject-date>1787</subject-date>
+  </source>
+  <representation-type id="image">
+    <name>Image</name>
+    <description>Image stored in electronic form. e.g. JPEG or PNG</description>
+  </representation-type>
+  <representation-type id="text">
+    <name>Text</name>
+    <description>Text, e.g. from a transcription.</description>
+  </representation-type>
+  <!-- Conclusional Submodel -->
+  <characteristic id="karen_char1" place-ref="fladstrand">
+    <date>1786</date>
+    <characteristic-part characteristic-part-type-ref="given_names">
+      <name>Karen Andreasdatter</name>
+    </characteristic-part>
+    <characteristic-part characteristic-part-type-ref="surname">
+      <name>Fugl</name>
+    </characteristic-part>
+  </characteristic>
+  <characteristic-part-type id="given_names">
+    <name>Given names</name>
+  </characteristic-part-type>
+  <characteristic-part-type id="surname">
+    <name>Surname</name>
+  </characteristic-part-type>
+  <characteristic id="military" place-ref="fladstrand">
+    <date>1787-1796</date>
+    <characteristic-part characteristic-part-type-ref="occupation">
+      <name>Military</name>
+    </characteristic-part>
+  </characteristic>
+  <characteristic-part-type id="occupation">
+    <name>Occupation</name>
+  </characteristic-part-type>
+  <event id="karen_marriage" event-type-ref="marriage" place-ref="fladstrand">
+    <name>Marriage of Karen Andreasdatter Fugl and Constable Ole Pedersen Biorloe</name>
+    <date>8 Dec 1786</date>
+  </event>
+  <event-type id="marriage">
+    <name>Marriage</name>
+    <event-type-role id="groom">
+      <name>Groom</name>
+    </event-type-role>
+    <event-type-role id="bride">
+      <name>Bride</name>
+    </event-type-role>
+  </event-type>
+  <group id="karen_marriage_witnesses" group-type-ref="marriage_witnesses" place-ref="fladstrand">
+    <name>Witnesses to Karen's Marriage</name>
+    <date>1786</date>
+    <criteria>Listed as witnesses on the marriage record.</criteria>
+  </group>
+  <group-type id="marriage_witnesses">
+    <name>Witnesses to a marriage</name>
+    <group-type-role id="marriage_witness">
+      <name>Witness</name>
+    </group-type-role>
+  </group-type>
+  <persona id="karen">
+    <name>Karen Andreasdatter Fugl</name>
+  </persona>
+  <persona id="ole">
+    <name>Ole Pedersen Biorloe</name>
+  </persona>
+  <persona id="sergeant">
+    <name>Sergeant Fugl</name>
+  </persona>
+  <persona id="andreascorporal">
+    <name>Andreas Fugl, Corporal</name>
+  </persona>
+  <persona id="andreas">
+    <name>Andreas Fugl</name>
+  </persona>
+  <group id="andreasgroup" group-type-ref="personagrouptype">
+    <name>Personas representing Andreas Fugl</name>
+    <date>1786-1798</date>
+    <criteria>Asserted to be Andreas Fugl</criteria>
+  </group>
+  <group-type id="personagrouptype">
+    <name>persona group</name>
+    <group-type-role id="personagroupmember">
+      <name>member</name>
+    </group-type-role>
+  </group-type>
+  <assertion id="assertion1" surety-scheme-part-ref="sure" researcher-ref="researcher1" source-ref="karensmarriage">
+    <assertion-subject type="persona" ref="karen"/>
+    <assertion-subject type="event" ref="karen_marriage"/>
+    <rationale>The source states it</rationale>
+    <value>
+      <role type="event-type" ref="bride"/>
+    </value>
+  </assertion>
+  <assertion id="assertion2" surety-scheme-part-ref="sure" researcher-ref="researcher1" source-ref="karensmarriage">
+    <assertion-subject type="persona" ref="ole"/>
+    <assertion-subject type="event" ref="karen_marriage"/>
+    <rationale>The source states it</rationale>
+    <value>
+      <role type="event-type" ref="groom"/>
+    </value>
+  </assertion>
+  <assertion id="assertion3" surety-scheme-part-ref="sure" researcher-ref="researcher1" source-ref="karensmarriage">
+    <assertion-subject type="persona" ref="sergeant"/>
+    <assertion-subject type="group" ref="karen_marriage_witnesses"/>
+    <rationale>The marriage record states that Sergeant Fugl was a witness</rationale>
+    <value>
+      <role type="group-type" ref="marriage_witness"/>
+    </value>
+  </assertion>
+  <assertion id="assertion4" surety-scheme-part-ref="sure" researcher-ref="researcher1" source-ref="census1787">
+    <assertion-subject type="persona" ref="andreascorporal"/>
+    <assertion-subject type="characteristic" ref="military"/>
+    <rationale>Andreas and his wife are listed in the census as the 7th family
+      in the garrison. Andreas is listed as a Corporal</rationale>
+    <value>Corporal</value>
+  </assertion>
+  <assertion id="assertion5" surety-scheme-part-ref="unsure" researcher-ref="researcher1">
+    <assertion ref="assertion3"/>
+    <assertion ref="assertion4"/>
+    <assertion-subject type="persona" ref="sergeant"/>
+    <assertion-subject type="group" ref="andreasgroup"/>
+    <rationale>Andreas is in the military, Karen's surname was Fugl, and a
+      "Sergeant Fugl" is listed as the witness to her marriage.</rationale>
+    <value>
+      <role type="group-type" ref="personagroupmember"/>
+    </value>
+  </assertion>
+  <assertion id="assertion6" surety-scheme-part-ref="unsure" researcher-ref="researcher1">
+    <assertion ref="assertion3"/>
+    <assertion ref="assertion4"/>
+    <assertion-subject type="persona" ref="andreascorporal"/>
+    <assertion-subject type="group" ref="andreasgroup"/>
+    <rationale>Andreas is in the military, Karen's surname was Fugl, and a
+      "Sergeant Fugl" is listed as the witness to her marriage.</rationale>
+    <value>
+      <role type="group-type" ref="personagroupmember"/>
+    </value>
+  </assertion>
+  <assertion id="assertion7" surety-scheme-part-ref="unsure" researcher-ref="researcher1">
+    <assertion ref="assertion5"/>
+    <assertion ref="assertion6"/>
+    <assertion-subject type="group" ref="andreasgroup"/>
+    <assertion-subject type="persona" ref="andreas"/>
+    <rationale>Persona Group</rationale>
+    <value>Identity</value>
+  </assertion>
+  <place id="slc">
+    <existence-date>1847-</existence-date>
+    <place-part place-part-type-ref="city">
+      <name>Salt Lake City</name>
+    </place-part>
+    <place-part place-part-type-ref="state">
+      <name>Utah</name>
+    </place-part>
+    <place-part place-part-type-ref="county">
+      <name>Salt Lake</name>
+    </place-part>
+    <place-part place-part-type-ref="country">
+      <name>United States of America</name>
+    </place-part>
+  </place>
+  <place id="fladstrand">
+    <!-- The beginning existence-date here is wholly made up. What's important
+    for this demonstration is that it covers the data in question. -->
+    <existence-date>1200-1818</existence-date>
+    <place-part place-part-type-ref="city">
+      <name>Fladstrand</name>
+    </place-part>
+    <place-part place-part-type-ref="country">
+      <name>Denmark</name>
+    </place-part>
+    <!-- Fladstrand is now Frederikshavn. Perhaps there ought to be a comments
+    element in place and/or some way to connect one place to another indicating
+    that they are the same place in different time periods. -->
+  </place>
+  <place id="frederikshavn">
+    <existence-date>1818-</existence-date>
+    <place-part place-part-type-ref="city">
+      <name>Frederikshavn</name>
+    </place-part>
+    <place-part place-part-type-ref="country">
+      <name>Denmark</name>
+    </place-part>
+  </place>
+  <place-part-type id="city">
+    <name>City/Town/Village</name>
+  </place-part-type>
+  <place-part-type id="state">
+    <name>State</name>
+  </place-part-type>
+  <place-part-type id="county">
+    <name>County</name>
+  </place-part-type>
+  <place-part-type id="country">
+    <name>Country</name>
+  </place-part-type>
+  <repository id="fhl" place-ref="slc">
+    <name>Family History Library of the Church of Jesus Christ of Latter-day Saints</name>
+    <address>35 North West Temple Street, Salt Lake City, Utah, 84150-3400</address>
+    <phone>800-453-3860 x22331</phone>
+    <hours>Monday: 7:30 A.M. to 5:00 P.M., Tuesday-Saturday: 7:30 A.M. to 10:00 P.M.</hours>
+    <comments>Some useful comments</comments>
+  </repository>
+</gdmxml>
+<!-- 
+  $Id: fugl.xml,v 1.10 2004/10/19 16:24:32 fugalh Exp $ 
+  vim:sw=2:ts=8:smarttab
+-->

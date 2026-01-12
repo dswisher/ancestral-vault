@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace AncestralVault.Common.Models.Database
 {
@@ -32,6 +33,8 @@ namespace AncestralVault.Common.Models.Database
         [Required]
         [Column("representation_type_id")]
         [MaxLength(50)]
+        [ForeignKey(nameof(RepresentationType))]
+        [JsonPropertyName("type")]
         public required string RepresentationTypeId { get; set; }
 
         /// <summary>
@@ -44,6 +47,7 @@ namespace AncestralVault.Common.Models.Database
         /// </remarks>
         [Column("physical_file_code")]
         [MaxLength(255)]
+        [JsonPropertyName("file-code")]
         public string? PhysicalFileCode { get; set; }
 
         /// <summary>
@@ -52,6 +56,7 @@ namespace AncestralVault.Common.Models.Database
         /// </summary>
         [Column("medium")]
         [MaxLength(50)]
+        [JsonPropertyName("medium")]
         public string? Medium { get; set; }
 
         // TODO - add Content
@@ -61,12 +66,20 @@ namespace AncestralVault.Common.Models.Database
         /// </summary>
         [Column("comments")]
         [MaxLength(1024)]
+        [JsonPropertyName("comments")]
         public string? Comments { get; set; }
 
         /// <summary>
         /// The data file from which this REPRESENTATION was ingested.
         /// </summary>
         [Column("data_file_key")]
+        [ForeignKey(nameof(DataFile))]
         public long DataFileKey { get; set; }
+
+
+        // ----------------- Navigation Properties -----------------
+
+        public DataFile? DataFile { get; set; }
+        public RepresentationType? RepresentationType { get; set; }
     }
 }
