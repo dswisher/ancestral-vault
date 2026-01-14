@@ -36,6 +36,7 @@ namespace AncestralVault.Common.Parsers
             private static readonly Dictionary<string, Type> TypeMap = new()
             {
                 ["census-us-1930"] = typeof(CensusUS1930),
+                ["census-us-1940"] = typeof(CensusUS1940),
                 ["persona"] = typeof(JsonPersona),
 
                 // ["project"] = typeof(Project),

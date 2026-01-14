@@ -41,6 +41,11 @@ namespace AncestralVault.Common.Loaders
                 // TODO - load 1930 US Census data
                 logger.LogWarning("Loading for CensusUS1930 is not yet implemented.");
             }
+            else if (entity is CensusUS1940 census1940)
+            {
+                // TODO - load 1940 US Census data
+                logger.LogWarning("Loading for CensusUS1940 is not yet implemented.");
+            }
             else
             {
                 // TODO - add remaining types

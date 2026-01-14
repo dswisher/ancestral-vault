@@ -1,10 +1,9 @@
 [
     {
         "census-us-1930": {
-            "header":
-            {
+            "header": {
                 "state": "Iowa",
-                "country": "Mahaska",
+                "county": "Mahaska",
                 "township": "Prairie township",
                 "incorporated-place": "New Sharon Town",
                 "enumeration-date": "7-Apr-1930"
@@ -126,8 +125,71 @@
         }
     },
     {
-        "persona":
-        {
+        "census-us-1940": {
+            "header": {
+                "state": "Iowa",
+                "county": "Mahaska",
+                "township": "Prairie township",
+                "incorporated-place": "New Sharon Town",
+                "enumeration-date": "22-Apr-1940"
+            },
+            "rows": [
+                {
+                    "line": 22,
+                    "household-number": 360,
+                    "name": "Walter Dunwoody",
+                    "relation": "Head",
+                    "sex": "M",
+                    "color": "W",
+                    "age": "56",
+                    "marital-condition": "M",
+                    "birth-place": "Iowa"
+                },
+                {
+                    "line": 23,
+                    "name": "Emma Mae Dunwoody",
+                    "relation": "Wife",
+                    "sex": "F",
+                    "color": "W",
+                    "age": "45",
+                    "marital-condition": "M",
+                    "birth-place": "Missouri"
+                },
+                {
+                    "line": 24,
+                    "name": "Floydean Dunwoody",
+                    "relation": "Daughter",
+                    "sex": "F",
+                    "color": "W",
+                    "age": "14",
+                    "marital-condition": "S",
+                    "birth-place": "Iowa"
+                },
+                {
+                    "line": 25,
+                    "name": "Bonnie Sue Dunwoody",
+                    "relation": "Daughter",
+                    "sex": "F",
+                    "color": "W",
+                    "age": "11",
+                    "marital-condition": "S",
+                    "birth-place": "Iowa"
+                },
+                {
+                    "line": 26,
+                    "name": "Beverly Ann Dunwoody",
+                    "relation": "Daughter",
+                    "sex": "F",
+                    "color": "W",
+                    "age": "7",
+                    "marital-condition": "S",
+                    "birth-place": "Iowa"
+                }
+            ]
+        }
+    },
+    {
+        "persona": {
             "id": "dunwoody-walter-grave",
             "name": "Walter Dunwoody",
             "description": "TBD: born 1882, died 1948"
