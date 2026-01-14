@@ -1,8 +1,10 @@
+// Copyright (c) Doug Swisher. All Rights Reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text.Json.Serialization;
 
-namespace AncestralVault.Common.Models.Database
+namespace AncestralVault.Common.Models.VaultDb
 {
     /// <summary>
     /// In genealogical data, there are group members for which we can’t identify query
@@ -15,7 +17,7 @@ namespace AncestralVault.Common.Models.Database
     /// <remarks>
     /// See p. 57 in the GenTech Data Model, v1.1.
     /// </remarks>
-    [Table("group")]
+    [Table("groups")]
     public class Group
     {
         /// <summary>
@@ -24,7 +26,6 @@ namespace AncestralVault.Common.Models.Database
         [Key]
         [Column("group_id")]
         [MaxLength(50)]
-        [JsonPropertyName("id")]
         public required string GroupId { get; set; }
 
         // TODO - add GroupTypeId

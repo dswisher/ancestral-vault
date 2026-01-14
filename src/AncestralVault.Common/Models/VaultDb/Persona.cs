@@ -1,8 +1,10 @@
+// Copyright (c) Doug Swisher. All Rights Reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text.Json.Serialization;
 
-namespace AncestralVault.Common.Models.Database
+namespace AncestralVault.Common.Models.VaultDb
 {
     /// <summary>
     /// Contains the core identification for each individual in genealogical data, and allows information
@@ -15,7 +17,7 @@ namespace AncestralVault.Common.Models.Database
     /// <remarks>
     /// See p. 60 in the GenTech Data Model, v1.1.
     /// </remarks>
-    [Table("persona")]
+    [Table("personas")]
     public class Persona
     {
         /// <summary>
@@ -24,7 +26,6 @@ namespace AncestralVault.Common.Models.Database
         [Key]
         [Column("persona_id")]
         [MaxLength(50)]
-        [JsonPropertyName("id")]
         public required string PersonaId { get; set; }
 
         /// <summary>
@@ -34,8 +35,8 @@ namespace AncestralVault.Common.Models.Database
         /// in any record, but which reflects the name the way the RESEARCHER wishes to tag the individual.
         /// </summary>
         [Column("name")]
+        [Required]
         [MaxLength(50)]
-        [JsonPropertyName("name")]
         public required string Name { get; set; }
 
         /// <summary>
@@ -43,7 +44,18 @@ namespace AncestralVault.Common.Models.Database
         /// </summary>
         [Column("description")]
         [MaxLength(1024)]
-        [JsonPropertyName("description")]
-        public required string Description { get; set; }
+        public string? Description { get; set; }
+
+        /// <summary>
+        /// The data file from which this PERSONA was ingested.
+        /// </summary>
+        [Column("data_file_key")]
+        [ForeignKey(nameof(DataFile))]
+        public long DataFileKey { get; set; }
+
+
+        // ----------------- Navigation Properties -----------------
+
+        public DataFile? DataFile { get; set; }
     }
 }

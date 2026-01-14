@@ -1,8 +1,10 @@
+// Copyright (c) Doug Swisher. All Rights Reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text.Json.Serialization;
 
-namespace AncestralVault.Common.Models.Database
+namespace AncestralVault.Common.Models.VaultDb
 {
     /// <summary>
     /// Contains a list of the types of representations of evidence, such as text, a TIF bitmap, a GIF bitmap, a WAV file, or other forms.
@@ -10,7 +12,7 @@ namespace AncestralVault.Common.Models.Database
     /// <remarks>
     /// See p. 68 in the GenTech Data Model, v1.1.
     /// </remarks>
-    [Table("representation_type")]
+    [Table("representation_types")]
     public class RepresentationType
     {
         /// <summary>
@@ -19,7 +21,6 @@ namespace AncestralVault.Common.Models.Database
         [Key]
         [Column("representation_type_id")]
         [MaxLength(50)]
-        [JsonPropertyName("id")]
         public required string RepresentationTypeId { get; set; }
 
         /// <summary>
@@ -28,7 +29,6 @@ namespace AncestralVault.Common.Models.Database
         [Required]
         [Column("name")]
         [MaxLength(50)]
-        [JsonPropertyName("name")]
         public required string Name { get; set; }
 
         /// <summary>

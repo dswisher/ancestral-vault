@@ -16,5 +16,6 @@ For a data model, I am attempting to use the GenTech Data Model.
     * The page has some examples of encoding data in the model that are illustrative
 * [GDMXML](http://gdmxml.fugal.net/) - an XML implementation of the Genealogical Data Model.
     * The site includes a sample, which I saved in the [docs directory](docs/fugl.xml)
+* [GenXML](https://www.cosoft.org/genxml/) - a file format for exchange of data between genealogy programs - somewhat based on GenTech model - version 3 of the spec is in the [docs directory](docs/genxml-3.0.pdf)
 * [GenTech UML](https://freepages.rootsweb.com/~mitchellsharp/history/gdmref/gentech-gdm.html) - a 3rd-party recasting of the GDM model in UML, includes a PDF with some possibly useful info
 

@@ -1,8 +1,10 @@
+// Copyright (c) Doug Swisher. All Rights Reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text.Json.Serialization;
 
-namespace AncestralVault.Common.Models.Database
+namespace AncestralVault.Common.Models.VaultDb
 {
     /// <summary>
     /// Contains the representation of a Source in a variety of multimedia formats as needed, including old
@@ -12,7 +14,7 @@ namespace AncestralVault.Common.Models.Database
     /// <remarks>
     /// See p. 67 in the GenTech Data Model, v1.1.
     /// </remarks>
-    [Table("representation")]
+    [Table("representations")]
     public class Representation
     {
         /// <summary>
@@ -34,7 +36,6 @@ namespace AncestralVault.Common.Models.Database
         [Column("representation_type_id")]
         [MaxLength(50)]
         [ForeignKey(nameof(RepresentationType))]
-        [JsonPropertyName("type")]
         public required string RepresentationTypeId { get; set; }
 
         /// <summary>
@@ -47,7 +48,6 @@ namespace AncestralVault.Common.Models.Database
         /// </remarks>
         [Column("physical_file_code")]
         [MaxLength(255)]
-        [JsonPropertyName("file-code")]
         public string? PhysicalFileCode { get; set; }
 
         /// <summary>
@@ -56,7 +56,6 @@ namespace AncestralVault.Common.Models.Database
         /// </summary>
         [Column("medium")]
         [MaxLength(50)]
-        [JsonPropertyName("medium")]
         public string? Medium { get; set; }
 
         // TODO - add Content
@@ -66,7 +65,6 @@ namespace AncestralVault.Common.Models.Database
         /// </summary>
         [Column("comments")]
         [MaxLength(1024)]
-        [JsonPropertyName("comments")]
         public string? Comments { get; set; }
 
         /// <summary>

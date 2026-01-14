@@ -1,0 +1,136 @@
+[
+    {
+        "census-us-1930": {
+            "header":
+            {
+                "state": "Iowa",
+                "country": "Mahaska",
+                "township": "Prairie township",
+                "incorporated-place": "New Sharon Town",
+                "enumeration-date": "7-Apr-1930"
+            },
+            "rows": [
+                {
+                    "line": 85,
+                    "dwelling-number": 87,
+                    "family-number": 90,
+                    "name": "Walter Dunwoody",
+                    "relation": "Head",
+                    "sex": "M",
+                    "color": "W",
+                    "age": "45",
+                    "marital-condition": "M",
+                    "age-at-first-marriage": "25",
+                    "birth-place": "Iowa",
+                    "father-birth-place": "Illinois",
+                    "mother-birth-place": "Illinois"
+                },
+                {
+                    "line": 86,
+                    "name": "Emma M Dunwoody",
+                    "relation": "Wife",
+                    "sex": "F",
+                    "color": "W",
+                    "age": "37",
+                    "marital-condition": "M",
+                    "age-at-first-marriage": "17",
+                    "birth-place": "Missouri",
+                    "father-birth-place": "Missouri",
+                    "mother-birth-place": "Missouri"
+                },
+                {
+                    "line": 87,
+                    "name": "Jacquetta Dunwoody",
+                    "relation": "Daughter",
+                    "sex": "F",
+                    "color": "W",
+                    "age": "19",
+                    "marital-condition": "S",
+                    "birth-place": "Iowa",
+                    "father-birth-place": "Iowa",
+                    "mother-birth-place": "Missouri"
+                },
+                {
+                    "line": 88,
+                    "name": "Lowell H Dunwoody",
+                    "relation": "Son",
+                    "sex": "M",
+                    "color": "W",
+                    "age": "17",
+                    "marital-condition": "S",
+                    "birth-place": "Iowa",
+                    "father-birth-place": "Iowa",
+                    "mother-birth-place": "Missouri"
+                },
+                {
+                    "line": 89,
+                    "name": "Wilma M Dunwoody",
+                    "relation": "Daughter",
+                    "sex": "F",
+                    "color": "W",
+                    "age": "15",
+                    "marital-condition": "S",
+                    "birth-place": "Iowa",
+                    "father-birth-place": "Iowa",
+                    "mother-birth-place": "Missouri"
+                },
+                {
+                    "line": 90,
+                    "name": "Maxine M Dunwoody",
+                    "relation": "Daughter",
+                    "sex": "F",
+                    "color": "W",
+                    "age": "12",
+                    "marital-condition": "S",
+                    "birth-place": "Iowa",
+                    "father-birth-place": "Iowa",
+                    "mother-birth-place": "Missouri"
+                },
+                {
+                    "line": 91,
+                    "name": "Betty S Dunwoody",
+                    "relation": "Daughter",
+                    "sex": "F",
+                    "color": "W",
+                    "age": "11",
+                    "marital-condition": "S",
+                    "birth-place": "Iowa",
+                    "father-birth-place": "Iowa",
+                    "mother-birth-place": "Missouri"
+                },
+                {
+                    "line": 92,
+                    "name": "Floydine Dunwoody",
+                    "relation": "Daughter",
+                    "sex": "F",
+                    "color": "W",
+                    "age": "4 11/12",
+                    "marital-condition": "S",
+                    "birth-place": "Iowa",
+                    "father-birth-place": "Iowa",
+                    "mother-birth-place": "Missouri"
+                },
+                {
+                    "line": 93,
+                    "name": "Bonny Sue Dunwoody",
+                    "relation": "Daughter",
+                    "sex": "F",
+                    "color": "W",
+                    "age": "1 3/12",
+                    "marital-condition": "S",
+                    "birth-place": "Iowa",
+                    "father-birth-place": "Iowa",
+                    "mother-birth-place": "Missouri"
+                }
+            ]
+        }
+    },
+    {
+        "persona":
+        {
+            "id": "dunwoody-walter-grave",
+            "name": "Walter Dunwoody",
+            "description": "TBD: born 1882, died 1948"
+        }
+    }
+]

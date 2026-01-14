@@ -1,3 +1,6 @@
+// Copyright (c) Doug Swisher. All Rights Reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
 using AncestralVault.TestCli.Options.Common;
 using CommandLine;
 
@@ -13,5 +16,8 @@ namespace AncestralVault.TestCli.Options
         // Command-specific options
         [Option("vault", HelpText = "The directory containing the vault.")]
         public string? VaultPath { get; set; }
+
+        [Option("schema-only", HelpText = "Create the schema, but do not load any data.")]
+        public bool SchemaOnly { get; set; }
     }
 }

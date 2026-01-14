@@ -1,8 +1,10 @@
+// Copyright (c) Doug Swisher. All Rights Reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text.Json.Serialization;
 
-namespace AncestralVault.Common.Models.Database
+namespace AncestralVault.Common.Models.VaultDb
 {
     /// <summary>
     /// Contains the lowest level raw conclusional data in a special atomic form. This involves
@@ -20,7 +22,7 @@ namespace AncestralVault.Common.Models.Database
     /// <remarks>
     /// See p. 46 in the GenTech Data Model, v1.1.
     /// </remarks>
-    [Table("assertion")]
+    [Table("assertions")]
     public class Assertion
     {
         /// <summary>
@@ -29,7 +31,6 @@ namespace AncestralVault.Common.Models.Database
         [Key]
         [Column("assertion_id")]
         [MaxLength(50)]
-        [JsonPropertyName("id")]
         public required string AssertionId { get; set; }
 
         // TODO - add SuretySchemePartId
