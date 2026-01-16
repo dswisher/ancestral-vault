@@ -6,6 +6,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AncestralVault.Common.Models.VaultDb
 {
+    // TODO - do we keep this, or replace it?
+
     /// <summary>
     /// Contains a list of the types of representations of evidence, such as text, a TIF bitmap, a GIF bitmap, a WAV file, or other forms.
     /// </summary>

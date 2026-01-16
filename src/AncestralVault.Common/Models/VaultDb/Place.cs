@@ -10,9 +10,7 @@ namespace AncestralVault.Common.Models.VaultDb
     /// A place in the world (city, county, state, country, etc.)
     /// </summary>
     /// <remarks>
-    /// This deviates from the GenTech model, as it is hierarchical. The GenTech model has a separate list
-    /// of place-parts for every place, but I only want one entry for a state, even though it will appear
-    /// in many places.
+    /// Places are hierarchical. A state belongs to a country, a county belongs to a state, etc.
     /// </remarks>
     [Table("places")]
     public class Place
@@ -41,7 +39,7 @@ namespace AncestralVault.Common.Models.VaultDb
         public required string Name { get; set; }
 
         /// <summary>
-        /// The place that contains this place. For example, the state contains the county, the country contains the state, etc.
+        /// The place that contains this place. For example, a state contains a county, etc.
         /// </summary>
         [Column("parent_place_id")]
         [MaxLength(50)]

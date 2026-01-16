@@ -16,7 +16,7 @@ namespace AncestralVault.Common.Models.VaultDb
     public class DataFile
     {
         /// <summary>
-        /// The key of this entry.
+        /// A unique key identifying this data file.
         /// </summary>
         [Key]
         [Column("data_file_key")]

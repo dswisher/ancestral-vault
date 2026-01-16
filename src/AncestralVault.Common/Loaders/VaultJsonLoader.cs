@@ -30,7 +30,7 @@ namespace AncestralVault.Common.Loaders
                 {
                     PersonaId = jsonPersona.PersonaId,
                     Name = jsonPersona.Name,
-                    Description = jsonPersona.Description,
+                    Notes = jsonPersona.Notes,
                     DataFile = dataFile
                 };
 
@@ -76,8 +76,7 @@ namespace AncestralVault.Common.Loaders
             }
             else if (entity is JsonTombstone tombstone)
             {
-                // TODO - load tombstone data
-                logger.LogWarning("Loading for Tombstone is not yet implemented.");
+                LoadTombstone(context, dataFile, tombstone);
             }
             else if (entity is JsonMarriage marriage)
             {
@@ -88,6 +87,52 @@ namespace AncestralVault.Common.Loaders
             {
                 // TODO - add remaining types
                 throw new NotImplementedException($"Loading type '{entity.GetType().FullName}' is not implemented.");
+            }
+        }
+
+
+        private static void LoadTombstone(AncestralVaultDbContext context, DataFile dataFile, JsonTombstone tombstone)
+        {
+            // TODO - source/citation for the persona and events
+
+            // Create a persona and add it
+            var persona = new Persona
+            {
+                PersonaId = $"{tombstone.Record.Id}:p1",
+                Name = tombstone.Record.Name,
+                DataFile = dataFile
+            };
+
+            context.Personas.Add(persona);
+
+            // If there is a birthdate, add an event for it
+            if (!string.IsNullOrEmpty(tombstone.Record.BirthDate))
+            {
+                var birthEvent = new SoloEvent
+                {
+                    EventType = "birth",
+                    PrincipalPersonaId = persona.PersonaId,
+                    PrincipalRole = "newborn",
+                    EventDate = tombstone.Record.BirthDate,
+                    DataFile = dataFile
+                };
+
+                context.SoloEvents.Add(birthEvent);
+            }
+
+            // If there is a death date, add an event for it
+            if (!string.IsNullOrEmpty(tombstone.Record.DeathDate))
+            {
+                var birthEvent = new SoloEvent
+                {
+                    EventType = "death",
+                    PrincipalPersonaId = persona.PersonaId,
+                    PrincipalRole = "decedent",
+                    EventDate = tombstone.Record.DeathDate,
+                    DataFile = dataFile
+                };
+
+                context.SoloEvents.Add(birthEvent);
             }
         }
     }

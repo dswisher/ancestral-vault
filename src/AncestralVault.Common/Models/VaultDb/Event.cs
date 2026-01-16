@@ -7,21 +7,20 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace AncestralVault.Common.Models.VaultDb
 {
     /// <summary>
-    /// An EVENT is any type of happening such as a particular wedding.
+    /// An EVENT is something that happened to one or more personas, in a specific place, at a specific time (though
+    /// the place and/or time may not be known). Each persona is tied to an event with a role, such as "child",
+    /// "groom", "resident", "witness", etc.
     /// </summary>
-    /// <remarks>
-    /// See p. 54 in the GenTech Data Model, v1.1.
-    /// </remarks>
     [Table("events")]
     public class Event
     {
         /// <summary>
-        /// Unique identifier that indicates which EVENT this is.
+        /// A unique key identifying this EVENT.
         /// </summary>
         [Key]
-        [Column("event_id")]
-        [MaxLength(50)]
-        public required string EventId { get; set; }
+        [Column("event_key")]
+        public long EventKey { get; set; }
+
 
         // TODO - add EventTypeId
         // TODO - add PlaceId

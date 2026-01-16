@@ -6,6 +6,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AncestralVault.Common.Models.VaultDb
 {
+    // TODO - do we keep this, or replace it?
+
     /// <summary>
     /// Contains the representation of a Source in a variety of multimedia formats as needed, including old
     /// fashioned text, plus it contains a pointer to a physical file if the representation cannot be stored

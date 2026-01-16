@@ -9,9 +9,6 @@ namespace AncestralVault.Common.Models.VaultDb
     /// <summary>
     /// A type of place, such as "City", "County", "State", "Country", etc.
     /// </summary>
-    /// <remarks>
-    /// This deviates from the GenTech model - see remarks in Place.cs.
-    /// </remarks>
     [Table("place_types")]
     public class PlaceType
     {
@@ -24,7 +21,7 @@ namespace AncestralVault.Common.Models.VaultDb
         public required string PlaceTypeId { get; set; }
 
         /// <summary>
-        /// The name of this place type, such as "City", "County", "State", "Country", etc.
+        /// The name of this PLACE-TYPE, such as "City", "County", "State", "Country", etc.
         /// </summary>
         [Column("name")]
         [Required]
@@ -32,7 +29,7 @@ namespace AncestralVault.Common.Models.VaultDb
         public required string Name { get; set; }
 
         /// <summary>
-        /// The data file from which this PLACE was ingested.
+        /// The data file from which this PLACE-TYPE was ingested.
         /// </summary>
         [Column("data_file_key")]
         [ForeignKey(nameof(DataFile))]

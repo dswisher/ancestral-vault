@@ -7,12 +7,28 @@ namespace AncestralVault.Common.Models.VaultJson
 {
     public class JsonTombstoneItem
     {
+        /// <summary>
+        /// The ID for this tombstone. Used to build identifiers for sub-entities, like the persona for the
+        /// person represented by this tombstone.
+        /// </summary>
+        [JsonPropertyName("id")]
+        public required string Id { get; set; }
+
+        /// <summary>
+        /// The name of the person on the tombstone.
+        /// </summary>
         [JsonPropertyName("name")]
         public required string Name { get; set; }
 
+        /// <summary>
+        /// The date of birth, as it appears on the tombstone.
+        /// </summary>
         [JsonPropertyName("birth-date")]
         public string? BirthDate { get; set; }
 
+        /// <summary>
+        /// The date of death, as it appears on the tombstone.
+        /// </summary>
         [JsonPropertyName("death-date")]
         public string? DeathDate { get; set; }
     }
