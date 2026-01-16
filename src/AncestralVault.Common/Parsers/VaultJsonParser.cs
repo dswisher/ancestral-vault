@@ -20,7 +20,10 @@ namespace AncestralVault.Common.Parsers
         {
             await using (var stream = file.OpenRead())
             {
-                var options = new JsonSerializerOptions();
+                var options = new JsonSerializerOptions
+                {
+                    ReadCommentHandling = JsonCommentHandling.Skip
+                };
 
                 options.Converters.Add(new VaultJsonEntityConverter());
 
@@ -37,7 +40,11 @@ namespace AncestralVault.Common.Parsers
             {
                 ["census-us-1930"] = typeof(CensusUS1930),
                 ["census-us-1940"] = typeof(CensusUS1940),
+                ["marriage"] = typeof(JsonMarriage),
                 ["persona"] = typeof(JsonPersona),
+                ["place"] = typeof(JsonPlace),
+                ["place-type"] = typeof(JsonPlaceType),
+                ["tombstone"] = typeof(JsonTombstone),
 
                 // ["project"] = typeof(Project),
                 // ["researcher"] = typeof(Researcher),

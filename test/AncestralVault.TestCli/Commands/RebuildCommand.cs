@@ -37,7 +37,7 @@ namespace AncestralVault.TestCli.Commands
         {
             // Figure out the vault path
             // TODO - "hunt" for the directory, if one is not specified
-            var vaultDir = new DirectoryInfo("../../sample-vault");
+            var vaultDir = new DirectoryInfo("../../../family");
             var dbDir = new DirectoryInfo(Path.Join(vaultDir.FullName, ".db"));
             var vaultPath = new FileInfo(Path.Join(dbDir.FullName, "vault.db"));
 
@@ -78,7 +78,8 @@ namespace AncestralVault.TestCli.Commands
             // TODO - start a transaction?
 
             // Load all the data
-            foreach (var file in vaultDir.EnumerateFiles("*.json", SearchOption.AllDirectories).OrderBy(x => x.FullName))
+            // TODO - also scan for .json files!
+            foreach (var file in vaultDir.EnumerateFiles("*.jsonc", SearchOption.AllDirectories).OrderBy(x => x.FullName))
             {
                 // TODO - load all the data
                 logger.LogInformation("Parsing data file {FileName}...", file.Name);

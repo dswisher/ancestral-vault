@@ -20,6 +20,8 @@ namespace AncestralVault.Common.Database
         public virtual DbSet<Event> Events { get; init; }
         public virtual DbSet<Group> Groups { get; init; }
         public virtual DbSet<Persona> Personas { get; init; }
+        public virtual DbSet<Place> Places { get; init; }
+        public virtual DbSet<PlaceType> PlaceTypes { get; init; }
         public virtual DbSet<Representation> Representations { get; init; }
         public virtual DbSet<RepresentationType> RepresentationTypes { get; init; }
 

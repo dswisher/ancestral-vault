@@ -1,15 +1,16 @@
 // Copyright (c) Doug Swisher. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
-namespace AncestralVault.Common.Models.VaultJson.CensusUS
+namespace AncestralVault.Common.Models.VaultJson
 {
-    public class CensusUS1930 : IVaultJsonEntity
+    public class JsonMarriage : IVaultJsonEntity
     {
         // TODO - add the header
         // TODO - add the source/citation
 
-        public List<CensusUS1930Row> Rows { get; set; } = [];
+        [JsonPropertyName("record")]
+        public required JsonMarriageItem Record { get; set; }
     }
 }

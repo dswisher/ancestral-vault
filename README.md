@@ -1,7 +1,13 @@
 # Ancestral Vault
 
 This project aims to store family history data as plain text files, for long-term preservation.
-For a data model, I am attempting to use the GenTech Data Model.
+
+
+## Data Model
+
+I looked extensively at the GenTech data model, and it is too complex for some things, too flexible in some ways, and too vague in other areas.
+It has many great ideas, though, that I have incorporated into my data model.
+
 
 
 ## Links

@@ -1,0 +1,46 @@
+// Copyright (c) Doug Swisher. All Rights Reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace AncestralVault.Common.Models.VaultDb
+{
+    /// <summary>
+    /// A type of place, such as "City", "County", "State", "Country", etc.
+    /// </summary>
+    /// <remarks>
+    /// This deviates from the GenTech model - see remarks in Place.cs.
+    /// </remarks>
+    [Table("place_types")]
+    public class PlaceType
+    {
+        /// <summary>
+        /// Unique key identifying a single PLACE-TYPE.
+        /// </summary>
+        [Key]
+        [Column("place_type_id")]
+        [MaxLength(50)]
+        public required string PlaceTypeId { get; set; }
+
+        /// <summary>
+        /// The name of this place type, such as "City", "County", "State", "Country", etc.
+        /// </summary>
+        [Column("name")]
+        [Required]
+        [MaxLength(50)]
+        public required string Name { get; set; }
+
+        /// <summary>
+        /// The data file from which this PLACE was ingested.
+        /// </summary>
+        [Column("data_file_key")]
+        [ForeignKey(nameof(DataFile))]
+        public long DataFileKey { get; set; }
+
+
+        // ----------------- Navigation Properties -----------------
+
+        public DataFile? DataFile { get; set; }
+    }
+}
