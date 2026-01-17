@@ -35,13 +35,13 @@ namespace AncestralVault.Common.Models.VaultJson.CensusUS
         public required string MaritalCondition { get; set; }
 
         [JsonPropertyName("years-married")]
-        public int? YearsMarried { get; set; }
+        public string? YearsMarried { get; set; }
 
         [JsonPropertyName("mother-of-how-many-children")]
-        public int? MotherOfHowManyChildren { get; set; }
+        public string? MotherOfHowManyChildren { get; set; }
 
         [JsonPropertyName("number-of-these-children-living")]
-        public int? NumberOfTheseChildrenLiving { get; set; }
+        public string? NumberOfTheseChildrenLiving { get; set; }
 
         [JsonPropertyName("birth-month")]
         public required string BirthMonth { get; set; }

@@ -27,9 +27,9 @@ namespace AncestralVault.Common.Models.Loader
         public string? MotherBirthPlace { get; set; }
 
         // 1900 only: Marriage and children information
-        public int? YearsMarried { get; set; }
-        public int? MotherOfHowManyChildren { get; set; }
-        public int? NumberOfTheseChildrenLiving { get; set; }
+        public string? YearsMarried { get; set; }
+        public string? MotherOfHowManyChildren { get; set; }
+        public string? NumberOfTheseChildrenLiving { get; set; }
 
         // 1900 only: Detailed birth information
         public string? BirthMonth { get; set; }

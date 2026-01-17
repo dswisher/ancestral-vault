@@ -17,6 +17,9 @@ namespace AncestralVault.Common.Models.VaultJson.CensusUS
         [JsonPropertyName("township")]
         public required string Township { get; set; }
 
+        [JsonPropertyName("incorporated-place")]
+        public string? IncorporatedPlace { get; set; }
+
         [JsonPropertyName("enumeration-district")]
         public required string EnumerationDistrict { get; set; }
 

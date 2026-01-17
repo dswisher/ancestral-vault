@@ -16,6 +16,6 @@ namespace AncestralVault.Common.Models.VaultJson.CensusUS
         public required CensusUSHeader Header { get; set; }
 
         [JsonPropertyName("rows")]
-        public required List<CensusUS1930Row> Rows { get; set; } = [];
+        public required List<CensusUS1900Row> Rows { get; set; } = [];
     }
 }
