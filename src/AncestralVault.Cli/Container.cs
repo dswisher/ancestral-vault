@@ -2,11 +2,11 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using AncestralVault.Common;
-using AncestralVault.TestCli.Commands;
+using AncestralVault.Cli.Commands;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 
-namespace AncestralVault.TestCli
+namespace AncestralVault.Cli
 {
     public static class Container
     {

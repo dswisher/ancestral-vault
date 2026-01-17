@@ -1,10 +1,10 @@
 // Copyright (c) Doug Swisher. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using AncestralVault.TestCli.Options.Common;
+using AncestralVault.Cli.Options.Common;
 using CommandLine;
 
-namespace AncestralVault.TestCli.Options
+namespace AncestralVault.Cli.Options
 {
     [Verb("rebuild", HelpText = "Rebuild the database from scratch.")]
     public class RebuildOptions : ILogOptions
@@ -20,7 +20,7 @@ namespace AncestralVault.TestCli.Options
         [Option("schema-only", HelpText = "Create the schema, but do not load any data.")]
         public bool SchemaOnly { get; set; }
 
-        [Option("validate-props", HelpText = "If a property exists in the JSON but not in the C# model, log a warning.")]
-        public bool ValidateProps { get; set; }
+        [Option("check-props", HelpText = "If a property exists in the JSON but not in the C# model, log a warning.")]
+        public bool CheckProps { get; set; }
     }
 }

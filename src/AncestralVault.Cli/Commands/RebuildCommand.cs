@@ -10,12 +10,12 @@ using AncestralVault.Common.Database;
 using AncestralVault.Common.Loaders;
 using AncestralVault.Common.Models.VaultDb;
 using AncestralVault.Common.Parsers;
-using AncestralVault.TestCli.Options;
+using AncestralVault.Cli.Options;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.Extensions.Logging;
 
-namespace AncestralVault.TestCli.Commands
+namespace AncestralVault.Cli.Commands
 {
     public class RebuildCommand
     {
@@ -89,7 +89,7 @@ namespace AncestralVault.TestCli.Commands
 
                 // TODO - load all the data
                 logger.LogInformation("Parsing data file {FileName}...", relativePath);
-                var vaultEntities = await parser.LoadVaultJsonEntitiesAsync(file, options.ValidateProps, stoppingToken);
+                var vaultEntities = await parser.LoadVaultJsonEntitiesAsync(file, options.CheckProps, stoppingToken);
 
                 if (vaultEntities.Count == 0)
                 {

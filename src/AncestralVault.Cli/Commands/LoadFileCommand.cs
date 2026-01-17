@@ -10,12 +10,12 @@ using AncestralVault.Common.Database;
 using AncestralVault.Common.Loaders;
 using AncestralVault.Common.Models.VaultDb;
 using AncestralVault.Common.Parsers;
-using AncestralVault.TestCli.Options;
+using AncestralVault.Cli.Options;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.Extensions.Logging;
 
-namespace AncestralVault.TestCli.Commands
+namespace AncestralVault.Cli.Commands
 {
     public class LoadFileCommand
     {
@@ -104,7 +104,7 @@ namespace AncestralVault.TestCli.Commands
 
                 // Parse the file
                 logger.LogInformation("Parsing data file {FileName}...", relativePath);
-                var vaultEntities = await parser.LoadVaultJsonEntitiesAsync(dataFile, options.ValidateProps, stoppingToken);
+                var vaultEntities = await parser.LoadVaultJsonEntitiesAsync(dataFile, options.CheckProps, stoppingToken);
 
                 if (vaultEntities.Count == 0)
                 {
