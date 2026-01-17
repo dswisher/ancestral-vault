@@ -14,7 +14,7 @@ namespace AncestralVault.TestCli.Options
         public bool Verbose { get; set; }
 
         // Command-specific options
-        [Option("data-file", Required = true, HelpText = "The filename of the data file to load (e.g., '1930-mahaska-tracy-swisher.jsonc').")]
+        [Option("data-file", Required = true, HelpText = "The filename or relative path of the data file to load (e.g., '1930-mahaska-tracy-swisher.jsonc' or 'graves/dunwoody-walter.jsonc').")]
         public required string DataFile { get; set; }
 
         [Option("vault", HelpText = "The directory containing the vault.")]

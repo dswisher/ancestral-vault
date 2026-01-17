@@ -85,20 +85,22 @@ namespace AncestralVault.TestCli.Commands
             // TODO - also scan for .json files!
             foreach (var file in vaultDir.EnumerateFiles("*.jsonc", SearchOption.AllDirectories).OrderBy(x => x.FullName))
             {
+                var relativePath = Path.GetRelativePath(vaultDir.FullName, file.FullName).Replace('\\', '/');
+
                 // TODO - load all the data
-                logger.LogInformation("Parsing data file {FileName}...", file.Name);
+                logger.LogInformation("Parsing data file {FileName}...", relativePath);
                 var vaultEntities = await parser.LoadVaultJsonEntitiesAsync(file, options.ValidateProps, stoppingToken);
 
                 if (vaultEntities.Count == 0)
                 {
-                    logger.LogWarning("...no entities found in data file {FileName}.", file.Name);
+                    logger.LogWarning("...no entities found in data file {FileName}.", relativePath);
                     continue;
                 }
 
                 // Create a data file entry
                 var dataFile = new DataFile
                 {
-                    RelativePath = Path.GetRelativePath(vaultDir.FullName, file.FullName).Replace('\\', '/')
+                    RelativePath = relativePath
                 };
 
                 context.DataFiles.Add(dataFile);
@@ -112,7 +114,7 @@ namespace AncestralVault.TestCli.Commands
                 }
 
                 // Save changes after each file
-                logger.LogDebug("...saving changes to database after processing file {FileName}...", file.Name);
+                logger.LogDebug("...saving changes to database after processing file {FileName}...", relativePath);
                 await context.SaveChangesAsync(stoppingToken);
             }
 

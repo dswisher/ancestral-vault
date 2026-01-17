@@ -52,9 +52,10 @@ namespace AncestralVault.TestCli.Commands
 
             // Find the file in vault
             logger.LogInformation("Searching for data file: {DataFile}", options.DataFile);
+            var isDirectoryPath = ContainsDirectoryPath(options.DataFile);
             var matchingFiles = vaultDir
                 .EnumerateFiles("*.jsonc", SearchOption.AllDirectories)
-                .Where(f => f.Name.Equals(options.DataFile, System.StringComparison.OrdinalIgnoreCase))
+                .Where(f => FileMatchesSearchPath(f, vaultDir, options.DataFile, isDirectoryPath))
                 .ToList();
 
             if (matchingFiles.Count == 0)
@@ -102,12 +103,12 @@ namespace AncestralVault.TestCli.Commands
                 }
 
                 // Parse the file
-                logger.LogInformation("Parsing data file {FileName}...", dataFile.Name);
+                logger.LogInformation("Parsing data file {FileName}...", relativePath);
                 var vaultEntities = await parser.LoadVaultJsonEntitiesAsync(dataFile, options.ValidateProps, stoppingToken);
 
                 if (vaultEntities.Count == 0)
                 {
-                    logger.LogWarning("No entities found in data file {FileName}.", dataFile.Name);
+                    logger.LogWarning("No entities found in data file {FileName}.", relativePath);
                     return;
                 }
 
@@ -131,6 +132,46 @@ namespace AncestralVault.TestCli.Commands
             }
 
             logger.LogInformation("Load complete in {Elapsed}.", timer.Elapsed);
+        }
+
+
+        private static string NormalizePathSeparators(string path)
+        {
+            return path.Replace('\\', '/');
+        }
+
+
+        private static bool ContainsDirectoryPath(string dataFile)
+        {
+            return dataFile.Contains('/') || dataFile.Contains('\\');
+        }
+
+
+        private static bool FileMatchesSearchPath(
+            FileInfo file,
+            DirectoryInfo vaultDir,
+            string searchPath,
+            bool isDirectoryPath)
+        {
+            if (isDirectoryPath)
+            {
+                // Match against full relative path
+                string relativePath = Path.GetRelativePath(vaultDir.FullName, file.FullName)
+                    .Replace('\\', '/');
+
+                string normalizedSearchPath = NormalizePathSeparators(searchPath);
+
+                return relativePath.EndsWith(
+                    normalizedSearchPath,
+                    System.StringComparison.OrdinalIgnoreCase);
+            }
+            else
+            {
+                // Match only filename (existing behavior)
+                return file.Name.Equals(
+                    searchPath,
+                    System.StringComparison.OrdinalIgnoreCase);
+            }
         }
     }
 }
