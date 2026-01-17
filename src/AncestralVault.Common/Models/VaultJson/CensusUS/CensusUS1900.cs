@@ -8,10 +8,12 @@ namespace AncestralVault.Common.Models.VaultJson.CensusUS
 {
     public class CensusUS1900 : IVaultJsonEntity
     {
+        // TODO: build a property source class and use it here
+        [JsonPropertyName("source")]
+        public object? Source { get; set; }
+
         [JsonPropertyName("header")]
         public required CensusUSHeader Header { get; set; }
-
-        // TODO - add the source/citation
 
         [JsonPropertyName("rows")]
         public required List<CensusUS1930Row> Rows { get; set; } = [];

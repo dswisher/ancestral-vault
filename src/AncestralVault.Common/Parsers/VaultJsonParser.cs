@@ -11,15 +11,32 @@ using System.Threading;
 using System.Threading.Tasks;
 using AncestralVault.Common.Models.VaultJson;
 using AncestralVault.Common.Models.VaultJson.CensusUS;
+using Microsoft.Extensions.Logging;
 
 namespace AncestralVault.Common.Parsers
 {
     public class VaultJsonParser : IVaultJsonParser
     {
-        public async Task<List<IVaultJsonEntity>> LoadVaultJsonEntitiesAsync(FileInfo file, CancellationToken stoppingToken)
+        private readonly ILogger logger;
+
+        public VaultJsonParser(ILogger<VaultJsonParser> logger)
+        {
+            this.logger = logger;
+        }
+
+
+        public async Task<List<IVaultJsonEntity>> LoadVaultJsonEntitiesAsync(FileInfo file, bool validateProps, CancellationToken stoppingToken)
         {
             await using (var stream = file.OpenRead())
             {
+                // Parse JSON document for validation
+                var docOptions = new JsonDocumentOptions
+                {
+                    CommentHandling = JsonCommentHandling.Skip
+                };
+
+                using var jsonDoc = await JsonDocument.ParseAsync(stream, docOptions, stoppingToken);
+
                 var options = new JsonSerializerOptions
                 {
                     ReadCommentHandling = JsonCommentHandling.Skip
@@ -27,9 +44,18 @@ namespace AncestralVault.Common.Parsers
 
                 options.Converters.Add(new VaultJsonEntityConverter());
 
-                var entities = await JsonSerializer.DeserializeAsync<List<IVaultJsonEntity>>(stream, options, stoppingToken);
+                // Deserialize from the JSON document
+                var jsonText = jsonDoc.RootElement.GetRawText();
+                var entities = JsonSerializer.Deserialize<List<IVaultJsonEntity>>(jsonText, options);
 
-                return entities ?? new List<IVaultJsonEntity>();
+                // Validate for unmapped properties
+                if (validateProps && entities != null)
+                {
+                    var validator = new UnmappedPropertyValidator(logger);
+                    validator.Validate(jsonDoc, entities);
+                }
+
+                return entities ?? [];
             }
         }
 

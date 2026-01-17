@@ -7,8 +7,11 @@ namespace AncestralVault.Common.Models.VaultJson
 {
     public class JsonMarriage : IVaultJsonEntity
     {
+        // TODO: build a property source class and use it here
+        [JsonPropertyName("source")]
+        public object? Source { get; set; }
+
         // TODO - add the header
-        // TODO - add the source/citation
 
         [JsonPropertyName("record")]
         public required JsonMarriageItem Record { get; set; }

@@ -70,7 +70,7 @@ namespace AncestralVault.TestCli.Commands
                 // If they want to load the data, do so.
                 if (!options.SchemaOnly)
                 {
-                    await LoadData(context, vaultDir, stoppingToken);
+                    await LoadData(context, options, vaultDir, stoppingToken);
                 }
             }
 
@@ -79,7 +79,7 @@ namespace AncestralVault.TestCli.Commands
         }
 
 
-        private async Task LoadData(AncestralVaultDbContext context, DirectoryInfo vaultDir, CancellationToken stoppingToken)
+        private async Task LoadData(AncestralVaultDbContext context, RebuildOptions options, DirectoryInfo vaultDir, CancellationToken stoppingToken)
         {
             // Start a database transaction
             // TODO - start a transaction?
@@ -90,7 +90,7 @@ namespace AncestralVault.TestCli.Commands
             {
                 // TODO - load all the data
                 logger.LogInformation("Parsing data file {FileName}...", file.Name);
-                var vaultEntities = await parser.LoadVaultJsonEntitiesAsync(file, stoppingToken);
+                var vaultEntities = await parser.LoadVaultJsonEntitiesAsync(file, options.ValidateProps, stoppingToken);
 
                 if (vaultEntities.Count == 0)
                 {

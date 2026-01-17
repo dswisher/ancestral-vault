@@ -19,5 +19,8 @@ namespace AncestralVault.TestCli.Options
 
         [Option("schema-only", HelpText = "Create the schema, but do not load any data.")]
         public bool SchemaOnly { get; set; }
+
+        [Option("validate-props", HelpText = "If a property exists in the JSON but not in the C# model, log a warning.")]
+        public bool ValidateProps { get; set; }
     }
 }
