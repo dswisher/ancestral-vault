@@ -23,6 +23,7 @@ namespace AncestralVault.TestCli
             services.RegisterVaultCommon();
 
             // Register all the commands
+            services.AddScoped<LoadFileCommand>();
             services.AddScoped<RebuildCommand>();
 
             // Build and return the container

@@ -21,8 +21,8 @@ public static class Program
         {
             // Parse the args
             var parsedArgs = Parser.Default.ParseArguments<
-                RebuildOptions,
-                object>(args);      // TODO - remove object, when we add the second real verb
+                LoadFileOptions,
+                RebuildOptions>(args);
 
             // Set up logging
             var logConfig = new LoggerConfiguration()
@@ -60,6 +60,7 @@ public static class Program
                 var scopeFactory = provider.GetRequiredService<IServiceScopeFactory>();
                 using (var scope = scopeFactory.CreateScope())
                 {
+                    await parsedArgs.WithParsedAsync<LoadFileOptions>(options => scope.ServiceProvider.GetRequiredService<LoadFileCommand>().ExecuteAsync(options, tokenSource.Token));
                     await parsedArgs.WithParsedAsync<RebuildOptions>(options => scope.ServiceProvider.GetRequiredService<RebuildCommand>().ExecuteAsync(options, tokenSource.Token));
                 }
             }

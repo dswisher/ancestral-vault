@@ -81,9 +81,6 @@ namespace AncestralVault.TestCli.Commands
 
         private async Task LoadData(AncestralVaultDbContext context, RebuildOptions options, DirectoryInfo vaultDir, CancellationToken stoppingToken)
         {
-            // Start a database transaction
-            // TODO - start a transaction?
-
             // Load all the data
             // TODO - also scan for .json files!
             foreach (var file in vaultDir.EnumerateFiles("*.jsonc", SearchOption.AllDirectories).OrderBy(x => x.FullName))
@@ -119,8 +116,7 @@ namespace AncestralVault.TestCli.Commands
                 await context.SaveChangesAsync(stoppingToken);
             }
 
-            // Commit the transaction
-            // TODO - commit the transaction?
+            // Make sure all work has been saved
             logger.LogInformation("Saving changes to database...");
 
             await context.SaveChangesAsync(stoppingToken);
