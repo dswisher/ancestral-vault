@@ -7,3 +7,6 @@ obj
 
 sample-vault/.db
 
+test/AncestralVault.UnitTests/coveragereport
+test/AncestralVault.UnitTests/coverage.opencover.xml
+AncestralVault.sln.DotSettings.user
