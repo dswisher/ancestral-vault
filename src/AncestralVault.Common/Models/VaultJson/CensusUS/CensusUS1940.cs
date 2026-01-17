@@ -2,14 +2,18 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace AncestralVault.Common.Models.VaultJson.CensusUS
 {
     public class CensusUS1940 : IVaultJsonEntity
     {
-        // TODO - add the header
+        [JsonPropertyName("header")]
+        public required CensusUSHeader Header { get; set; }
+
         // TODO - add the source/citation
 
-        public List<CensusUS1940Row> Rows { get; set; } = [];
+        [JsonPropertyName("rows")]
+        public required List<CensusUS1940Row> Rows { get; set; } = [];
     }
 }

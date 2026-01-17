@@ -6,7 +6,7 @@ using System.Text.Json.Serialization;
 
 namespace AncestralVault.Common.Models.VaultJson.CensusUS
 {
-    public class CensusUS1930 : IVaultJsonEntity
+    public class CensusUS1900 : IVaultJsonEntity
     {
         [JsonPropertyName("header")]
         public required CensusUSHeader Header { get; set; }

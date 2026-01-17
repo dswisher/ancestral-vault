@@ -1,6 +1,7 @@
 // Copyright (c) Doug Swisher. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -35,6 +36,9 @@ namespace AncestralVault.TestCli.Commands
 
         public async Task ExecuteAsync(RebuildOptions options, CancellationToken stoppingToken)
         {
+            // Keep track of the time
+            var timer = Stopwatch.StartNew();
+
             // Figure out the vault path
             // TODO - "hunt" for the directory, if one is not specified
             var vaultDir = new DirectoryInfo("../../../family");
@@ -69,6 +73,9 @@ namespace AncestralVault.TestCli.Commands
                     await LoadData(context, vaultDir, stoppingToken);
                 }
             }
+
+            // Report!
+            logger.LogInformation("Rebuild complete in {Elapsed}.", timer.Elapsed);
         }
 
 
@@ -102,10 +109,14 @@ namespace AncestralVault.TestCli.Commands
                 // Process all the items in the file
                 foreach (var entity in vaultEntities)
                 {
-                    logger.LogInformation("   -> processing entity of type {EntityType}...", entity.GetType().Name);
+                    logger.LogDebug("   -> processing entity of type {EntityType}...", entity.GetType().Name);
 
                     loader.LoadEntity(context, dataFile, entity);
                 }
+
+                // Save changes after each file
+                logger.LogDebug("...saving changes to database after processing file {FileName}...", file.Name);
+                await context.SaveChangesAsync(stoppingToken);
             }
 
             // Commit the transaction

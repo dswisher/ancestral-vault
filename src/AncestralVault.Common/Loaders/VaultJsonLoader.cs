@@ -64,6 +64,11 @@ namespace AncestralVault.Common.Loaders
 
                 context.PlaceTypes.Add(dbPlaceType);
             }
+            else if (entity is CensusUS1900 census1900)
+            {
+                // TODO - load 1900 US Census data
+                logger.LogWarning("Loading for CensusUS1900 is not yet implemented.");
+            }
             else if (entity is CensusUS1930 census1930)
             {
                 // TODO - load 1930 US Census data
