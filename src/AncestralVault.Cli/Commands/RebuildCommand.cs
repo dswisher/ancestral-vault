@@ -11,25 +11,30 @@ using AncestralVault.Common.Loaders;
 using AncestralVault.Common.Models.VaultDb;
 using AncestralVault.Common.Parsers;
 using AncestralVault.Cli.Options;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Migrations;
+using AncestralVault.Common.Utilities;
 using Microsoft.Extensions.Logging;
 
 namespace AncestralVault.Cli.Commands
 {
     public class RebuildCommand
     {
+        private readonly IVaultSeeker seeker;
         private readonly IVaultJsonParser parser;
         private readonly IVaultJsonLoader loader;
+        private readonly IAncestralVaultDbContextFactory dbContextFactory;
         private readonly ILogger<RebuildCommand> logger;
 
         public RebuildCommand(
+            IVaultSeeker seeker,
             IVaultJsonParser parser,
             IVaultJsonLoader loader,
+            IAncestralVaultDbContextFactory dbContextFactory,
             ILogger<RebuildCommand> logger)
         {
+            this.seeker = seeker;
             this.parser = parser;
             this.loader = loader;
+            this.dbContextFactory = dbContextFactory;
             this.logger = logger;
         }
 
@@ -39,26 +44,17 @@ namespace AncestralVault.Cli.Commands
             // Keep track of the time
             var timer = Stopwatch.StartNew();
 
-            // Figure out the vault path
-            // TODO - "hunt" for the directory, if one is not specified
-            var vaultDir = new DirectoryInfo("../../../family");
-            var dbDir = new DirectoryInfo(Path.Join(vaultDir.FullName, ".db"));
-            var vaultPath = new FileInfo(Path.Join(dbDir.FullName, "vault.db"));
+            // Set up the vault info
+            seeker.Configure(options.VaultPath);
 
             // Make sure the DB directory exists
-            if (!dbDir.Exists)
+            if (!seeker.VaultDbDir.Exists)
             {
-                logger.LogInformation("Creating database directory at: {DbDir}", dbDir.FullName);
-                dbDir.Create();
+                logger.LogInformation("Creating database directory at: {DbDir}", seeker.VaultDbDir.FullName);
+                seeker.VaultDbDir.Create();
             }
 
-            // TODO - we should be getting the DB context from DI
-            logger.LogInformation("Opening database at: {VaultPath}", vaultPath.FullName);
-            var optionsBuilder = new DbContextOptionsBuilder<AncestralVaultDbContext>()
-                .UseSqlite($"Data Source={vaultPath.FullName}")
-                .ReplaceService<IMigrationsSqlGenerator, DeferrableForeignKeysSqlGenerator>();
-
-            await using (var context = new AncestralVaultDbContext(optionsBuilder.Options))
+            using (var context = dbContextFactory.CreateDbContext())
             {
                 // Recreate the database
                 logger.LogInformation("...ensuring database is deleted...");
@@ -70,7 +66,7 @@ namespace AncestralVault.Cli.Commands
                 // If they want to load the data, do so.
                 if (!options.SchemaOnly)
                 {
-                    await LoadData(context, options, vaultDir, stoppingToken);
+                    await LoadData(context, options, seeker.VaultDir, stoppingToken);
                 }
             }
 

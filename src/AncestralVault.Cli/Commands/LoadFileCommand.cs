@@ -11,25 +11,31 @@ using AncestralVault.Common.Loaders;
 using AncestralVault.Common.Models.VaultDb;
 using AncestralVault.Common.Parsers;
 using AncestralVault.Cli.Options;
+using AncestralVault.Common.Utilities;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.Extensions.Logging;
 
 namespace AncestralVault.Cli.Commands
 {
     public class LoadFileCommand
     {
+        private readonly IVaultSeeker seeker;
         private readonly IVaultJsonParser parser;
         private readonly IVaultJsonLoader loader;
+        private readonly IAncestralVaultDbContextFactory dbContextFactory;
         private readonly ILogger<LoadFileCommand> logger;
 
         public LoadFileCommand(
+            IVaultSeeker seeker,
             IVaultJsonParser parser,
             IVaultJsonLoader loader,
+            IAncestralVaultDbContextFactory dbContextFactory,
             ILogger<LoadFileCommand> logger)
         {
+            this.seeker = seeker;
             this.parser = parser;
             this.loader = loader;
+            this.dbContextFactory = dbContextFactory;
             this.logger = logger;
         }
 
@@ -38,24 +44,22 @@ namespace AncestralVault.Cli.Commands
         {
             var timer = Stopwatch.StartNew();
 
-            // Figure out the vault path
-            var vaultDir = new DirectoryInfo(options.VaultPath ?? "../../../family");
-            var dbDir = new DirectoryInfo(Path.Join(vaultDir.FullName, ".db"));
-            var vaultPath = new FileInfo(Path.Join(dbDir.FullName, "vault.db"));
+            // Set up the vault info
+            seeker.Configure(options.VaultPath);
 
             // Ensure database exists
-            if (!vaultPath.Exists)
+            if (!seeker.VaultDbFile.Exists)
             {
-                logger.LogError("Database not found at: {VaultPath}. Run 'rebuild' command first.", vaultPath.FullName);
+                logger.LogError("Database not found at: {VaultPath}. Run 'rebuild' command first.", seeker.VaultDbFile.FullName);
                 return;
             }
 
             // Find the file in vault
             logger.LogInformation("Searching for data file: {DataFile}", options.DataFile);
             var isDirectoryPath = ContainsDirectoryPath(options.DataFile);
-            var matchingFiles = vaultDir
+            var matchingFiles = seeker.VaultDir
                 .EnumerateFiles("*.jsonc", SearchOption.AllDirectories)
-                .Where(f => FileMatchesSearchPath(f, vaultDir, options.DataFile, isDirectoryPath))
+                .Where(f => FileMatchesSearchPath(f, seeker.VaultDir, options.DataFile, isDirectoryPath))
                 .ToList();
 
             if (matchingFiles.Count == 0)
@@ -69,24 +73,20 @@ namespace AncestralVault.Cli.Commands
                 logger.LogError("Multiple files named '{DataFile}' found in vault:", options.DataFile);
                 foreach (var file in matchingFiles)
                 {
-                    logger.LogError("  - {FilePath}", Path.GetRelativePath(vaultDir.FullName, file.FullName));
+                    logger.LogError("  - {FilePath}", Path.GetRelativePath(seeker.VaultDir.FullName, file.FullName));
                 }
                 return;
             }
 
             var dataFile = matchingFiles[0];
-            var relativePath = Path.GetRelativePath(vaultDir.FullName, dataFile.FullName).Replace('\\', '/');
+            var relativePath = Path.GetRelativePath(seeker.VaultDir.FullName, dataFile.FullName).Replace('\\', '/');
             logger.LogInformation("Found data file at: {RelativePath}", relativePath);
 
-            // Open database and process
-            var optionsBuilder = new DbContextOptionsBuilder<AncestralVaultDbContext>()
-                .UseSqlite($"Data Source={vaultPath.FullName}")
-                .ReplaceService<IMigrationsSqlGenerator, DeferrableForeignKeysSqlGenerator>();
-
-            await using (var context = new AncestralVaultDbContext(optionsBuilder.Options))
+            using (var dbContext = dbContextFactory.CreateDbContext())
             {
+
                 // Look up existing DataFile record
-                var existingDataFile = await context.DataFiles
+                var existingDataFile = await dbContext.DataFiles
                     .FirstOrDefaultAsync(df => df.RelativePath == relativePath, stoppingToken);
 
                 if (existingDataFile != null)
@@ -94,8 +94,8 @@ namespace AncestralVault.Cli.Commands
                     logger.LogInformation("Data file previously loaded, deleting existing records...");
 
                     // Remove the DataFile record - cascade delete will handle child records
-                    context.DataFiles.Remove(existingDataFile);
-                    await context.SaveChangesAsync(stoppingToken);
+                    dbContext.DataFiles.Remove(existingDataFile);
+                    await dbContext.SaveChangesAsync(stoppingToken);
                 }
                 else
                 {
@@ -117,18 +117,18 @@ namespace AncestralVault.Cli.Commands
                 {
                     RelativePath = relativePath
                 };
-                context.DataFiles.Add(newDataFile);
+                dbContext.DataFiles.Add(newDataFile);
 
                 // Load all entities
                 foreach (var entity in vaultEntities)
                 {
                     logger.LogDebug("Processing entity of type {EntityType}...", entity.GetType().Name);
-                    loader.LoadEntity(context, newDataFile, entity);
+                    loader.LoadEntity(dbContext, newDataFile, entity);
                 }
 
                 // Save changes
                 logger.LogInformation("Saving changes to database...");
-                await context.SaveChangesAsync(stoppingToken);
+                await dbContext.SaveChangesAsync(stoppingToken);
             }
 
             logger.LogInformation("Load complete in {Elapsed}.", timer.Elapsed);
