@@ -4,14 +4,14 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using AncestralVault.Cli.Commands;
-using AncestralVault.Cli.Options;
-using AncestralVault.Cli.Options.Common;
+using AncestralVault.TestCli.Commands;
+using AncestralVault.TestCli.Options;
+using AncestralVault.TestCli.Options.Common;
 using CommandLine;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 
-namespace AncestralVault.Cli
+namespace AncestralVault.TestCli
 {
     public static class Program
     {
@@ -20,13 +20,17 @@ namespace AncestralVault.Cli
             try
             {
                 // Parse the args
+                // TODO: remove object when more options are added
                 var parsedArgs = Parser.Default.ParseArguments<
-                    LoadFileOptions,
-                    RebuildOptions>(args);
+                    DumpPersonaOptions,
+                    object>(args);
 
                 // Set up logging
                 var logConfig = new LoggerConfiguration()
                     .WriteTo.Console();
+
+                // .MinimumLevel.Override("Microsoft.EntityFrameworkCore", LogEventLevel.Warning)
+                // .WriteTo.Console(outputTemplate: "{Timestamp:HH:mm:ss} [{Level}] [{SourceContext}] {Message}{NewLine}{Exception}");
 
                 if (parsedArgs.Value is ILogOptions lo)
                 {
@@ -55,8 +59,7 @@ namespace AncestralVault.Cli
                     var scopeFactory = provider.GetRequiredService<IServiceScopeFactory>();
                     using (var scope = scopeFactory.CreateScope())
                     {
-                        await parsedArgs.WithParsedAsync<LoadFileOptions>(options => scope.ServiceProvider.GetRequiredService<LoadFileCommand>().ExecuteAsync(options, tokenSource.Token));
-                        await parsedArgs.WithParsedAsync<RebuildOptions>(options => scope.ServiceProvider.GetRequiredService<RebuildCommand>().ExecuteAsync(options, tokenSource.Token));
+                        await parsedArgs.WithParsedAsync<DumpPersonaOptions>(options => scope.ServiceProvider.GetRequiredService<DumpPersonaCommand>().ExecuteAsync(options, tokenSource.Token));
                     }
                 }
 

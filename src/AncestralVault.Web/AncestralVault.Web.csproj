@@ -3,13 +3,24 @@
         <TargetFramework>net10.0</TargetFramework>
         <ImplicitUsings>disable</ImplicitUsings>
         <Nullable>enable</Nullable>
+
+        <CodeAnalysisRuleSet>../stylecop.ruleset</CodeAnalysisRuleSet>
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.556">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+        </PackageReference>
+
         <PackageReference Include="CommandLineParser" Version="2.9.1" />
     </ItemGroup>
 
     <ItemGroup>
         <ProjectReference Include="../AncestralVault.Common/AncestralVault.Common.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <AdditionalFiles Include="../stylecop.json" />
     </ItemGroup>
 </Project>

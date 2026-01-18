@@ -4,9 +4,16 @@
         <ImplicitUsings>false</ImplicitUsings>
         <Nullable>enable</Nullable>
         <IsPackable>false</IsPackable>
+
+        <CodeAnalysisRuleSet>../../src/stylecop.ruleset</CodeAnalysisRuleSet>
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.556">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+        </PackageReference>
+
         <PackageReference Include="coverlet.msbuild" Version="6.0.4">
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
             <PrivateAssets>all</PrivateAssets>
@@ -23,5 +30,13 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\src\AncestralVault.Common\AncestralVault.Common.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <AdditionalFiles Include="../../src/stylecop.json" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Include="Common\Repositories\TestData\test-tombstone.jsonc" />
     </ItemGroup>
 </Project>

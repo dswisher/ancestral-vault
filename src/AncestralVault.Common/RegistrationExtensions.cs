@@ -4,6 +4,7 @@
 using AncestralVault.Common.Database;
 using AncestralVault.Common.Loaders;
 using AncestralVault.Common.Parsers;
+using AncestralVault.Common.Repositories;
 using AncestralVault.Common.Utilities;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -13,11 +14,28 @@ namespace AncestralVault.Common
     {
         public static void RegisterVaultCommon(this IServiceCollection services)
         {
+            // Infrastructure
             services.AddSingleton<IAncestralVaultDbContextFactory, AncestralVaultDbContextFactory>();
+            services.AddSingleton<IVaultSeeker, VaultSeeker>();
+
+            // Other bits
+            services.RegisterLoaders();
+            services.RegisterRepositories();
+        }
+
+
+        public static void RegisterLoaders(this IServiceCollection services)
+        {
             services.AddSingleton<ICensusLoader, CensusLoader>();
             services.AddSingleton<IVaultJsonLoader, VaultJsonLoader>();
             services.AddSingleton<IVaultJsonParser, VaultJsonParser>();
-            services.AddSingleton<IVaultSeeker, VaultSeeker>();
+        }
+
+
+        public static void RegisterRepositories(this IServiceCollection services)
+        {
+            services.AddSingleton<ICompositePersonaRepository, CompositePersonaRepository>();
+            services.AddSingleton<IPersonaRepository, PersonaRepository>();
         }
     }
 }

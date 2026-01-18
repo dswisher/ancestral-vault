@@ -6,11 +6,11 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using AncestralVault.Cli.Options;
 using AncestralVault.Common.Database;
 using AncestralVault.Common.Loaders;
 using AncestralVault.Common.Models.VaultDb;
 using AncestralVault.Common.Parsers;
-using AncestralVault.Cli.Options;
 using AncestralVault.Common.Utilities;
 using Microsoft.Extensions.Logging;
 
@@ -54,6 +54,7 @@ namespace AncestralVault.Cli.Commands
                 seeker.VaultDbDir.Create();
             }
 
+            // Connect to the database
             await using (var context = dbContextFactory.CreateDbContext())
             {
                 // Recreate the database

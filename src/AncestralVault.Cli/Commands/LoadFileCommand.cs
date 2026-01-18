@@ -6,11 +6,11 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using AncestralVault.Cli.Options;
 using AncestralVault.Common.Database;
 using AncestralVault.Common.Loaders;
 using AncestralVault.Common.Models.VaultDb;
 using AncestralVault.Common.Parsers;
-using AncestralVault.Cli.Options;
 using AncestralVault.Common.Utilities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -75,6 +75,7 @@ namespace AncestralVault.Cli.Commands
                 {
                     logger.LogError("  - {FilePath}", Path.GetRelativePath(seeker.VaultDir.FullName, file.FullName));
                 }
+
                 return;
             }
 
@@ -82,9 +83,8 @@ namespace AncestralVault.Cli.Commands
             var relativePath = Path.GetRelativePath(seeker.VaultDir.FullName, dataFile.FullName).Replace('\\', '/');
             logger.LogInformation("Found data file at: {RelativePath}", relativePath);
 
-            using (var dbContext = dbContextFactory.CreateDbContext())
+            await using (var dbContext = dbContextFactory.CreateDbContext())
             {
-
                 // Look up existing DataFile record
                 var existingDataFile = await dbContext.DataFiles
                     .FirstOrDefaultAsync(df => df.RelativePath == relativePath, stoppingToken);

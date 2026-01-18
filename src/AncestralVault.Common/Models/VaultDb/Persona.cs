@@ -1,6 +1,7 @@
 // Copyright (c) Doug Swisher. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -45,6 +46,7 @@ namespace AncestralVault.Common.Models.VaultDb
 
         // ----------------- Navigation Properties -----------------
 
-        public DataFile? DataFile { get; set; }
+        public DataFile DataFile { get; set; } = null!;
+        public ICollection<SoloEvent> SoloEvents { get; set; } = null!;
     }
 }

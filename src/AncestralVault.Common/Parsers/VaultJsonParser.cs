@@ -29,34 +29,40 @@ namespace AncestralVault.Common.Parsers
         {
             await using (var stream = file.OpenRead())
             {
-                // Parse JSON document for validation
-                var docOptions = new JsonDocumentOptions
-                {
-                    CommentHandling = JsonCommentHandling.Skip
-                };
-
-                using var jsonDoc = await JsonDocument.ParseAsync(stream, docOptions, stoppingToken);
-
-                var options = new JsonSerializerOptions
-                {
-                    ReadCommentHandling = JsonCommentHandling.Skip
-                };
-
-                options.Converters.Add(new VaultJsonEntityConverter());
-
-                // Deserialize from the JSON document
-                var jsonText = jsonDoc.RootElement.GetRawText();
-                var entities = JsonSerializer.Deserialize<List<IVaultJsonEntity>>(jsonText, options);
-
-                // Validate for unmapped properties
-                if (validateProps && entities != null)
-                {
-                    var validator = new UnmappedPropertyValidator(logger);
-                    validator.Validate(jsonDoc, entities);
-                }
-
-                return entities ?? [];
+                return await LoadVaultJsonEntitiesAsync(stream, validateProps, stoppingToken);
             }
+        }
+
+
+        public async Task<List<IVaultJsonEntity>> LoadVaultJsonEntitiesAsync(Stream stream, bool validateProps, CancellationToken stoppingToken)
+        {
+            // Parse JSON document for validation
+            var docOptions = new JsonDocumentOptions
+            {
+                CommentHandling = JsonCommentHandling.Skip
+            };
+
+            using var jsonDoc = await JsonDocument.ParseAsync(stream, docOptions, stoppingToken);
+
+            var options = new JsonSerializerOptions
+            {
+                ReadCommentHandling = JsonCommentHandling.Skip
+            };
+
+            options.Converters.Add(new VaultJsonEntityConverter());
+
+            // Deserialize from the JSON document
+            var jsonText = jsonDoc.RootElement.GetRawText();
+            var entities = JsonSerializer.Deserialize<List<IVaultJsonEntity>>(jsonText, options);
+
+            // Validate for unmapped properties
+            if (validateProps && entities != null)
+            {
+                var validator = new UnmappedPropertyValidator(logger);
+                validator.Validate(jsonDoc, entities);
+            }
+
+            return entities ?? [];
         }
 
 

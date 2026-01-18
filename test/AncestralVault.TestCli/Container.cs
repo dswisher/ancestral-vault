@@ -1,12 +1,12 @@
 // Copyright (c) Doug Swisher. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using AncestralVault.Cli.Commands;
 using AncestralVault.Common;
+using AncestralVault.TestCli.Commands;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 
-namespace AncestralVault.Cli
+namespace AncestralVault.TestCli
 {
     public static class Container
     {
@@ -23,8 +23,7 @@ namespace AncestralVault.Cli
             services.RegisterVaultCommon();
 
             // Register all the commands
-            services.AddScoped<LoadFileCommand>();
-            services.AddScoped<RebuildCommand>();
+            services.AddScoped<DumpPersonaCommand>();
 
             // Build and return the container
             return services.BuildServiceProvider(validateScopes: true);

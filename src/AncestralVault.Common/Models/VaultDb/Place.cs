@@ -56,8 +56,8 @@ namespace AncestralVault.Common.Models.VaultDb
 
         // ----------------- Navigation Properties -----------------
 
-        public DataFile? DataFile { get; set; }
-        public PlaceType? PlaceType { get; set; }
+        public DataFile DataFile { get; set; } = null!;
+        public PlaceType PlaceType { get; set; } = null!;
         public Place? ParentPlace { get; set; }
     }
 }

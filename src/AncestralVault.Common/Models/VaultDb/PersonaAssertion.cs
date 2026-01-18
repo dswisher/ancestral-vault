@@ -58,9 +58,9 @@ namespace AncestralVault.Common.Models.VaultDb
 
         // ----------------- Navigation Properties -----------------
 
-        public DataFile? DataFile { get; set; }
+        public DataFile DataFile { get; set; } = null!;
 
-        public CompositePersona? CompositePersona { get; set; }
-        public Persona? Persona { get; set; }
+        public CompositePersona CompositePersona { get; set; } = null!;
+        public Persona Persona { get; set; } = null!;
     }
 }

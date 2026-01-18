@@ -12,5 +12,6 @@ namespace AncestralVault.Common.Parsers
     public interface IVaultJsonParser
     {
         Task<List<IVaultJsonEntity>> LoadVaultJsonEntitiesAsync(FileInfo file, bool validateProps, CancellationToken stoppingToken);
+        Task<List<IVaultJsonEntity>> LoadVaultJsonEntitiesAsync(Stream stream, bool validateProps, CancellationToken stoppingToken);
     }
 }

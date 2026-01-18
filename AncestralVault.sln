@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AncestralVault.Cli", "src\A
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AncestralVault.Web", "src\AncestralVault.Web\AncestralVault.Web.csproj", "{7C188B7D-53EF-413D-8CBB-EF18515BA50B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AncestralVault.TestCli", "test\AncestralVault.TestCli\AncestralVault.TestCli.csproj", "{0634690B-84C6-45C6-9405-0530E307824B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -73,6 +75,18 @@ Global
 		{7C188B7D-53EF-413D-8CBB-EF18515BA50B}.Release|x64.Build.0 = Release|Any CPU
 		{7C188B7D-53EF-413D-8CBB-EF18515BA50B}.Release|x86.ActiveCfg = Release|Any CPU
 		{7C188B7D-53EF-413D-8CBB-EF18515BA50B}.Release|x86.Build.0 = Release|Any CPU
+		{0634690B-84C6-45C6-9405-0530E307824B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0634690B-84C6-45C6-9405-0530E307824B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0634690B-84C6-45C6-9405-0530E307824B}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{0634690B-84C6-45C6-9405-0530E307824B}.Debug|x64.Build.0 = Debug|Any CPU
+		{0634690B-84C6-45C6-9405-0530E307824B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{0634690B-84C6-45C6-9405-0530E307824B}.Debug|x86.Build.0 = Debug|Any CPU
+		{0634690B-84C6-45C6-9405-0530E307824B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0634690B-84C6-45C6-9405-0530E307824B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0634690B-84C6-45C6-9405-0530E307824B}.Release|x64.ActiveCfg = Release|Any CPU
+		{0634690B-84C6-45C6-9405-0530E307824B}.Release|x64.Build.0 = Release|Any CPU
+		{0634690B-84C6-45C6-9405-0530E307824B}.Release|x86.ActiveCfg = Release|Any CPU
+		{0634690B-84C6-45C6-9405-0530E307824B}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -82,5 +96,6 @@ Global
 		{A4A0E946-3442-4BCD-8E6E-7558FD0E38B4} = {0C88DD14-F956-CE84-757C-A364CCF449FC}
 		{4A25F5FD-A46D-4343-A5A3-C3146CA6707A} = {827E0CD3-B72D-47B6-A68D-7590B98EB39B}
 		{7C188B7D-53EF-413D-8CBB-EF18515BA50B} = {827E0CD3-B72D-47B6-A68D-7590B98EB39B}
+		{0634690B-84C6-45C6-9405-0530E307824B} = {0C88DD14-F956-CE84-757C-A364CCF449FC}
 	EndGlobalSection
 EndGlobal
