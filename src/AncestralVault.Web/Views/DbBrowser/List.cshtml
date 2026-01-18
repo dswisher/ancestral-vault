@@ -1,0 +1,45 @@
+@model AncestralVault.Web.Models.DbBrowser.EntityListViewModel
+@{
+    ViewData["Title"] = $"{Model.TypeName} List";
+}
+
+<h1>@Model.TypeName List</h1>
+
+<p>
+    <a asp-controller="DbBrowser" asp-action="Home">Back to Entity Types</a>
+</p>
+
+@if (Model.Entities != null && Model.Entities.Any())
+{
+    <p>Showing first @Model.Entities.Count items (max 100).</p>
+
+    <table>
+        <thead>
+            <tr>
+                @foreach (var prop in Model.Entities.First().Properties.Keys)
+                {
+                    <th>@prop</th>
+                }
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var entity in Model.Entities)
+            {
+                <tr>
+                    @foreach (var prop in entity.Properties.Values)
+                    {
+                        <td>@(prop?.ToString() ?? "null")</td>
+                    }
+                    <td>
+                        <a asp-controller="DbBrowser" asp-action="Detail" asp-route-type="@Model.UrlName" asp-route-id="@entity.Id">Details</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No entities found.</p>
+}

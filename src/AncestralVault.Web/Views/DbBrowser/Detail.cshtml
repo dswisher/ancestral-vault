@@ -1,0 +1,89 @@
+@model AncestralVault.Web.Models.DbBrowser.EntityDetailViewModel
+@using AncestralVault.Web.Models.DbBrowser
+@{
+    ViewData["Title"] = $"{Model.TypeName} Details";
+}
+
+<h1>@Model.TypeName Details</h1>
+
+<p>
+    <a asp-controller="DbBrowser" asp-action="List" asp-route-type="@Model.UrlName">Back to @Model.TypeName List</a> |
+    <a asp-controller="DbBrowser" asp-action="Home">Back to Entity Types</a>
+</p>
+
+<table>
+    <tbody>
+        @foreach (var prop in Model.Properties)
+        {
+            <tr>
+                <th>@prop.Name</th>
+                <td>
+                    @switch (prop.Type)
+                    {
+                        case PropertyType.Simple:
+                            @(prop.Value?.ToString() ?? "null")
+                            break;
+
+                        case PropertyType.ForeignKey:
+                            if (prop.Value == null)
+                            {
+                                <text>null</text>
+                            }
+                            else if (prop.RelatedEntityType != null)
+                            {
+                                <a asp-controller="DbBrowser" asp-action="Detail" asp-route-type="@prop.RelatedEntityType" asp-route-id="@prop.Value">
+                                    @prop.Value
+                                </a>
+                            }
+                            else
+                            {
+                                @prop.Value.ToString()
+                            }
+                            break;
+
+                        case PropertyType.ForeignKeyNavigation:
+                            if (prop.Value == null)
+                            {
+                                <text>null</text>
+                            }
+                            else if (prop.RelatedEntityType != null)
+                            {
+                                <a asp-controller="DbBrowser" asp-action="Detail" asp-route-type="@prop.RelatedEntityType" asp-route-id="@prop.Value">
+                                    View @prop.RelatedEntityType
+                                </a>
+                            }
+                            else
+                            {
+                                <text>N/A</text>
+                            }
+                            break;
+
+                        case PropertyType.Collection:
+                            if (prop.RelatedEntityIds == null || !prop.RelatedEntityIds.Any())
+                            {
+                                <text>Empty collection</text>
+                            }
+                            else if (prop.RelatedEntityType != null)
+                            {
+                                <ul>
+                                    @foreach (var id in prop.RelatedEntityIds)
+                                    {
+                                        <li>
+                                            <a asp-controller="DbBrowser" asp-action="Detail" asp-route-type="@prop.RelatedEntityType" asp-route-id="@id">
+                                                @id
+                                            </a>
+                                        </li>
+                                    }
+                                </ul>
+                            }
+                            else
+                            {
+                                <text>@prop.RelatedEntityIds.Count items</text>
+                            }
+                            break;
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

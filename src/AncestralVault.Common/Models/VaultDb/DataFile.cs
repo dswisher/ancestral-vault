@@ -1,6 +1,7 @@
 // Copyright (c) Doug Swisher. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -32,5 +33,15 @@ namespace AncestralVault.Common.Models.VaultDb
         [Column("relative_path")]
         [MaxLength(255)]
         public required string RelativePath { get; set; }
+
+
+        // ----------------- Navigation Properties -----------------
+
+        public ICollection<CompositePersona> CompositePersonas { get; set; } = null!;
+        public ICollection<Persona> Personas { get; set; } = null!;
+        public ICollection<PersonaAssertion> PersonaAssertions { get; set; } = null!;
+        public ICollection<Place> Places { get; set; } = null!;
+        public ICollection<PlaceType> PlaceTypes { get; set; } = null!;
+        public ICollection<SoloEvent> SoloEvents { get; set; } = null!;
     }
 }

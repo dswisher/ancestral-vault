@@ -1,0 +1,35 @@
+@model IEnumerable<AncestralVault.Web.Models.DbBrowser.EntityTypeInfo>
+@{
+    ViewData["Title"] = "Database Browser";
+}
+
+<h1>Database Browser</h1>
+
+<p>Browse all entity types in the database.</p>
+
+@if (Model != null && Model.Any())
+{
+    <table>
+        <thead>
+            <tr>
+                <th>Entity Type</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var entityType in Model)
+            {
+                <tr>
+                    <td>@entityType.TypeName</td>
+                    <td>
+                        <a asp-controller="DbBrowser" asp-action="List" asp-route-type="@entityType.UrlName">View List</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No entity types found.</p>
+}
