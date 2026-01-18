@@ -176,8 +176,17 @@ namespace AncestralVault.Common.Repositories
             var propertyValues = new List<PropertyValue>();
             var properties = entityType.GetProperties(BindingFlags.Public | BindingFlags.Instance);
 
+            // Get navigation property names to filter out non-collection navigations
+            var navigationPropertyNames = GetNavigationPropertyNames(dbContext, entityType);
+
             foreach (var prop in properties)
             {
+                // Skip non-collection navigation properties
+                if (navigationPropertyNames.Contains(prop.Name) && !IsCollectionProperty(prop))
+                {
+                    continue;
+                }
+
                 var propertyValue = BuildPropertyValue(prop, entity);
                 propertyValues.Add(propertyValue);
             }
