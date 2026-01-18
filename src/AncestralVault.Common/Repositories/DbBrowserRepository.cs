@@ -113,13 +113,8 @@ namespace AncestralVault.Common.Repositories
             // Build the view model
             var entityItems = new List<EntityListItem>();
 
-            // Get navigation property names to filter them out
-            var navigationPropertyNames = GetNavigationPropertyNames(dbContext, entityType);
-
-            var properties = entityType.GetProperties(BindingFlags.Public | BindingFlags.Instance)
-                .Where(p => !navigationPropertyNames.Contains(p.Name) && !IsForeignKeyProperty(p, entityType))
-                .Take(5) // Show up to 5 properties in the list view
-                .ToList();
+            // Get the properties to display
+            var properties = GetDisplayProperties(dbContext, entityType);
 
             foreach (var entity in entities)
             {
@@ -145,6 +140,21 @@ namespace AncestralVault.Common.Repositories
                 PrimaryKeyName = primaryKeyName,
                 Entities = entityItems
             };
+        }
+
+
+        /// <summary>
+        /// Gets the properties to display for an entity type, using the same logic as the List view.
+        /// Filters out navigation properties and foreign key properties, taking the first 5 properties.
+        /// </summary>
+        private static List<PropertyInfo> GetDisplayProperties(AncestralVaultDbContext dbContext, Type entityType)
+        {
+            var navigationPropertyNames = GetNavigationPropertyNames(dbContext, entityType);
+
+            return entityType.GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                .Where(p => !navigationPropertyNames.Contains(p.Name) && !IsForeignKeyProperty(p, entityType))
+                .Take(5)
+                .ToList();
         }
 
 
@@ -174,6 +184,7 @@ namespace AncestralVault.Common.Repositories
 
             // Categorize and build property values
             var propertyValues = new List<PropertyValue>();
+            var collectionValues = new List<CollectionPropertyValue>();
             var properties = entityType.GetProperties(BindingFlags.Public | BindingFlags.Instance);
 
             // Get navigation property names to filter out non-collection navigations
@@ -181,8 +192,16 @@ namespace AncestralVault.Common.Repositories
 
             foreach (var prop in properties)
             {
+                // Handle collection properties separately
+                if (IsCollectionProperty(prop))
+                {
+                    var collectionValue = BuildCollectionPropertyValue(dbContext, prop, entity);
+                    collectionValues.Add(collectionValue);
+                    continue;
+                }
+
                 // Skip non-collection navigation properties
-                if (navigationPropertyNames.Contains(prop.Name) && !IsCollectionProperty(prop))
+                if (navigationPropertyNames.Contains(prop.Name))
                 {
                     continue;
                 }
@@ -196,7 +215,8 @@ namespace AncestralVault.Common.Repositories
                 TypeName = entityType.Name,
                 UrlName = urlName,
                 Id = id,
-                Properties = propertyValues
+                Properties = propertyValues,
+                Collections = collectionValues
             };
         }
 
@@ -341,39 +361,55 @@ namespace AncestralVault.Common.Repositories
         }
 
 
+        private static CollectionPropertyValue BuildCollectionPropertyValue(
+            AncestralVaultDbContext dbContext,
+            PropertyInfo prop,
+            object entity)
+        {
+            var value = prop.GetValue(entity);
+            var collectionType = prop.PropertyType.GetGenericArguments()[0];
+            var collectionUrlName = collectionType.Name.ToLowerInvariant();
+            var collectionKeyProperty = GetPrimaryKeyProperty(collectionType);
+
+            // Get the same properties that would show in the List view
+            var properties = GetDisplayProperties(dbContext, collectionType);
+
+            var items = new List<CollectionItem>();
+            if (value is IEnumerable collection && collectionKeyProperty != null)
+            {
+                foreach (var item in collection)
+                {
+                    var itemId = collectionKeyProperty.GetValue(item)?.ToString();
+                    if (itemId != null)
+                    {
+                        // Build property dictionary for this collection item
+                        var propertyDict = new Dictionary<string, object?>();
+                        foreach (var displayProp in properties)
+                        {
+                            propertyDict[displayProp.Name] = displayProp.GetValue(item);
+                        }
+
+                        items.Add(new CollectionItem
+                        {
+                            Id = itemId,
+                            Properties = propertyDict
+                        });
+                    }
+                }
+            }
+
+            return new CollectionPropertyValue
+            {
+                Name = prop.Name,
+                RelatedEntityType = collectionUrlName,
+                Items = items
+            };
+        }
+
+
         private static PropertyValue BuildPropertyValue(PropertyInfo prop, object entity)
         {
             var value = prop.GetValue(entity);
-
-            // Check if this is a collection
-            if (IsCollectionProperty(prop))
-            {
-                var collectionType = prop.PropertyType.GetGenericArguments()[0];
-                var collectionUrlName = collectionType.Name.ToLowerInvariant();
-                var collectionKeyProperty = GetPrimaryKeyProperty(collectionType);
-
-                var relatedIds = new List<string>();
-                if (value is IEnumerable collection && collectionKeyProperty != null)
-                {
-                    foreach (var item in collection)
-                    {
-                        var itemId = collectionKeyProperty.GetValue(item)?.ToString();
-                        if (itemId != null)
-                        {
-                            relatedIds.Add(itemId);
-                        }
-                    }
-                }
-
-                return new PropertyValue
-                {
-                    Name = prop.Name,
-                    Value = null,
-                    Type = PropertyType.Collection,
-                    RelatedEntityType = collectionUrlName,
-                    RelatedEntityIds = relatedIds
-                };
-            }
 
             // Check if this is a foreign key navigation property
             var foreignKeyAttr = prop.GetCustomAttribute<ForeignKeyAttribute>();

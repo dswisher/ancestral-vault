@@ -57,33 +57,18 @@
                                 <text>N/A</text>
                             }
                             break;
-
-                        case PropertyType.Collection:
-                            if (prop.RelatedEntityIds == null || !prop.RelatedEntityIds.Any())
-                            {
-                                <text>Empty collection</text>
-                            }
-                            else if (prop.RelatedEntityType != null)
-                            {
-                                <ul>
-                                    @foreach (var id in prop.RelatedEntityIds)
-                                    {
-                                        <li>
-                                            <a asp-controller="DbBrowser" asp-action="Detail" asp-route-type="@prop.RelatedEntityType" asp-route-id="@id">
-                                                @id
-                                            </a>
-                                        </li>
-                                    }
-                                </ul>
-                            }
-                            else
-                            {
-                                <text>@prop.RelatedEntityIds.Count items</text>
-                            }
-                            break;
                     }
                 </td>
             </tr>
         }
     </tbody>
 </table>
+
+@if (Model.Collections.Any(c => c.Items.Any()))
+{
+    <h2>Related Collections</h2>
+    @foreach (var collection in Model.Collections.Where(c => c.Items.Any()))
+    {
+        @await Html.PartialAsync("_CollectionTable", collection)
+    }
+}

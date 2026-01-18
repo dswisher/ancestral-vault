@@ -1,0 +1,40 @@
+@model AncestralVault.Common.Models.ViewModels.DbBrowser.CollectionPropertyValue
+
+<h3>@Model.Name</h3>
+
+@if (Model.Items.Any())
+{
+    <table>
+        <thead>
+            <tr>
+                @foreach (var propertyName in Model.Items.First().Properties.Keys)
+                {
+                    <th>@propertyName</th>
+                }
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Items)
+            {
+                <tr>
+                    @foreach (var propertyValue in item.Properties.Values)
+                    {
+                        <td>@(propertyValue?.ToString() ?? string.Empty)</td>
+                    }
+                    <td>
+                        <a asp-controller="DbBrowser" asp-action="Detail"
+                           asp-route-type="@Model.RelatedEntityType"
+                           asp-route-id="@item.Id">
+                            View Details
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No items in this collection.</p>
+}

@@ -29,5 +29,10 @@ namespace AncestralVault.Common.Models.ViewModels.DbBrowser
         /// All properties of the entity with their values and metadata.
         /// </summary>
         public required List<PropertyValue> Properties { get; set; }
+
+        /// <summary>
+        /// Collection properties that should be displayed in separate tables.
+        /// </summary>
+        public required List<CollectionPropertyValue> Collections { get; set; }
     }
 }
