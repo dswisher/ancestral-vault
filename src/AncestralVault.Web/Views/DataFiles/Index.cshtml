@@ -1,0 +1,31 @@
+@model IEnumerable<AncestralVault.Common.Models.VaultDb.DataFile>
+@{
+    ViewData["Title"] = "Data Files";
+}
+
+<h1>Data Files</h1>
+
+@if (Model != null && Model.Any())
+{
+    <table>
+        <thead>
+            <tr>
+                <th>Filename</th>
+                <th>Path</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var file in Model)
+            {
+                <tr>
+                    <td>@System.IO.Path.GetFileName(file.RelativePath)</td>
+                    <td>@file.RelativePath</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No data files found.</p>
+}

@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AncestralVault.UnitTests", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AncestralVault.Cli", "src\AncestralVault.Cli\AncestralVault.Cli.csproj", "{4A25F5FD-A46D-4343-A5A3-C3146CA6707A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AncestralVault.Web", "src\AncestralVault.Web\AncestralVault.Web.csproj", "{7C188B7D-53EF-413D-8CBB-EF18515BA50B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -59,6 +61,18 @@ Global
 		{4A25F5FD-A46D-4343-A5A3-C3146CA6707A}.Release|x64.Build.0 = Release|Any CPU
 		{4A25F5FD-A46D-4343-A5A3-C3146CA6707A}.Release|x86.ActiveCfg = Release|Any CPU
 		{4A25F5FD-A46D-4343-A5A3-C3146CA6707A}.Release|x86.Build.0 = Release|Any CPU
+		{7C188B7D-53EF-413D-8CBB-EF18515BA50B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7C188B7D-53EF-413D-8CBB-EF18515BA50B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7C188B7D-53EF-413D-8CBB-EF18515BA50B}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{7C188B7D-53EF-413D-8CBB-EF18515BA50B}.Debug|x64.Build.0 = Debug|Any CPU
+		{7C188B7D-53EF-413D-8CBB-EF18515BA50B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{7C188B7D-53EF-413D-8CBB-EF18515BA50B}.Debug|x86.Build.0 = Debug|Any CPU
+		{7C188B7D-53EF-413D-8CBB-EF18515BA50B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7C188B7D-53EF-413D-8CBB-EF18515BA50B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7C188B7D-53EF-413D-8CBB-EF18515BA50B}.Release|x64.ActiveCfg = Release|Any CPU
+		{7C188B7D-53EF-413D-8CBB-EF18515BA50B}.Release|x64.Build.0 = Release|Any CPU
+		{7C188B7D-53EF-413D-8CBB-EF18515BA50B}.Release|x86.ActiveCfg = Release|Any CPU
+		{7C188B7D-53EF-413D-8CBB-EF18515BA50B}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -67,5 +81,6 @@ Global
 		{756575D6-DBDD-4689-93EF-C04F5548B4C3} = {827E0CD3-B72D-47B6-A68D-7590B98EB39B}
 		{A4A0E946-3442-4BCD-8E6E-7558FD0E38B4} = {0C88DD14-F956-CE84-757C-A364CCF449FC}
 		{4A25F5FD-A46D-4343-A5A3-C3146CA6707A} = {827E0CD3-B72D-47B6-A68D-7590B98EB39B}
+		{7C188B7D-53EF-413D-8CBB-EF18515BA50B} = {827E0CD3-B72D-47B6-A68D-7590B98EB39B}
 	EndGlobalSection
 EndGlobal
