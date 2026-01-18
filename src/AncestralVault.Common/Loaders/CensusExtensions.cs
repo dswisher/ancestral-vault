@@ -1,6 +1,7 @@
 // Copyright (c) Doug Swisher. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System.Linq;
 using AncestralVault.Common.Models.Loader;
 using AncestralVault.Common.Models.VaultJson.CensusUS;
 
@@ -8,10 +9,58 @@ namespace AncestralVault.Common.Loaders
 {
     public static class CensusExtensions
     {
-        public static LoaderCensusRow ToLoaderRow(this CensusUS1900Row row)
+        public static LoaderCensus ToLoader(this CensusUS1900 census)
+        {
+            return new LoaderCensus
+            {
+                Header = census.Header.ToLoader(),
+                Rows = census.Rows.Select(r => r.ToLoader()).ToList()
+            };
+        }
+
+
+        public static LoaderCensus ToLoader(this CensusUS1930 census)
+        {
+            return new LoaderCensus
+            {
+                Header = census.Header.ToLoader(),
+                Rows = census.Rows.Select(r => r.ToLoader()).ToList()
+            };
+        }
+
+
+        public static LoaderCensus ToLoader(this CensusUS1940 census)
+        {
+            return new LoaderCensus
+            {
+                Header = census.Header.ToLoader(),
+                Rows = census.Rows.Select(r => r.ToLoader()).ToList()
+            };
+        }
+
+
+        private static LoaderCensusHeader ToLoader(this CensusUSHeader header)
+        {
+            return new LoaderCensusHeader
+            {
+                Id = header.Id,
+                State = header.State,
+                County = header.County,
+                Township = header.Township,
+                IncorporatedPlace = header.IncorporatedPlace,
+                EnumerationDistrict = header.EnumerationDistrict,
+                SupervisorsDistrict = header.SupervisorsDistrict,
+                EnumerationDate = header.EnumerationDate,
+                Sheet = header.Sheet,
+            };
+        }
+
+
+        private static LoaderCensusRow ToLoader(this CensusUS1900Row row)
         {
             return new LoaderCensusRow
             {
+                Id = row.Id,
                 Line = row.Line,
                 Name = row.Name,
                 Relation = row.Relation,
@@ -33,10 +82,11 @@ namespace AncestralVault.Common.Loaders
         }
 
 
-        public static LoaderCensusRow ToLoaderRow(this CensusUS1930Row row)
+        private static LoaderCensusRow ToLoader(this CensusUS1930Row row)
         {
             return new LoaderCensusRow
             {
+                Id = row.Id,
                 Line = row.Line,
                 Name = row.Name,
                 Relation = row.Relation,
@@ -54,10 +104,11 @@ namespace AncestralVault.Common.Loaders
         }
 
 
-        public static LoaderCensusRow ToLoaderRow(this CensusUS1940Row row)
+        private static LoaderCensusRow ToLoader(this CensusUS1940Row row)
         {
             return new LoaderCensusRow
             {
+                Id = row.Id,
                 Line = row.Line,
                 Name = row.Name,
                 Relation = row.Relation,

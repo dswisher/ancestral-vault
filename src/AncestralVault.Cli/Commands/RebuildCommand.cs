@@ -54,7 +54,7 @@ namespace AncestralVault.Cli.Commands
                 seeker.VaultDbDir.Create();
             }
 
-            using (var context = dbContextFactory.CreateDbContext())
+            await using (var context = dbContextFactory.CreateDbContext())
             {
                 // Recreate the database
                 logger.LogInformation("...ensuring database is deleted...");
@@ -77,11 +77,30 @@ namespace AncestralVault.Cli.Commands
 
         private async Task LoadData(AncestralVaultDbContext context, RebuildOptions options, DirectoryInfo vaultDir, CancellationToken stoppingToken)
         {
+            // Load directories in the following order: admin, evidence, conclusions
+            // TODO - if there are other directories (other than images), load them too?
+            await LoadDirectoryData(context, options, vaultDir, "admin", stoppingToken);
+            await LoadDirectoryData(context, options, vaultDir, "evidence", stoppingToken);
+            await LoadDirectoryData(context, options, vaultDir, "conclusions", stoppingToken);
+        }
+
+
+        private async Task LoadDirectoryData(AncestralVaultDbContext context, RebuildOptions options, DirectoryInfo vaultDir, string directoryName, CancellationToken stoppingToken)
+        {
+            // Get the directory info, and make sure it exists
+            var directoryInfo = new DirectoryInfo(Path.Join(vaultDir.FullName, directoryName));
+            if (!directoryInfo.Exists)
+            {
+                return;
+            }
+
+            logger.LogDebug("Loading data from directory: {DirectoryName}...", directoryInfo.FullName);
+
             // Load all the data
             // TODO - also scan for .json files!
-            foreach (var file in vaultDir.EnumerateFiles("*.jsonc", SearchOption.AllDirectories).OrderBy(x => x.FullName))
+            foreach (var file in directoryInfo.EnumerateFiles("*.jsonc", SearchOption.AllDirectories).OrderBy(x => x.FullName))
             {
-                var relativePath = Path.GetRelativePath(vaultDir.FullName, file.FullName).Replace('\\', '/');
+                var relativePath = Path.GetRelativePath(directoryInfo.FullName, file.FullName).Replace('\\', '/');
 
                 // TODO - load all the data
                 logger.LogInformation("Parsing data file {FileName}...", relativePath);

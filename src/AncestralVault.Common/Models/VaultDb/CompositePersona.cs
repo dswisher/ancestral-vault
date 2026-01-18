@@ -7,36 +7,30 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace AncestralVault.Common.Models.VaultDb
 {
     /// <summary>
-    /// A PERSONA is a single individual that appears in a piece of evidence.
+    /// A COMPOSITE-PERSONA is an aggregation of multiple PERSONA records that are believed to
+    /// represent the same individual.
     /// </summary>
-    [Table("personas")]
-    public class Persona
+    [Table("composite_personas")]
+    public class CompositePersona
     {
         /// <summary>
-        /// Unique key identifying this PERSONA.
+        /// Unique key identifying this COMPOSITE-PERSONA.
         /// </summary>
         [Key]
-        [Column("persona_id")]
+        [Column("composite_persona_id")]
         [MaxLength(50)]
-        public required string PersonaId { get; set; }
+        public required string CompositePersonaId { get; set; }
 
         /// <summary>
-        /// The name, as it appears in the evidence.
+        /// The name by which the researcher refers to this COMPOSITE-PERSONA.
         /// </summary>
-        [Column("name")]
         [Required]
-        [MaxLength(50)]
+        [Column("name")]
+        [MaxLength(100)]
         public required string Name { get; set; }
 
         /// <summary>
-        /// Free-form notes about this PERSONA.
-        /// </summary>
-        [Column("notes")]
-        [MaxLength(1024)]
-        public string? Notes { get; set; }
-
-        /// <summary>
-        /// The data file from which this PERSONA was ingested.
+        /// The data file from which this COMPOSITE-PERSONA was ingested.
         /// </summary>
         [Column("data_file_key")]
         [ForeignKey(nameof(DataFile))]

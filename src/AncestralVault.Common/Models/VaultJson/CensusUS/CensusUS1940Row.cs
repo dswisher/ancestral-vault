@@ -7,6 +7,9 @@ namespace AncestralVault.Common.Models.VaultJson.CensusUS
 {
     public class CensusUS1940Row
     {
+        [JsonPropertyName("id")]
+        public string? Id { get; set; }
+
         [JsonPropertyName("line")]
         public int Line { get; set; }
 

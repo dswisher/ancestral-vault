@@ -12,10 +12,14 @@ namespace AncestralVault.Common.Loaders
 {
     public class VaultJsonLoader : IVaultJsonLoader
     {
+        private readonly ICensusLoader censusLoader;
         private readonly ILogger<VaultJsonLoader> logger;
 
-        public VaultJsonLoader(ILogger<VaultJsonLoader> logger)
+        public VaultJsonLoader(
+            ICensusLoader censusLoader,
+            ILogger<VaultJsonLoader> logger)
         {
+            this.censusLoader = censusLoader;
             this.logger = logger;
         }
 
@@ -38,46 +42,23 @@ namespace AncestralVault.Common.Loaders
             }
             else if (entity is JsonPlace jsonPlace)
             {
-                logger.LogDebug("Loading place '{PlaceId}', type {PlaceTypeId}, name {PlaceName}...", jsonPlace.PlaceId, jsonPlace.PlaceTypeId, jsonPlace.Name);
-
-                var dbPlace = new Place
-                {
-                    PlaceId = jsonPlace.PlaceId,
-                    PlaceTypeId = jsonPlace.PlaceTypeId,
-                    Name = jsonPlace.Name,
-                    ParentPlaceId = jsonPlace.Parent,
-                    DataFile = dataFile
-                };
-
-                context.Places.Add(dbPlace);
+                LoadPlace(context, dataFile, jsonPlace);
             }
             else if (entity is JsonPlaceType jsonPlaceType)
             {
-                logger.LogDebug("Loading place type '{PlaceTypeId}', name {PlaceTypeName}...", jsonPlaceType.PlaceTypeId, jsonPlaceType.Name);
-
-                var dbPlaceType = new PlaceType
-                {
-                    PlaceTypeId = jsonPlaceType.PlaceTypeId,
-                    Name = jsonPlaceType.Name,
-                    DataFile = dataFile
-                };
-
-                context.PlaceTypes.Add(dbPlaceType);
+                LoadPlaceType(context, dataFile, jsonPlaceType);
             }
             else if (entity is CensusUS1900 census1900)
             {
-                // TODO - load 1900 US Census data
-                logger.LogWarning("Loading for CensusUS1900 is not yet implemented.");
+                censusLoader.LoadCensus(context, dataFile, census1900.ToLoader());
             }
             else if (entity is CensusUS1930 census1930)
             {
-                // TODO - load 1930 US Census data
-                logger.LogWarning("Loading for CensusUS1930 is not yet implemented.");
+                censusLoader.LoadCensus(context, dataFile, census1930.ToLoader());
             }
             else if (entity is CensusUS1940 census1940)
             {
-                // TODO - load 1940 US Census data
-                logger.LogWarning("Loading for CensusUS1940 is not yet implemented.");
+                censusLoader.LoadCensus(context, dataFile, census1940.ToLoader());
             }
             else if (entity is JsonTombstone tombstone)
             {
@@ -88,6 +69,14 @@ namespace AncestralVault.Common.Loaders
                 // TODO - load marriage data
                 logger.LogWarning("Loading for Marriage is not yet implemented.");
             }
+            else if (entity is JsonCompositePersona compositePersona)
+            {
+                LoadCompositePersona(context, dataFile, compositePersona);
+            }
+            else if (entity is JsonPersonaAssertion personaAssertion)
+            {
+                LoadPersonaAssertion(context, dataFile, personaAssertion);
+            }
             else
             {
                 // TODO - add remaining types
@@ -96,8 +85,73 @@ namespace AncestralVault.Common.Loaders
         }
 
 
-        private static void LoadTombstone(AncestralVaultDbContext context, DataFile dataFile, JsonTombstone tombstone)
+        private void LoadPlaceType(AncestralVaultDbContext context, DataFile dataFile, JsonPlaceType jsonPlaceType)
         {
+            logger.LogDebug("Loading place type '{PlaceTypeId}', name {PlaceTypeName}...", jsonPlaceType.PlaceTypeId, jsonPlaceType.Name);
+
+            var dbPlaceType = new PlaceType
+            {
+                PlaceTypeId = jsonPlaceType.PlaceTypeId,
+                Name = jsonPlaceType.Name,
+                DataFile = dataFile
+            };
+
+            context.PlaceTypes.Add(dbPlaceType);
+        }
+
+
+        private void LoadPlace(AncestralVaultDbContext context, DataFile dataFile, JsonPlace jsonPlace)
+        {
+            logger.LogDebug("Loading place '{PlaceId}', type {PlaceTypeId}, name {PlaceName}...", jsonPlace.PlaceId, jsonPlace.PlaceTypeId, jsonPlace.Name);
+
+            var dbPlace = new Place
+            {
+                PlaceId = jsonPlace.PlaceId,
+                PlaceTypeId = jsonPlace.PlaceTypeId,
+                Name = jsonPlace.Name,
+                ParentPlaceId = jsonPlace.Parent,
+                DataFile = dataFile
+            };
+
+            context.Places.Add(dbPlace);
+        }
+
+
+        private void LoadCompositePersona(AncestralVaultDbContext context, DataFile dataFile, JsonCompositePersona jsonPersona)
+        {
+            logger.LogDebug("Loading composite persona for {CompositeId}...", jsonPersona.Id);
+
+            var persona = new CompositePersona
+            {
+                CompositePersonaId = jsonPersona.Id,
+                Name = jsonPersona.Name,
+                DataFile = dataFile
+            };
+
+            context.CompositePersonas.Add(persona);
+        }
+
+
+        private void LoadPersonaAssertion(AncestralVaultDbContext context, DataFile dataFile, JsonPersonaAssertion jsonAssertion)
+        {
+            logger.LogDebug("Loading persona assertion for {PersonaId} -> {CompositeId}...", jsonAssertion.PersonaId, jsonAssertion.CompositePersonaId);
+
+            var assertion = new PersonaAssertion
+            {
+                CompositePersonaId = jsonAssertion.CompositePersonaId,
+                PersonaId = jsonAssertion.PersonaId,
+                Rationale = jsonAssertion.Rationale,
+                DataFile = dataFile
+            };
+
+            context.PersonaAssertions.Add(assertion);
+        }
+
+
+        private void LoadTombstone(AncestralVaultDbContext context, DataFile dataFile, JsonTombstone tombstone)
+        {
+            logger.LogDebug("Loading tombstone '{TombstoneId}'...", tombstone.Record.Id);
+
             // TODO - source/citation for the persona and events
 
             // Create a persona and add it

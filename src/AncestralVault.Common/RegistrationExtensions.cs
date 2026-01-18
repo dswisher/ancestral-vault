@@ -13,11 +13,11 @@ namespace AncestralVault.Common
     {
         public static void RegisterVaultCommon(this IServiceCollection services)
         {
+            services.AddSingleton<IAncestralVaultDbContextFactory, AncestralVaultDbContextFactory>();
+            services.AddSingleton<ICensusLoader, CensusLoader>();
             services.AddSingleton<IVaultJsonLoader, VaultJsonLoader>();
             services.AddSingleton<IVaultJsonParser, VaultJsonParser>();
-
             services.AddSingleton<IVaultSeeker, VaultSeeker>();
-            services.AddSingleton<IAncestralVaultDbContextFactory, AncestralVaultDbContextFactory>();
         }
     }
 }

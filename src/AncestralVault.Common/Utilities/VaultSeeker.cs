@@ -21,7 +21,7 @@ namespace AncestralVault.Common.Utilities
         public void Configure(string? vaultPath)
         {
             // TODO - go hunt for the the root of the vault
-            vaultDir = new DirectoryInfo(vaultPath ?? "../../../family");
+            vaultDir = new DirectoryInfo(vaultPath ?? "../../../family/adopted-vault");
             vaultDbDir = new DirectoryInfo(Path.Join(vaultDir.FullName, ".db"));
             vaultDbFile = new FileInfo(Path.Join(vaultDbDir.FullName, "vault.db"));
         }

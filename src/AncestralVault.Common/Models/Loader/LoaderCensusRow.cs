@@ -6,6 +6,8 @@ namespace AncestralVault.Common.Models.Loader
     public class LoaderCensusRow
     {
         // Common fields across all census years
+        public string? Id { get; set; }
+
         public int Line { get; set; }
         public required string Name { get; set; }
         public required string Relation { get; set; }
