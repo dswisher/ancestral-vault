@@ -9,19 +9,19 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Reflection;
 using AncestralVault.Common.Database;
-using AncestralVault.Web.Models.DbBrowser;
+using AncestralVault.Common.Models.ViewModels.DbBrowser;
 using Microsoft.EntityFrameworkCore;
 
-namespace AncestralVault.Web.Services
+namespace AncestralVault.Common.Repositories
 {
     /// <summary>
     /// Service for browsing database entities using reflection.
     /// </summary>
-    public class DbBrowserService : IDbBrowserService
+    public class DbBrowserRepository : IDbBrowserRepository
     {
         private readonly Dictionary<string, Type> entityTypeCache;
 
-        public DbBrowserService()
+        public DbBrowserRepository()
         {
             // Build a cache of entity types for fast case-insensitive lookup
             entityTypeCache = new Dictionary<string, Type>(StringComparer.OrdinalIgnoreCase);
@@ -112,8 +112,12 @@ namespace AncestralVault.Web.Services
 
             // Build the view model
             var entityItems = new List<EntityListItem>();
+
+            // Get navigation property names to filter them out
+            var navigationPropertyNames = GetNavigationPropertyNames(dbContext, entityType);
+
             var properties = entityType.GetProperties(BindingFlags.Public | BindingFlags.Instance)
-                .Where(p => !IsCollectionProperty(p))
+                .Where(p => !navigationPropertyNames.Contains(p.Name))
                 .Take(5) // Show up to 5 properties in the list view
                 .ToList();
 
@@ -277,6 +281,27 @@ namespace AncestralVault.Web.Services
         {
             return prop.PropertyType.IsGenericType &&
                    prop.PropertyType.GetGenericTypeDefinition() == typeof(ICollection<>);
+        }
+
+
+        /// <summary>
+        /// Gets the names of all navigation properties (both collections and references) for an entity type.
+        /// </summary>
+        /// <param name="dbContext">The database context containing the EF Core model metadata.</param>
+        /// <param name="entityClrType">The CLR type of the entity.</param>
+        /// <returns>A set of navigation property names for efficient lookup.</returns>
+        private static HashSet<string> GetNavigationPropertyNames(AncestralVaultDbContext dbContext, Type entityClrType)
+        {
+            var entityType = dbContext.Model.FindEntityType(entityClrType);
+            if (entityType == null)
+            {
+                // Shouldn't happen for valid entity types, but return empty set for safety
+                return new HashSet<string>();
+            }
+
+            return entityType.GetNavigations()
+                .Select(n => n.Name)
+                .ToHashSet();
         }
 
 

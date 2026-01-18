@@ -5,7 +5,6 @@ using System;
 using AncestralVault.Common;
 using AncestralVault.Common.Utilities;
 using AncestralVault.Web.Options;
-using AncestralVault.Web.Services;
 using CommandLine;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
@@ -27,7 +26,6 @@ namespace AncestralVault.Web
                 // Add services to the container
                 builder.Services.AddControllersWithViews();
                 builder.Services.RegisterVaultCommon();
-                builder.Services.AddSingleton<IDbBrowserService, DbBrowserService>();
 
                 var app = builder.Build();
 

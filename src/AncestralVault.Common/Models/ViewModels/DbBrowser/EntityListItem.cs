@@ -3,7 +3,7 @@
 
 using System.Collections.Generic;
 
-namespace AncestralVault.Web.Models.DbBrowser
+namespace AncestralVault.Common.Models.ViewModels.DbBrowser
 {
     /// <summary>
     /// Represents a single entity in the list.

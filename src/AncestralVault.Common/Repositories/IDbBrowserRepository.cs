@@ -4,14 +4,14 @@
 using System;
 using System.Collections.Generic;
 using AncestralVault.Common.Database;
-using AncestralVault.Web.Models.DbBrowser;
+using AncestralVault.Common.Models.ViewModels.DbBrowser;
 
-namespace AncestralVault.Web.Services
+namespace AncestralVault.Common.Repositories
 {
     /// <summary>
     /// Service for browsing database entities using reflection.
     /// </summary>
-    public interface IDbBrowserService
+    public interface IDbBrowserRepository
     {
         /// <summary>
         /// Get all entity types available in the database.

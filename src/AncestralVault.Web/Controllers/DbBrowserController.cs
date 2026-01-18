@@ -2,7 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using AncestralVault.Common.Database;
-using AncestralVault.Web.Services;
+using AncestralVault.Common.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AncestralVault.Web.Controllers
@@ -14,12 +14,12 @@ namespace AncestralVault.Web.Controllers
     public class DbBrowserController : Controller
     {
         private readonly IAncestralVaultDbContextFactory contextFactory;
-        private readonly IDbBrowserService dbBrowserService;
+        private readonly IDbBrowserRepository dbBrowserRepo;
 
-        public DbBrowserController(IAncestralVaultDbContextFactory contextFactory, IDbBrowserService dbBrowserService)
+        public DbBrowserController(IAncestralVaultDbContextFactory contextFactory, IDbBrowserRepository dbBrowserRepo)
         {
             this.contextFactory = contextFactory;
-            this.dbBrowserService = dbBrowserService;
+            this.dbBrowserRepo = dbBrowserRepo;
         }
 
 
@@ -30,7 +30,8 @@ namespace AncestralVault.Web.Controllers
         [Route("home")]
         public IActionResult Home()
         {
-            var entityTypes = dbBrowserService.GetAllEntityTypes();
+            var entityTypes = dbBrowserRepo.GetAllEntityTypes();
+
             return View(entityTypes);
         }
 
@@ -43,14 +44,17 @@ namespace AncestralVault.Web.Controllers
         [Route("list/{type}")]
         public IActionResult List(string type)
         {
-            if (!dbBrowserService.TryResolveEntityType(type, out var entityType) || entityType == null)
+            if (!dbBrowserRepo.TryResolveEntityType(type, out var entityType) || entityType == null)
             {
                 return NotFound($"Entity type '{type}' not found.");
             }
 
-            using var dbContext = contextFactory.CreateDbContext();
-            var viewModel = dbBrowserService.BuildListViewModel(dbContext, entityType);
-            return View(viewModel);
+            using (var dbContext = contextFactory.CreateDbContext())
+            {
+                var viewModel = dbBrowserRepo.BuildListViewModel(dbContext, entityType);
+
+                return View(viewModel);
+            }
         }
 
 
@@ -63,20 +67,22 @@ namespace AncestralVault.Web.Controllers
         [Route("detail/{type}/{id}")]
         public IActionResult Detail(string type, string id)
         {
-            if (!dbBrowserService.TryResolveEntityType(type, out var entityType) || entityType == null)
+            if (!dbBrowserRepo.TryResolveEntityType(type, out var entityType) || entityType == null)
             {
                 return NotFound($"Entity type '{type}' not found.");
             }
 
-            using var dbContext = contextFactory.CreateDbContext();
-            var viewModel = dbBrowserService.BuildDetailViewModel(dbContext, entityType, id);
-
-            if (viewModel == null)
+            using (var dbContext = contextFactory.CreateDbContext())
             {
-                return NotFound($"Entity of type '{type}' with id '{id}' not found.");
-            }
+                var viewModel = dbBrowserRepo.BuildDetailViewModel(dbContext, entityType, id);
 
-            return View(viewModel);
+                if (viewModel == null)
+                {
+                    return NotFound($"Entity of type '{type}' with id '{id}' not found.");
+                }
+
+                return View(viewModel);
+            }
         }
     }
 }

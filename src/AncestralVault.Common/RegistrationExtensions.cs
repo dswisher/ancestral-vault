@@ -35,6 +35,7 @@ namespace AncestralVault.Common
         public static void RegisterRepositories(this IServiceCollection services)
         {
             services.AddSingleton<ICompositePersonaRepository, CompositePersonaRepository>();
+            services.AddSingleton<IDbBrowserRepository, DbBrowserRepository>();
             services.AddSingleton<IPersonaRepository, PersonaRepository>();
         }
     }

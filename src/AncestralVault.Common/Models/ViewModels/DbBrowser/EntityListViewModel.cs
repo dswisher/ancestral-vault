@@ -3,7 +3,7 @@
 
 using System.Collections.Generic;
 
-namespace AncestralVault.Web.Models.DbBrowser
+namespace AncestralVault.Common.Models.ViewModels.DbBrowser
 {
     /// <summary>
     /// View model for the List page showing entities of a specific type.

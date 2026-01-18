@@ -1,7 +1,7 @@
 // Copyright (c) Doug Swisher. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace AncestralVault.Web.Models.DbBrowser
+namespace AncestralVault.Common.Models.ViewModels.DbBrowser
 {
     /// <summary>
     /// The type of property, which determines how it should be rendered.
