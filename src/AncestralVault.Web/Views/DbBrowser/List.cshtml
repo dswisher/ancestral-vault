@@ -29,7 +29,7 @@
                 <tr>
                     @foreach (var prop in entity.Properties.Values)
                     {
-                        <td>@(prop?.ToString() ?? "null")</td>
+                        <td>@(prop?.ToString() ?? string.Empty)</td>
                     }
                     <td>
                         <a asp-controller="DbBrowser" asp-action="Detail" asp-route-type="@Model.UrlName" asp-route-id="@entity.Id">Details</a>

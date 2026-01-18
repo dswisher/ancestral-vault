@@ -117,7 +117,7 @@ namespace AncestralVault.Common.Repositories
             var navigationPropertyNames = GetNavigationPropertyNames(dbContext, entityType);
 
             var properties = entityType.GetProperties(BindingFlags.Public | BindingFlags.Instance)
-                .Where(p => !navigationPropertyNames.Contains(p.Name))
+                .Where(p => !navigationPropertyNames.Contains(p.Name) && !IsForeignKeyProperty(p, entityType))
                 .Take(5) // Show up to 5 properties in the list view
                 .ToList();
 
@@ -302,6 +302,33 @@ namespace AncestralVault.Common.Repositories
             return entityType.GetNavigations()
                 .Select(n => n.Name)
                 .ToHashSet();
+        }
+
+
+        /// <summary>
+        /// Checks if a property is a foreign key property by looking for the ForeignKey attribute.
+        /// </summary>
+        /// <param name="prop">The property to check.</param>
+        /// <param name="entityType">The entity type containing the property.</param>
+        /// <returns>True if the property is a foreign key property, false otherwise.</returns>
+        private static bool IsForeignKeyProperty(PropertyInfo prop, Type entityType)
+        {
+            // Check if the property itself has a ForeignKey attribute
+            if (prop.GetCustomAttribute<ForeignKeyAttribute>() != null)
+            {
+                return true;
+            }
+
+            // Check if another property has a ForeignKey attribute pointing to this property
+            var referencingProperty = entityType
+                .GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                .FirstOrDefault(p =>
+                {
+                    var fkAttr = p.GetCustomAttribute<ForeignKeyAttribute>();
+                    return fkAttr != null && fkAttr.Name.Equals(prop.Name, StringComparison.OrdinalIgnoreCase);
+                });
+
+            return referencingProperty != null;
         }
 
 
