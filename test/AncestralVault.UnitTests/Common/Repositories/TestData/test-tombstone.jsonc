@@ -1,5 +1,29 @@
 [
   {
+    "event-type": {
+      "id": "birth",
+      "name": "Birth"
+    }
+  },
+  {
+    "event-type": {
+      "id": "death",
+      "name": "Death"
+    }
+  },
+  {
+    "event-role-type": {
+      "id": "newborn",
+      "name": "Newborn"
+    }
+  },
+  {
+    "event-role-type": {
+      "id": "decedent",
+      "name": "Decedent"
+    }
+  },
+  {
     "tombstone": {
       "record": {
         "id": "t1",

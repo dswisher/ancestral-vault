@@ -3,13 +3,12 @@
 
 using System.Collections.Generic;
 
-namespace AncestralVault.Common.Models.ViewModels
+namespace AncestralVault.Common.Models.ViewModels.PersonaDetails
 {
     public class PersonaDetailsViewModel
     {
         public required string Name { get; set; }
-        public string? Notes { get; set; }
 
-        public List<SoloEventViewModel> SoloEvents { get; } = [];
+        public List<PersonaDetailsEventBox> EventBoxItems { get; } = [];
     }
 }

@@ -14,17 +14,16 @@ namespace AncestralVault.Common.Database
         }
 
 
-        public virtual DbSet<Characteristic> Characteristics { get; init; }
         public virtual DbSet<CompositePersona> CompositePersonas { get; init; }
         public virtual DbSet<DataFile> DataFiles { get; init; }
-        public virtual DbSet<JointEvent> JointEvents { get; init; }
+        public virtual DbSet<Event> Events { get; init; }
+        public virtual DbSet<EventRole> EventRoles { get; init; }
+        public virtual DbSet<EventRoleType> EventRoleTypes { get; init; }
+        public virtual DbSet<EventType> EventTypes { get; init; }
         public virtual DbSet<Persona> Personas { get; init; }
         public virtual DbSet<PersonaAssertion> PersonaAssertions { get; init; }
         public virtual DbSet<Place> Places { get; init; }
         public virtual DbSet<PlaceType> PlaceTypes { get; init; }
-        public virtual DbSet<Representation> Representations { get; init; }
-        public virtual DbSet<RepresentationType> RepresentationTypes { get; init; }
-        public virtual DbSet<SoloEvent> SoloEvents { get; init; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

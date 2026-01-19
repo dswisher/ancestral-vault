@@ -4,7 +4,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using AncestralVault.Common.Database;
-using AncestralVault.Common.Models.ViewModels;
+using AncestralVault.Common.Models.ViewModels.PersonaDetails;
 
 namespace AncestralVault.Common.Repositories
 {

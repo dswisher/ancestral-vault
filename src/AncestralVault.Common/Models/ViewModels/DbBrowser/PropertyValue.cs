@@ -1,8 +1,6 @@
 // Copyright (c) Doug Swisher. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System.Linq;
-
 namespace AncestralVault.Common.Models.ViewModels.DbBrowser
 {
     /// <summary>
@@ -60,47 +58,5 @@ namespace AncestralVault.Common.Models.ViewModels.DbBrowser
         /// For collections, the list of related entity IDs.
         /// </summary>
         public System.Collections.Generic.List<string>? RelatedEntityIds { get; set; }
-    }
-
-    /// <summary>
-    /// Represents a single item in a collection with its property values.
-    /// </summary>
-    public class CollectionItem
-    {
-        /// <summary>
-        /// The primary key value (as string for URL routing).
-        /// </summary>
-        public required string Id { get; set; }
-
-        /// <summary>
-        /// Key-value pairs of property names and values for display.
-        /// </summary>
-        public required System.Collections.Generic.Dictionary<string, object?> Properties { get; set; }
-    }
-
-    /// <summary>
-    /// Represents a collection property for separate display.
-    /// </summary>
-    public class CollectionPropertyValue
-    {
-        /// <summary>
-        /// The name of the collection property.
-        /// </summary>
-        public required string Name { get; set; }
-
-        /// <summary>
-        /// The entity type name of items in the collection.
-        /// </summary>
-        public required string RelatedEntityType { get; set; }
-
-        /// <summary>
-        /// The list of items in the collection with their property values.
-        /// </summary>
-        public required System.Collections.Generic.List<CollectionItem> Items { get; set; }
-
-        /// <summary>
-        /// Backward compatibility: computed from Items.
-        /// </summary>
-        public System.Collections.Generic.List<string> RelatedEntityIds => Items.Select(i => i.Id).ToList();
     }
 }

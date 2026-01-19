@@ -6,7 +6,7 @@ using AncestralVault.Common.Models.Loader;
 using AncestralVault.Common.Models.VaultDb;
 using Microsoft.Extensions.Logging;
 
-namespace AncestralVault.Common.Loaders
+namespace AncestralVault.Common.Loaders.Impl
 {
     public class CensusLoader : ICensusLoader
     {

@@ -74,18 +74,14 @@ namespace AncestralVault.Common.Parsers
                 ["census-us-1930"] = typeof(CensusUS1930),
                 ["census-us-1940"] = typeof(CensusUS1940),
                 ["composite-persona"] = typeof(JsonCompositePersona),
+                ["event-role-type"] = typeof(JsonEventRoleType),
+                ["event-type"] = typeof(JsonEventType),
                 ["marriage"] = typeof(JsonMarriage),
                 ["persona"] = typeof(JsonPersona),
                 ["persona-assertion"] = typeof(JsonPersonaAssertion),
                 ["place"] = typeof(JsonPlace),
                 ["place-type"] = typeof(JsonPlaceType),
                 ["tombstone"] = typeof(JsonTombstone),
-
-                // ["project"] = typeof(Project),
-                // ["researcher"] = typeof(Researcher),
-                // ["activity"] = typeof(Activity),
-                // ["event"] = typeof(Event)
-                // ... register all types
             };
 
             private static readonly Dictionary<Type, string> NameMap =

@@ -3,6 +3,7 @@
 
 using AncestralVault.Common.Database;
 using AncestralVault.Common.Loaders;
+using AncestralVault.Common.Loaders.Impl;
 using AncestralVault.Common.Parsers;
 using AncestralVault.Common.Repositories;
 using AncestralVault.Common.Utilities;
@@ -27,6 +28,9 @@ namespace AncestralVault.Common
         public static void RegisterLoaders(this IServiceCollection services)
         {
             services.AddSingleton<ICensusLoader, CensusLoader>();
+            services.AddSingleton<IMarriageLoader, MarriageLoader>();
+            services.AddSingleton<ITombstoneLoader, TombstoneLoader>();
+            services.AddSingleton<ITypeLoaders, TypeLoaders>();
             services.AddSingleton<IVaultJsonLoader, VaultJsonLoader>();
             services.AddSingleton<IVaultJsonParser, VaultJsonParser>();
         }

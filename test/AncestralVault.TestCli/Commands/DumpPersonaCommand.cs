@@ -1,11 +1,12 @@
 // Copyright (c) Doug Swisher. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System;
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using AncestralVault.Common.Database;
-using AncestralVault.Common.Models.ViewModels;
+using AncestralVault.Common.Models.ViewModels.PersonaDetails;
 using AncestralVault.Common.Repositories;
 using AncestralVault.Common.Utilities;
 using AncestralVault.TestCli.Options;
@@ -75,24 +76,60 @@ namespace AncestralVault.TestCli.Commands
                 return;
             }
 
-            logger.LogInformation("Persona Details:");
-            logger.LogInformation("  Name: {Name}", viewModel.Name);
-
-            if (!string.IsNullOrEmpty(viewModel.Notes))
-            {
-                logger.LogInformation(" Notes: {Notes}", viewModel.Notes);
-            }
-
-            foreach (var soloEvent in viewModel.SoloEvents)
-            {
-                logger.LogInformation(" Solo Event: {EventType} ({PrincipalRole}), date {EventDate}",
-                    soloEvent.EventType,
-                    soloEvent.PrincipalRole,
-                    soloEvent.EventDate ?? "unknown");
-            }
+            WriteDetails(viewModel);
 
             // Report!
             logger.LogWarning("Done, in {Elapsed}.", timer.Elapsed);
+        }
+
+
+        private static void WriteDetails(PersonaDetailsViewModel viewModel)
+        {
+            WriteSmallBanner("HEADER");
+            WriteHeader(viewModel);
+
+            WriteSmallBanner("EVENTS");
+            var first = true;
+            foreach (var eventBox in viewModel.EventBoxItems)
+            {
+                if (first)
+                {
+                    first = false;
+                }
+                else
+                {
+                    Console.WriteLine();
+                }
+
+                WriteEventBox(eventBox);
+            }
+
+            Console.WriteLine();
+        }
+
+
+        private static void WriteHeader(PersonaDetailsViewModel viewModel)
+        {
+            Console.WriteLine("Name: {0}", viewModel.Name);
+        }
+
+
+        private static void WriteEventBox(PersonaDetailsEventBox eventBox)
+        {
+            Console.WriteLine("Event Date: {0}", eventBox.EventDate);
+            Console.WriteLine("Event Type: {0} ({1})", eventBox.EventTypeName, eventBox.EventTypeId);
+            Console.WriteLine("Event Role: {0} ({1})", eventBox.EventRoleTypeName, eventBox.EventRoleTypeId);
+        }
+
+
+        private static void WriteSmallBanner(string title)
+        {
+            const int totalWidth = 80;
+
+            var dashes = new string('-', (totalWidth - title.Length - 2) / 2);
+
+            Console.WriteLine();
+            Console.WriteLine("{0} {1} {0}", dashes, title);
         }
     }
 }

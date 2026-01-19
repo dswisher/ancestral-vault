@@ -1,40 +1,36 @@
 // Copyright (c) Doug Swisher. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AncestralVault.Common.Models.VaultDb
 {
-    // TODO - do we keep this, or replace it?
-
     /// <summary>
-    /// Contains a list of the types of representations of evidence, such as text, a TIF bitmap, a GIF bitmap, a WAV file, or other forms.
+    /// An EVENT-TYPE describes the type of an EVENT (e.g., birth, death, marriage).
     /// </summary>
-    /// <remarks>
-    /// See p. 68 in the GenTech Data Model, v1.1.
-    /// </remarks>
-    [Table("representation_types")]
-    public class RepresentationType
+    [Table("event_types")]
+    public class EventType
     {
         /// <summary>
-        /// A unique key that identifies this REPRESENTATION-TYPE.
+        /// Unique key identifying a single EVENT-TYPE.
         /// </summary>
         [Key]
-        [Column("representation_type_id")]
+        [Column("event_type_id")]
         [MaxLength(50)]
-        public required string RepresentationTypeId { get; set; }
+        public required string EventTypeId { get; set; }
 
         /// <summary>
-        /// The name, such as "Text", "PNG Image", etc.
+        /// The name of this EVENT-TYPE, such as "Birth", "Death", "Marriage", "Residence", etc.
         /// </summary>
-        [Required]
         [Column("name")]
+        [Required]
         [MaxLength(50)]
         public required string Name { get; set; }
 
         /// <summary>
-        /// The data file from which this REPRESENTATION-TYPE was ingested.
+        /// The data file from which this EVENT-TYPE was ingested.
         /// </summary>
         [Column("data_file_key")]
         [ForeignKey(nameof(DataFile))]
@@ -43,6 +39,8 @@ namespace AncestralVault.Common.Models.VaultDb
 
         // ----------------- Navigation Properties -----------------
 
-        public DataFile? DataFile { get; set; }
+        public DataFile DataFile { get; set; } = null!;
+
+        public ICollection<Event> Events { get; set; } = null!;
     }
 }

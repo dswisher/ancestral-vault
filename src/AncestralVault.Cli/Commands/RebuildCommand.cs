@@ -81,6 +81,7 @@ namespace AncestralVault.Cli.Commands
             // Load directories in the following order: admin, evidence, conclusions
             // TODO - if there are other directories (other than images), load them too?
             await LoadDirectoryData(context, options, vaultDir, "admin", stoppingToken);
+            await LoadDirectoryData(context, options, vaultDir, "places", stoppingToken);
             await LoadDirectoryData(context, options, vaultDir, "evidence", stoppingToken);
             await LoadDirectoryData(context, options, vaultDir, "conclusions", stoppingToken);
         }
@@ -104,7 +105,7 @@ namespace AncestralVault.Cli.Commands
                 var relativePath = Path.GetRelativePath(directoryInfo.FullName, file.FullName).Replace('\\', '/');
 
                 // TODO - load all the data
-                logger.LogInformation("Parsing data file {FileName}...", relativePath);
+                logger.LogInformation("Parsing data file {FileName}...", $"{directoryName}/{relativePath}");
                 var vaultEntities = await parser.LoadVaultJsonEntitiesAsync(file, options.CheckProps, stoppingToken);
 
                 if (vaultEntities.Count == 0)
@@ -135,8 +136,6 @@ namespace AncestralVault.Cli.Commands
             }
 
             // Make sure all work has been saved
-            logger.LogInformation("Saving changes to database...");
-
             await context.SaveChangesAsync(stoppingToken);
         }
     }

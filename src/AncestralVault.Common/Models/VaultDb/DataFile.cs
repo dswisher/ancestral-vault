@@ -38,10 +38,13 @@ namespace AncestralVault.Common.Models.VaultDb
         // ----------------- Navigation Properties -----------------
 
         public ICollection<CompositePersona> CompositePersonas { get; set; } = null!;
+        public ICollection<Event> Events { get; set; } = null!;
+        public ICollection<EventRole> EventRoles { get; set; } = null!;
+        public ICollection<EventRoleType> EventRoleTypes { get; set; } = null!;
+        public ICollection<EventType> EventTypes { get; set; } = null!;
         public ICollection<Persona> Personas { get; set; } = null!;
         public ICollection<PersonaAssertion> PersonaAssertions { get; set; } = null!;
         public ICollection<Place> Places { get; set; } = null!;
         public ICollection<PlaceType> PlaceTypes { get; set; } = null!;
-        public ICollection<SoloEvent> SoloEvents { get; set; } = null!;
     }
 }

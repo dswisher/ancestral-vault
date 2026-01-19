@@ -8,21 +8,21 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace AncestralVault.Common.Models.VaultDb
 {
     /// <summary>
-    /// A PERSONA is a single individual that appears in a piece of evidence.
+    /// An EVENT-ROLE-TYPE describes the role an individual can have in an EVENT (e.g., decedent, spouse, child).
     /// </summary>
-    [Table("personas")]
-    public class Persona
+    [Table("event_role_types")]
+    public class EventRoleType
     {
         /// <summary>
-        /// Unique key identifying this PERSONA.
+        /// Unique key identifying a single EVENT-ROLE-TYPE.
         /// </summary>
         [Key]
-        [Column("persona_id")]
+        [Column("event_role_type_id")]
         [MaxLength(50)]
-        public required string PersonaId { get; set; }
+        public required string EventRoleTypeId { get; set; }
 
         /// <summary>
-        /// The name, as it appears in the evidence.
+        /// The name of this EVENT-ROLE-TYPE, such as "Spouse", "Son", "Father", "Wife", etc.
         /// </summary>
         [Column("name")]
         [Required]
@@ -30,14 +30,7 @@ namespace AncestralVault.Common.Models.VaultDb
         public required string Name { get; set; }
 
         /// <summary>
-        /// Free-form notes about this PERSONA.
-        /// </summary>
-        [Column("notes")]
-        [MaxLength(1024)]
-        public string? Notes { get; set; }
-
-        /// <summary>
-        /// The data file from which this PERSONA was ingested.
+        /// The data file from which this EVENT-ROLE-TYPE was ingested.
         /// </summary>
         [Column("data_file_key")]
         [ForeignKey(nameof(DataFile))]

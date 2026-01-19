@@ -42,12 +42,15 @@ namespace AncestralVault.UnitTests.Common.Repositories
             var viewModel = await personaRepo.GetPersonaDetailsAsync(dbContext, "t1:p1", token);
 
             // Assert
+            dbContext.Events.Should().HaveCount(2);
+            dbContext.EventRoles.Should().HaveCount(2);
+
             viewModel.Should().NotBeNull();
             viewModel.Name.Should().Be("Walter Smith");
 
-            viewModel.SoloEvents.Should().HaveCount(2);
-            viewModel.SoloEvents.Should().Contain(x => x.EventType == "birth");
-            viewModel.SoloEvents.Should().Contain(x => x.EventType == "death");
+            viewModel.EventBoxItems.Should().HaveCount(2);
+            viewModel.EventBoxItems.Should().Contain(x => x.EventTypeId == "birth");
+            viewModel.EventBoxItems.Should().Contain(x => x.EventTypeId == "death");
         }
 
 

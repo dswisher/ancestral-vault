@@ -4,8 +4,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using AncestralVault.Common.Database;
-using AncestralVault.Common.Models.VaultDb;
-using AncestralVault.Common.Models.ViewModels;
+using AncestralVault.Common.Models.ViewModels.PersonaDetails;
 using Microsoft.EntityFrameworkCore;
 
 namespace AncestralVault.Common.Repositories
@@ -19,7 +18,8 @@ namespace AncestralVault.Common.Repositories
         {
             // Find the persona (if it exists)
             var dbPersona = await dbContext.Personas
-                .Include(p => p.SoloEvents)
+                .Include(e => e.EventRoles).ThenInclude(t => t.EventRoleType)
+                .Include(persona => persona.EventRoles).ThenInclude(eventRole => eventRole.Event).ThenInclude(@event => @event.EventType)
                 .SingleOrDefaultAsync(x => x.PersonaId == personaId, stoppingToken);
 
             if (dbPersona == null)
@@ -31,36 +31,29 @@ namespace AncestralVault.Common.Repositories
             var personaDetails = new PersonaDetailsViewModel
             {
                 Name = dbPersona.Name,
-                Notes = dbPersona.Notes
             };
 
-            // Populate solo events for this persona
-            foreach (var soloEvent in dbPersona.SoloEvents)
+            // Populate event box items based on persona events
+            foreach (var dbEventRole in dbPersona.EventRoles)
             {
-                personaDetails.SoloEvents.Add(ToViewModel(soloEvent));
+                var dbEventRoleType = dbEventRole.EventRoleType;
+                var dbEvent = dbEventRole.Event;
+                var dbEventType = dbEvent.EventType;
+
+                var eventBoxItem = new PersonaDetailsEventBox
+                {
+                    EventTypeId = dbEventType.EventTypeId,
+                    EventTypeName = dbEventType.Name,
+                    EventDate = dbEvent.EventDate,
+                    EventRoleTypeId = dbEventRoleType.EventRoleTypeId,
+                    EventRoleTypeName = dbEventRoleType.Name,
+                };
+
+                personaDetails.EventBoxItems.Add(eventBoxItem);
             }
-
-            // TODO - fetch solo events
-
-            // Populate joint events for this persona
-            // TODO - fetch joint events
 
             // Return what we've built
             return personaDetails;
-        }
-
-
-        private static SoloEventViewModel ToViewModel(SoloEvent soloEvent)
-        {
-            var soloEventViewModel = new SoloEventViewModel
-            {
-                EventType = soloEvent.EventType,
-                PrincipalPersonaId = soloEvent.PrincipalPersonaId,
-                PrincipalRole = soloEvent.PrincipalRole,
-                EventDate = soloEvent.EventDate,
-            };
-
-            return soloEventViewModel;
         }
     }
 }

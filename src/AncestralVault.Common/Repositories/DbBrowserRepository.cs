@@ -143,21 +143,6 @@ namespace AncestralVault.Common.Repositories
         }
 
 
-        /// <summary>
-        /// Gets the properties to display for an entity type, using the same logic as the List view.
-        /// Filters out navigation properties and foreign key properties, taking the first 5 properties.
-        /// </summary>
-        private static List<PropertyInfo> GetDisplayProperties(AncestralVaultDbContext dbContext, Type entityType)
-        {
-            var navigationPropertyNames = GetNavigationPropertyNames(dbContext, entityType);
-
-            return entityType.GetProperties(BindingFlags.Public | BindingFlags.Instance)
-                .Where(p => !navigationPropertyNames.Contains(p.Name) && !IsForeignKeyProperty(p, entityType))
-                .Take(5)
-                .ToList();
-        }
-
-
         public EntityDetailViewModel? BuildDetailViewModel(AncestralVaultDbContext dbContext, Type entityType, string id)
         {
             var urlName = entityType.Name.ToLowerInvariant();
@@ -218,6 +203,21 @@ namespace AncestralVault.Common.Repositories
                 Properties = propertyValues,
                 Collections = collectionValues
             };
+        }
+
+
+        /// <summary>
+        /// Gets the properties to display for an entity type, using the same logic as the List view.
+        /// Filters out navigation properties and foreign key properties, taking the first 5 properties.
+        /// </summary>
+        private static List<PropertyInfo> GetDisplayProperties(AncestralVaultDbContext dbContext, Type entityType)
+        {
+            var navigationPropertyNames = GetNavigationPropertyNames(dbContext, entityType);
+
+            return entityType.GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                .Where(p => !navigationPropertyNames.Contains(p.Name) && !IsForeignKeyProperty(p, entityType))
+                .Take(5)
+                .ToList();
         }
 
 

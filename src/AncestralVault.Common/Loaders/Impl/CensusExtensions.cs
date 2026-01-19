@@ -5,7 +5,7 @@ using System.Linq;
 using AncestralVault.Common.Models.Loader;
 using AncestralVault.Common.Models.VaultJson.CensusUS;
 
-namespace AncestralVault.Common.Loaders
+namespace AncestralVault.Common.Loaders.Impl
 {
     public static class CensusExtensions
     {

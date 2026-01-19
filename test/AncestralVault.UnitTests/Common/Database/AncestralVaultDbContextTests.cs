@@ -28,12 +28,10 @@ namespace AncestralVault.UnitTests.Common.Database
             context.Personas.Should().NotBeNull();
             context.Places.Should().NotBeNull();
             context.DataFiles.Should().NotBeNull();
-            context.Characteristics.Should().NotBeNull();
-            context.JointEvents.Should().NotBeNull();
-            context.SoloEvents.Should().NotBeNull();
+            context.Events.Should().NotBeNull();
+            context.EventRoleTypes.Should().NotBeNull();
+            context.EventTypes.Should().NotBeNull();
             context.PlaceTypes.Should().NotBeNull();
-            context.Representations.Should().NotBeNull();
-            context.RepresentationTypes.Should().NotBeNull();
         }
     }
 }
