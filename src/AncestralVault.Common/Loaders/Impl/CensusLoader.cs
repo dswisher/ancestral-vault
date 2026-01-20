@@ -1,9 +1,7 @@
 // Copyright (c) Doug Swisher. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using AncestralVault.Common.Database;
 using AncestralVault.Common.Models.Loader;
-using AncestralVault.Common.Models.VaultDb;
 using Microsoft.Extensions.Logging;
 
 namespace AncestralVault.Common.Loaders.Impl
@@ -18,7 +16,7 @@ namespace AncestralVault.Common.Loaders.Impl
         }
 
 
-        public void LoadCensus(AncestralVaultDbContext dbContext, DataFile dataFile, LoaderCensus census)
+        public void LoadCensus(LoaderContext context, LoaderCensus census)
         {
             // Go through all the rows and load 'em
             var num = 0;
@@ -32,14 +30,7 @@ namespace AncestralVault.Common.Loaders.Impl
                 logger.LogDebug("Loading census row for persona {PersonaId}...", personaId);
 
                 // Create a persona and add it
-                var persona = new Persona
-                {
-                    PersonaId = personaId,
-                    Name = row.Name,
-                    DataFile = dataFile
-                };
-
-                dbContext.Personas.Add(persona);
+                var persona = context.AddPersona(census.Header.Id, id, row.Name);
 
                 // TODO - add events and whatnot for census row
             }

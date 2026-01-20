@@ -10,7 +10,7 @@ namespace AncestralVault.Common.Loaders
 {
     public interface IVaultJsonLoader
     {
-        void LoadEntities(AncestralVaultDbContext context, DataFile dataFile, List<IVaultJsonEntity> entities);
-        void LoadEntity(AncestralVaultDbContext context, DataFile dataFile, IVaultJsonEntity entity);
+        void LoadEntities(AncestralVaultDbContext dbContext, DataFile dataFile, List<IVaultJsonEntity> entities);
+        void LoadEntity(AncestralVaultDbContext dbContext, DataFile dataFile, IVaultJsonEntity entity);
     }
 }

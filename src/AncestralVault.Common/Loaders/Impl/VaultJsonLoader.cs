@@ -34,17 +34,35 @@ namespace AncestralVault.Common.Loaders.Impl
         }
 
 
-        public void LoadEntities(AncestralVaultDbContext context, DataFile dataFile, List<IVaultJsonEntity> entities)
+        public void LoadEntities(AncestralVaultDbContext dbContext, DataFile dataFile, List<IVaultJsonEntity> entities)
         {
+            var loaderContext = new LoaderContext
+            {
+                DbContext = dbContext,
+                DataFile = dataFile
+            };
+
             foreach (var entity in entities)
             {
                 logger.LogDebug("Processing entity of type {EntityType}...", entity.GetType().Name);
-                LoadEntity(context, dataFile, entity);
+                LoadEntity(loaderContext, entity);
             }
         }
 
 
-        public void LoadEntity(AncestralVaultDbContext context, DataFile dataFile, IVaultJsonEntity entity)
+        public void LoadEntity(AncestralVaultDbContext dbContext, DataFile dataFile, IVaultJsonEntity entity)
+        {
+            var loaderContext = new LoaderContext
+            {
+                DbContext = dbContext,
+                DataFile = dataFile
+            };
+
+            LoadEntity(loaderContext, entity);
+        }
+
+
+        private void LoadEntity(LoaderContext context, IVaultJsonEntity entity)
         {
             if (entity is JsonPersona jsonPersona)
             {
@@ -55,54 +73,54 @@ namespace AncestralVault.Common.Loaders.Impl
                     PersonaId = jsonPersona.PersonaId,
                     Name = jsonPersona.Name,
                     Notes = jsonPersona.Notes,
-                    DataFile = dataFile
+                    DataFile = context.DataFile
                 };
 
-                context.Personas.Add(dbPersona);
+                context.DbContext.Personas.Add(dbPersona);
             }
             else if (entity is JsonPlace jsonPlace)
             {
-                LoadPlace(context, dataFile, jsonPlace);
+                LoadPlace(context, jsonPlace);
             }
             else if (entity is JsonPlaceType jsonPlaceType)
             {
-                typeLoaders.LoadPlaceType(context, dataFile, jsonPlaceType);
+                typeLoaders.LoadPlaceType(context, jsonPlaceType);
             }
             else if (entity is JsonEventRoleType jsonEventRoleType)
             {
-                typeLoaders.LoadEventRoleType(context, dataFile, jsonEventRoleType);
+                typeLoaders.LoadEventRoleType(context, jsonEventRoleType);
             }
             else if (entity is JsonEventType jsonEventType)
             {
-                typeLoaders.LoadEventType(context, dataFile, jsonEventType);
+                typeLoaders.LoadEventType(context, jsonEventType);
             }
             else if (entity is CensusUS1900 census1900)
             {
-                censusLoader.LoadCensus(context, dataFile, census1900.ToLoader());
+                censusLoader.LoadCensus(context, census1900.ToLoader());
             }
             else if (entity is CensusUS1930 census1930)
             {
-                censusLoader.LoadCensus(context, dataFile, census1930.ToLoader());
+                censusLoader.LoadCensus(context, census1930.ToLoader());
             }
             else if (entity is CensusUS1940 census1940)
             {
-                censusLoader.LoadCensus(context, dataFile, census1940.ToLoader());
+                censusLoader.LoadCensus(context, census1940.ToLoader());
             }
             else if (entity is JsonTombstone tombstone)
             {
-                tombstoneLoader.LoadTombstone(context, dataFile, tombstone);
+                tombstoneLoader.LoadTombstone(context, tombstone);
             }
             else if (entity is JsonMarriage marriage)
             {
-                marriageLoader.LoadMarriage(context, dataFile, marriage);
+                marriageLoader.LoadMarriage(context, marriage);
             }
             else if (entity is JsonCompositePersona compositePersona)
             {
-                LoadCompositePersona(context, dataFile, compositePersona);
+                LoadCompositePersona(context, compositePersona);
             }
             else if (entity is JsonPersonaAssertion personaAssertion)
             {
-                LoadPersonaAssertion(context, dataFile, personaAssertion);
+                LoadPersonaAssertion(context, personaAssertion);
             }
             else
             {
@@ -111,7 +129,7 @@ namespace AncestralVault.Common.Loaders.Impl
         }
 
 
-        private void LoadPlace(AncestralVaultDbContext context, DataFile dataFile, JsonPlace json)
+        private void LoadPlace(LoaderContext context, JsonPlace json)
         {
             logger.LogDebug("Loading place '{PlaceId}', type {PlaceTypeId}, name {PlaceName}...", json.PlaceId, json.PlaceTypeId, json.Name);
 
@@ -121,14 +139,14 @@ namespace AncestralVault.Common.Loaders.Impl
                 PlaceTypeId = json.PlaceTypeId,
                 Name = json.Name,
                 ParentPlaceId = json.Parent,
-                DataFile = dataFile
+                DataFile = context.DataFile
             };
 
-            context.Places.Add(dbPlace);
+            context.DbContext.Places.Add(dbPlace);
         }
 
 
-        private void LoadCompositePersona(AncestralVaultDbContext context, DataFile dataFile, JsonCompositePersona json)
+        private void LoadCompositePersona(LoaderContext context, JsonCompositePersona json)
         {
             logger.LogDebug("Loading composite persona for {CompositePersonaId}...", json.Id);
 
@@ -136,14 +154,14 @@ namespace AncestralVault.Common.Loaders.Impl
             {
                 CompositePersonaId = json.Id,
                 Name = json.Name,
-                DataFile = dataFile
+                DataFile = context.DataFile
             };
 
-            context.CompositePersonas.Add(persona);
+            context.DbContext.CompositePersonas.Add(persona);
         }
 
 
-        private void LoadPersonaAssertion(AncestralVaultDbContext context, DataFile dataFile, JsonPersonaAssertion json)
+        private void LoadPersonaAssertion(LoaderContext context, JsonPersonaAssertion json)
         {
             logger.LogDebug("Loading persona assertion for {PersonaId} -> {CompositeId}...", json.PersonaId, json.CompositePersonaId);
 
@@ -152,10 +170,10 @@ namespace AncestralVault.Common.Loaders.Impl
                 CompositePersonaId = json.CompositePersonaId,
                 PersonaId = json.PersonaId,
                 Rationale = json.Rationale,
-                DataFile = dataFile
+                DataFile = context.DataFile
             };
 
-            context.PersonaAssertions.Add(assertion);
+            context.DbContext.PersonaAssertions.Add(assertion);
         }
     }
 }

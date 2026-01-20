@@ -1,7 +1,6 @@
 // Copyright (c) Doug Swisher. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using AncestralVault.Common.Database;
 using AncestralVault.Common.Models.VaultDb;
 using AncestralVault.Common.Models.VaultJson;
 using Microsoft.Extensions.Logging;
@@ -18,7 +17,7 @@ namespace AncestralVault.Common.Loaders.Impl
         }
 
 
-        public void LoadEventRoleType(AncestralVaultDbContext context, DataFile dataFile, JsonEventRoleType json)
+        public void LoadEventRoleType(LoaderContext context, JsonEventRoleType json)
         {
             logger.LogDebug("Loading event role type '{EventRoleTypeId}', name {EventRoleTypeName}...", json.EventRoleTypeId, json.Name);
 
@@ -26,14 +25,14 @@ namespace AncestralVault.Common.Loaders.Impl
             {
                 EventRoleTypeId = json.EventRoleTypeId,
                 Name = json.Name,
-                DataFile = dataFile
+                DataFile = context.DataFile
             };
 
-            context.EventRoleTypes.Add(dbItem);
+            context.DbContext.EventRoleTypes.Add(dbItem);
         }
 
 
-        public void LoadEventType(AncestralVaultDbContext context, DataFile dataFile, JsonEventType json)
+        public void LoadEventType(LoaderContext context, JsonEventType json)
         {
             logger.LogDebug("Loading event type '{EventTypeId}', name {EventTypeName}...", json.EventTypeId, json.Name);
 
@@ -41,14 +40,14 @@ namespace AncestralVault.Common.Loaders.Impl
             {
                 EventTypeId = json.EventTypeId,
                 Name = json.Name,
-                DataFile = dataFile
+                DataFile = context.DataFile
             };
 
-            context.EventTypes.Add(dbItem);
+            context.DbContext.EventTypes.Add(dbItem);
         }
 
 
-        public void LoadPlaceType(AncestralVaultDbContext context, DataFile dataFile, JsonPlaceType json)
+        public void LoadPlaceType(LoaderContext context, JsonPlaceType json)
         {
             logger.LogDebug("Loading place type '{PlaceTypeId}', name {PlaceTypeName}...", json.PlaceTypeId, json.Name);
 
@@ -56,10 +55,10 @@ namespace AncestralVault.Common.Loaders.Impl
             {
                 PlaceTypeId = json.PlaceTypeId,
                 Name = json.Name,
-                DataFile = dataFile
+                DataFile = context.DataFile
             };
 
-            context.PlaceTypes.Add(dbPlaceType);
+            context.DbContext.PlaceTypes.Add(dbPlaceType);
         }
     }
 }

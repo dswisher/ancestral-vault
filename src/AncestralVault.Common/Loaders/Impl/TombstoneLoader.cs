@@ -1,8 +1,6 @@
 // Copyright (c) Doug Swisher. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using AncestralVault.Common.Database;
-using AncestralVault.Common.Models.VaultDb;
 using AncestralVault.Common.Models.VaultJson;
 using Microsoft.Extensions.Logging;
 
@@ -18,64 +16,27 @@ namespace AncestralVault.Common.Loaders.Impl
         }
 
 
-        public void LoadTombstone(AncestralVaultDbContext context, DataFile dataFile, JsonTombstone json)
+        public void LoadTombstone(LoaderContext context, JsonTombstone json)
         {
             logger.LogDebug("Loading tombstone '{TombstoneId}'...", json.Record.Id);
 
-            // TODO - source/citation for the persona and events
+            // TODO - add source/citation for tombstone
 
             // Create a persona and add it
-            var persona = new Persona
-            {
-                PersonaId = $"{json.Record.Id}:p1",
-                Name = json.Record.Name,
-                DataFile = dataFile
-            };
-
-            context.Personas.Add(persona);
+            var persona = context.AddPersona(json.Record.Id, "p1", json.Record.Name);
 
             // If there is a birthdate, add an event for it, with a newborn role
             if (!string.IsNullOrEmpty(json.Record.BirthDate))
             {
-                var birthEvent = new Event
-                {
-                    EventTypeId = "birth",
-                    EventDate = json.Record.BirthDate,
-                    DataFile = dataFile
-                };
-
-                var birthRole = new EventRole
-                {
-                    PersonaId = persona.PersonaId,
-                    EventRoleTypeId = "newborn",
-                    Event = birthEvent,
-                    DataFile = dataFile
-                };
-
-                context.Events.Add(birthEvent);
-                context.EventRoles.Add(birthRole);
+                var birthEvent = context.AddEvent("birth", json.Record.BirthDate);
+                context.AddEventRole(persona.PersonaId, "newborn", birthEvent);
             }
 
             // If there is a death date, add an event for it
             if (!string.IsNullOrEmpty(json.Record.DeathDate))
             {
-                var deathEvent = new Event
-                {
-                    EventTypeId = "death",
-                    EventDate = json.Record.DeathDate,
-                    DataFile = dataFile
-                };
-
-                var deathRole = new EventRole
-                {
-                    PersonaId = persona.PersonaId,
-                    EventRoleTypeId = "decedent",
-                    Event = deathEvent,
-                    DataFile = dataFile
-                };
-
-                context.Events.Add(deathEvent);
-                context.EventRoles.Add(deathRole);
+                var deathEvent = context.AddEvent("death", json.Record.DeathDate);
+                context.AddEventRole(persona.PersonaId, "decedent", deathEvent);
             }
         }
     }

@@ -1,11 +1,14 @@
 // Copyright (c) Doug Swisher. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System.Diagnostics.CodeAnalysis;
 using System.Text.Json.Serialization;
 
 namespace AncestralVault.Common.Models.VaultJson
 {
-    public class JsonTombstoneItem : IVaultJsonRecord
+    [SuppressMessage("ReSharper", "ClassNeverInstantiated.Global", Justification = "Classes are instantiated by JSON deserialization")]
+    [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Global", Justification = "Properties are used by JSON deserialization")]
+    public class JsonTombstoneItem
     {
         /// <summary>
         /// The ID for this tombstone. Used to build identifiers for sub-entities, like the persona for the
