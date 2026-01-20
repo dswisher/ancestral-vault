@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System;
+using System.Collections.Generic;
 using AncestralVault.Common.Database;
 using AncestralVault.Common.Models.VaultDb;
 using AncestralVault.Common.Models.VaultJson;
@@ -30,6 +31,16 @@ namespace AncestralVault.Common.Loaders.Impl
             this.tombstoneLoader = tombstoneLoader;
             this.typeLoaders = typeLoaders;
             this.logger = logger;
+        }
+
+
+        public void LoadEntities(AncestralVaultDbContext context, DataFile dataFile, List<IVaultJsonEntity> entities)
+        {
+            foreach (var entity in entities)
+            {
+                logger.LogDebug("Processing entity of type {EntityType}...", entity.GetType().Name);
+                LoadEntity(context, dataFile, entity);
+            }
         }
 
 

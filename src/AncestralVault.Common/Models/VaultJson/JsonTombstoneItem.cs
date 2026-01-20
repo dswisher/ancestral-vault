@@ -5,7 +5,7 @@ using System.Text.Json.Serialization;
 
 namespace AncestralVault.Common.Models.VaultJson
 {
-    public class JsonTombstoneItem
+    public class JsonTombstoneItem : IVaultJsonRecord
     {
         /// <summary>
         /// The ID for this tombstone. Used to build identifiers for sub-entities, like the persona for the

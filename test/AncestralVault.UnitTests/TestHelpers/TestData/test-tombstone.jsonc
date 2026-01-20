@@ -1,0 +1,12 @@
+[
+  {
+    "tombstone": {
+      "record": {
+        "id": "t1",
+        "name": "Walter Smith",
+        "birth-date": "1882",
+        "death-date": "1948"
+      }
+    }
+  }
+]

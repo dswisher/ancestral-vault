@@ -5,8 +5,11 @@ using System.Text.Json.Serialization;
 
 namespace AncestralVault.Common.Models.VaultJson
 {
-    public class JsonMarriageItem
+    public class JsonMarriageItem : IVaultJsonRecord
     {
+        [JsonPropertyName("id")]
+        public required string Id { get; set; }
+
         [JsonPropertyName("license-number")]
         public string? LicenseNumber { get; set; }
 
@@ -14,10 +17,10 @@ namespace AncestralVault.Common.Models.VaultJson
         public string? LicenseDate { get; set; }
 
         [JsonPropertyName("location")]
-        public required string Location { get; set; }
+        public string? Location { get; set; }
 
         [JsonPropertyName("date")]
-        public required string Date { get; set; }
+        public string? Date { get; set; }
 
         // TODO - does this need to be a list?
         [JsonPropertyName("witness")]

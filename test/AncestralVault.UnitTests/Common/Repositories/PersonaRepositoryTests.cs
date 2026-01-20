@@ -6,8 +6,10 @@ using System.Threading;
 using System.Threading.Tasks;
 using AncestralVault.Common.Database;
 using AncestralVault.Common.Repositories;
+using AncestralVault.UnitTests.TestHelpers;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -19,16 +21,18 @@ namespace AncestralVault.UnitTests.Common.Repositories
 
         private readonly IPersonaRepository personaRepo;
         private readonly AncestralVaultDbContext dbContext;
+        private readonly ILogger logger;
 
         private readonly CancellationToken token = CancellationToken.None;
 
         public PersonaRepositoryTests(ITestOutputHelper testOutputHelper)
         {
             // Set up the mini-container
-            container = RepositoryTestHelpers.CreateContainer(testOutputHelper);
+            container = DatabaseTestHelpers.CreateContainer(testOutputHelper);
 
             personaRepo = container.GetRequiredService<IPersonaRepository>();
             dbContext = container.GetRequiredService<AncestralVaultDbContext>();
+            logger = container.GetRequiredService<ILogger<PersonaRepositoryTests>>();
         }
 
 
@@ -36,7 +40,7 @@ namespace AncestralVault.UnitTests.Common.Repositories
         public async Task CanLoadSimpleTombstone()
         {
             // Arrange
-            await RepositoryTestHelpers.PopulateDatabaseAsync(container, "test-tombstone.jsonc", token);
+            await DatabaseTestHelpers.PopulateDatabaseAsync(container, "test-tombstone.jsonc", logger, token);
 
             // Act
             var viewModel = await personaRepo.GetPersonaDetailsAsync(dbContext, "t1:p1", token);

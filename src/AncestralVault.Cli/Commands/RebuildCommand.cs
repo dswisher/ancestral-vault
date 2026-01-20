@@ -123,12 +123,7 @@ namespace AncestralVault.Cli.Commands
                 context.DataFiles.Add(dataFile);
 
                 // Process all the items in the file
-                foreach (var entity in vaultEntities)
-                {
-                    logger.LogDebug("   -> processing entity of type {EntityType}...", entity.GetType().Name);
-
-                    loader.LoadEntity(context, dataFile, entity);
-                }
+                loader.LoadEntities(context, dataFile, vaultEntities);
 
                 // Save changes after each file
                 logger.LogDebug("...saving changes to database after processing file {FileName}...", relativePath);

@@ -37,6 +37,11 @@
     </ItemGroup>
 
     <ItemGroup>
-      <EmbeddedResource Include="Common\Repositories\TestData\test-tombstone.jsonc" />
+      <Folder Include="Common\Repositories\TestData\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Include="TestHelpers\TestData\test-marriage-minimal.jsonc" />
+      <EmbeddedResource Include="TestHelpers\TestData\test-tombstone.jsonc" />
     </ItemGroup>
 </Project>

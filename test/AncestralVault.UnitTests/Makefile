@@ -1,7 +1,7 @@
 
 COVERAGE_OPTS = /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
 
-.PHONY: test report
+.PHONY: test report open clean
 
 test:
 	dotnet test $(COVERAGE_OPTS)
@@ -11,4 +11,8 @@ report:
 
 open:
 	open coveragereport/index.html
+
+clean:
+	dotnet clean
+	rm -rf coveragereport
 

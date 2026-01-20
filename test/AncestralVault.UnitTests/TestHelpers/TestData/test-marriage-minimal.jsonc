@@ -1,0 +1,15 @@
+[
+  {
+    "marriage": {
+      "record": {
+        "id": "m1",
+        "groom": {
+          "name": "Barney Rubble"
+        },
+        "bride": {
+          "name": "Betty McBricker"
+        }
+      }
+    }
+  }
+]

@@ -19,12 +19,10 @@ namespace AncestralVault.Common.Parsers
         private readonly ILogger logger;
         private readonly string[] namespacePatterns;
 
-        public UnmappedPropertyValidator(ILogger logger, params string[] namespacePatterns)
+        public UnmappedPropertyValidator(ILogger logger)
         {
             this.logger = logger;
-            this.namespacePatterns = namespacePatterns.Length > 0
-                ? namespacePatterns
-                : new[] { "AncestralVault.Common.Models.VaultJson" };
+            this.namespacePatterns = ["AncestralVault.Common.Models.VaultJson"];
         }
 
         public void Validate(JsonDocument jsonDoc, object obj)
@@ -51,10 +49,15 @@ namespace AncestralVault.Common.Parsers
                 var props = jsonElement.EnumerateObject().ToList();
                 if (props.Count == 1)
                 {
-                    // This is a wrapper like {"census-us-1940": {...}}
-                    // Unwrap and validate the inner content
-                    ValidateElement(props[0].Value, obj, type);
-                    return;
+                    // Check if this single property is actually a mapped property of the type
+                    var mappedProps = GetExpectedPropertyNames(type);
+                    if (!mappedProps.Contains(props[0].Name))
+                    {
+                        // This is a wrapper like {"census-us-1940": {...}}
+                        // Unwrap and validate the inner content
+                        ValidateElement(props[0].Value, obj, type);
+                        return;
+                    }
                 }
             }
 
