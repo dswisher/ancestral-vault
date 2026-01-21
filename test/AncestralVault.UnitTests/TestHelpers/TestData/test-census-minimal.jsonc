@@ -1,0 +1,74 @@
+[
+  {
+    "census-us-1930": {
+      "source": {
+        // "United States, Census, 1930", FamilySearch (https://www.familysearch.org/ark:/61903/1:1:XMVS-P38 : Sun Mar 10 23:43:54 UTC 2024), Entry for Walter Dunwoody and Emma M Dunwoody, 1930.
+      },
+      "header": {
+        "id": "c1",
+        "state": "Iowa",
+        "county": "Mahaska",
+        "township": "Prairie township",
+        "incorporated-place": "New Sharon Town",
+        "enumeration-district": "18-23",
+        "supervisors-district": "8",
+        "enumeration-date": "7-Apr-1930",
+        "sheet": "25-C"
+      },
+      "rows": [
+        {
+          "line": 85,
+          "dwelling-number": 87,
+          "family-number": 90,
+          "name": "Walter Smith",
+          "relation": "Head",
+          "sex": "M",
+          "color": "W",
+          "age": "45",
+          "marital-condition": "M",
+          "age-at-first-marriage": "25",
+          "birth-place": "Iowa",
+          "father-birth-place": "Illinois",
+          "mother-birth-place": "Illinois"
+        },
+        {
+          "line": 86,
+          "name": "Emma M Smith",
+          "relation": "Wife",
+          "sex": "F",
+          "color": "W",
+          "age": "37",
+          "marital-condition": "M",
+          "age-at-first-marriage": "17",
+          "birth-place": "Missouri",
+          "father-birth-place": "Missouri",
+          "mother-birth-place": "Missouri"
+        },
+        {
+          "line": 87,
+          "name": "Jack Smith",
+          "relation": "Daughter",
+          "sex": "F",
+          "color": "W",
+          "age": "19",
+          "marital-condition": "S",
+          "birth-place": "Iowa",
+          "father-birth-place": "Iowa",
+          "mother-birth-place": "Missouri"
+        },
+        {
+          "line": 88,
+          "name": "Bud H Smith",
+          "relation": "Son",
+          "sex": "M",
+          "color": "W",
+          "age": "17",
+          "marital-condition": "S",
+          "birth-place": "Iowa",
+          "father-birth-place": "Iowa",
+          "mother-birth-place": "Missouri"
+        }
+      ]
+    }
+  }
+]

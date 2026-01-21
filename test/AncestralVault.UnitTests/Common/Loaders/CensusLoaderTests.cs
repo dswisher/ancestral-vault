@@ -1,6 +1,3 @@
-// Copyright (c) Doug Swisher. All Rights Reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
-
 using System.Threading;
 using System.Threading.Tasks;
 using AncestralVault.Common.Database;
@@ -14,7 +11,7 @@ using Xunit.Abstractions;
 
 namespace AncestralVault.UnitTests.Common.Loaders
 {
-    public class MarriageLoaderTests
+    public class CensusLoaderTests
     {
         private readonly ServiceProvider container;
 
@@ -25,7 +22,7 @@ namespace AncestralVault.UnitTests.Common.Loaders
         private readonly CancellationToken token = CancellationToken.None;
 
 
-        public MarriageLoaderTests(ITestOutputHelper testOutputHelper)
+        public CensusLoaderTests(ITestOutputHelper testOutputHelper)
         {
             // Set up the mini-container and pull out required services
             container = DatabaseTestHelpers.CreateContainer(testOutputHelper);
@@ -44,10 +41,10 @@ namespace AncestralVault.UnitTests.Common.Loaders
 
 
         [Fact]
-        public async Task CanLoadSimpleMarriage()
+        public async Task CanLoadSimpleCensus()
         {
             // Arrange
-            var entities = await DatabaseTestHelpers.LoadDataAsync(container, "test-marriage-minimal.jsonc", token);
+            var entities = await DatabaseTestHelpers.LoadDataAsync(container, "test-census-minimal.jsonc", token);
 
             // Act
             loader.LoadEntities(dbContext, dataFile, entities);
@@ -55,7 +52,7 @@ namespace AncestralVault.UnitTests.Common.Loaders
             await dbContext.SaveChangesAsync(token);
 
             // Assert
-            dbContext.Personas.Should().HaveCount(2);
+            dbContext.Personas.Should().HaveCount(4);
 
             // TODO - check persona details and check events/roles
         }

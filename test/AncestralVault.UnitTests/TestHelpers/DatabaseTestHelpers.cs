@@ -68,23 +68,33 @@ namespace AncestralVault.UnitTests.TestHelpers
         }
 
 
-        public static void SeedTypes(AncestralVaultDbContext dbContext)
+        public static DataFile AddDataFile(AncestralVaultDbContext dbContext, string relativePath)
         {
-            var newDataFile = new DataFile
+            var dataFile = new DataFile
             {
-                RelativePath = "types.jsonc"
+                RelativePath = relativePath
             };
 
-            dbContext.DataFiles.Add(newDataFile);
+            dbContext.DataFiles.Add(dataFile);
+
+            return dataFile;
+        }
+
+
+        public static void SeedTypes(AncestralVaultDbContext dbContext)
+        {
+            var newDataFile = AddDataFile(dbContext, "types.jsonc");
 
             // Load some common admin-ish data
             AddEventType(dbContext, newDataFile, "birth");
             AddEventType(dbContext, newDataFile, "marriage");
             AddEventType(dbContext, newDataFile, "death");
+            AddEventType(dbContext, newDataFile, "residence");
             AddEventRoleType(dbContext, newDataFile, "newborn");
             AddEventRoleType(dbContext, newDataFile, "decedent");
             AddEventRoleType(dbContext, newDataFile, "bride");
             AddEventRoleType(dbContext, newDataFile, "groom");
+            AddEventRoleType(dbContext, newDataFile, "resident");
         }
 
 
