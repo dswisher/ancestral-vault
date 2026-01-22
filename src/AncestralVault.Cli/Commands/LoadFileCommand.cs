@@ -120,7 +120,7 @@ namespace AncestralVault.Cli.Commands
                 dbContext.DataFiles.Add(newDataFile);
 
                 // Load all entities
-                loader.LoadEntities(dbContext, newDataFile, vaultEntities);
+                await loader.LoadEntitiesAsync(dbContext, newDataFile, vaultEntities, stoppingToken);
 
                 // Save changes
                 logger.LogInformation("Saving changes to database...");

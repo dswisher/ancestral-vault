@@ -8,10 +8,14 @@ namespace AncestralVault.Common.Loaders.Impl
 {
     public class MarriageLoader : IMarriageLoader
     {
+        private readonly ILoaderHelpers loaderHelpers;
         private readonly ILogger logger;
 
-        public MarriageLoader(ILogger<MarriageLoader> logger)
+        public MarriageLoader(
+            ILoaderHelpers loaderHelpers,
+            ILogger<MarriageLoader> logger)
         {
+            this.loaderHelpers = loaderHelpers;
             this.logger = logger;
         }
 
@@ -22,15 +26,15 @@ namespace AncestralVault.Common.Loaders.Impl
 
             // TODO - add source/citation for marriage
 
-            // Create personas for the bride and groom
-            var groom = context.AddPersona(json.Record.Id, "groom", json.Record.Groom.Name);
-            var bride = context.AddPersona(json.Record.Id, "bride", json.Record.Bride.Name);
+            // Create personas for the two spouses
+            var spouse1 = loaderHelpers.AddPersona(context, json.Record.Id, json.Record.Groom.Name);
+            var spouse2 = loaderHelpers.AddPersona(context, json.Record.Id, json.Record.Bride.Name);
 
             // Create an event record for the marriage with roles for each spouse
             var marriageEvent = context.AddEvent("marriage", json.Record.Date);
 
-            context.AddEventRole(groom.PersonaId, "groom", marriageEvent);
-            context.AddEventRole(bride.PersonaId, "bride", marriageEvent);
+            context.AddEventRole(spouse1.PersonaId, "spouse1", marriageEvent);
+            context.AddEventRole(spouse2.PersonaId, "spouse2", marriageEvent);
         }
     }
 }

@@ -61,7 +61,7 @@ namespace AncestralVault.UnitTests.TestHelpers
             // Load the data into the database
             var loader = container.GetRequiredService<IVaultJsonLoader>();
 
-            loader.LoadEntities(dbContext, newDataFile, entities);
+            await loader.LoadEntitiesAsync(dbContext, newDataFile, entities, stoppingToken);
 
             // Save all the changes
             await dbContext.SaveChangesAsync(stoppingToken);
@@ -92,8 +92,8 @@ namespace AncestralVault.UnitTests.TestHelpers
             AddEventType(dbContext, newDataFile, "residence");
             AddEventRoleType(dbContext, newDataFile, "newborn");
             AddEventRoleType(dbContext, newDataFile, "decedent");
-            AddEventRoleType(dbContext, newDataFile, "bride");
-            AddEventRoleType(dbContext, newDataFile, "groom");
+            AddEventRoleType(dbContext, newDataFile, "spouse1");
+            AddEventRoleType(dbContext, newDataFile, "spouse2");
             AddEventRoleType(dbContext, newDataFile, "resident");
         }
 
@@ -129,6 +129,7 @@ namespace AncestralVault.UnitTests.TestHelpers
             services.AddSingleton(dbContext);
 
             // Register all the real bits
+            services.RegisterAssistants();
             services.RegisterLoaders();
             services.RegisterRepositories();
 

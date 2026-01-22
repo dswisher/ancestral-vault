@@ -8,10 +8,14 @@ namespace AncestralVault.Common.Loaders.Impl
 {
     public class TombstoneLoader : ITombstoneLoader
     {
+        private readonly ILoaderHelpers loaderHelpers;
         private readonly ILogger logger;
 
-        public TombstoneLoader(ILogger<TombstoneLoader> logger)
+        public TombstoneLoader(
+            ILoaderHelpers loaderHelpers,
+            ILogger<TombstoneLoader> logger)
         {
+            this.loaderHelpers = loaderHelpers;
             this.logger = logger;
         }
 
@@ -23,7 +27,7 @@ namespace AncestralVault.Common.Loaders.Impl
             // TODO - add source/citation for tombstone
 
             // Create a persona and add it
-            var persona = context.AddPersona(json.Record.Id, "p1", json.Record.Name);
+            var persona = loaderHelpers.AddPersona(context, json.Record.Id, json.Record.Name);
 
             // If there is a birthdate, add an event for it, with a newborn role
             if (!string.IsNullOrEmpty(json.Record.BirthDate))

@@ -50,7 +50,7 @@ namespace AncestralVault.UnitTests.Common.Loaders
             var entities = await DatabaseTestHelpers.LoadDataAsync(container, "test-marriage-minimal.jsonc", token);
 
             // Act
-            loader.LoadEntities(dbContext, dataFile, entities);
+            await loader.LoadEntitiesAsync(dbContext, dataFile, entities, token);
 
             await dbContext.SaveChangesAsync(token);
 

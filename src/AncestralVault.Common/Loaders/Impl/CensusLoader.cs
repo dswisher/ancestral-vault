@@ -11,10 +11,14 @@ namespace AncestralVault.Common.Loaders.Impl
 {
     public class CensusLoader : ICensusLoader
     {
+        private readonly ILoaderHelpers loaderHelpers;
         private readonly ILogger<CensusLoader> logger;
 
-        public CensusLoader(ILogger<CensusLoader> logger)
+        public CensusLoader(
+            ILoaderHelpers loaderHelpers,
+            ILogger<CensusLoader> logger)
         {
+            this.loaderHelpers = loaderHelpers;
             this.logger = logger;
         }
 
@@ -33,7 +37,7 @@ namespace AncestralVault.Common.Loaders.Impl
                 logger.LogDebug("Loading census row for persona {PersonaId}...", personaId);
 
                 // Create a persona and add it to the DB as well as our list of amended rows
-                var persona = context.AddPersona(census.Header.Id, id, row.Name);
+                var persona = loaderHelpers.AddPersona(context, census.Header.Id, row.Name);
 
                 var amendedRow = new AmendedRow
                 {

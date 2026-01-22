@@ -7,20 +7,7 @@ namespace AncestralVault.Common.Loaders.Impl
 {
     public static class LoaderExtensions
     {
-        public static Persona AddPersona(this LoaderContext context, string recordId, string personaSuffix, string personaName)
-        {
-            var persona = new Persona
-            {
-                PersonaId = $"{recordId}:{personaSuffix}",
-                Name = personaName,
-                DataFile = context.DataFile
-            };
-
-            context.DbContext.Personas.Add(persona);
-
-            return persona;
-        }
-
+        // TODO - move these methods over to LoaderHelpers
 
         public static Event AddEvent(this LoaderContext context, string eventType, string? eventDate)
         {

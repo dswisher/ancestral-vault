@@ -43,7 +43,7 @@ namespace AncestralVault.UnitTests.Common.Repositories
             await DatabaseTestHelpers.PopulateDatabaseAsync(container, "test-tombstone.jsonc", logger, token);
 
             // Act
-            var viewModel = await personaRepo.GetPersonaDetailsAsync(dbContext, "t1:p1", token);
+            var viewModel = await personaRepo.GetPersonaDetailsAsync(dbContext, "t1:walter", token);
 
             // Assert
             dbContext.Events.Should().HaveCount(2);

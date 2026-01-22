@@ -1,6 +1,7 @@
 // Copyright (c) Doug Swisher. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using AncestralVault.Common.Assistants.PersonNames;
 using AncestralVault.Common.Database;
 using AncestralVault.Common.Loaders;
 using AncestralVault.Common.Loaders.Impl;
@@ -20,14 +21,22 @@ namespace AncestralVault.Common
             services.AddSingleton<IVaultSeeker, VaultSeeker>();
 
             // Other bits
+            services.RegisterAssistants();
             services.RegisterLoaders();
             services.RegisterRepositories();
+        }
+
+
+        public static void RegisterAssistants(this IServiceCollection services)
+        {
+            services.AddSingleton<IPersonNameParser, PersonNameParser>();
         }
 
 
         public static void RegisterLoaders(this IServiceCollection services)
         {
             services.AddSingleton<ICensusLoader, CensusLoader>();
+            services.AddSingleton<ILoaderHelpers, LoaderHelpers>();
             services.AddSingleton<IMarriageLoader, MarriageLoader>();
             services.AddSingleton<ITombstoneLoader, TombstoneLoader>();
             services.AddSingleton<ITypeLoaders, TypeLoaders>();

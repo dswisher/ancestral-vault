@@ -30,6 +30,38 @@ namespace AncestralVault.Common.Models.VaultDb
         public required string Name { get; set; }
 
         /// <summary>
+        /// The prefix, such as "Dr.". Also known as title or prenomial.
+        /// </summary>
+        [Column("name_prefix")]
+        [MaxLength(20)]
+        public string? NamePrefix { get; set; }
+
+        /// <summary>
+        /// The given name, such as "John David", "Robert", or "Mary Jane". Also known as first name, personal name, or mononame.
+        /// </summary>
+        /// <remarks>
+        /// This may include a middle name, middle initial, or multiple given names.
+        /// </remarks>
+        [Column("given_name")]
+        [MaxLength(50)]
+        public string? GivenNames { get; set; }
+
+        /// <summary>
+        /// The surname, such as "Smith" or "Johnson". Also known as last name or family name.
+        /// </summary>
+        [Column("surname")]
+        [Required]
+        [MaxLength(50)]
+        public required string Surname { get; set; }
+
+        /// <summary>
+        /// The suffix, such as "Jr". Also known as postnomial.
+        /// </summary>
+        [Column("name_suffix")]
+        [MaxLength(20)]
+        public string? NameSuffix { get; set; }
+
+        /// <summary>
         /// Free-form notes about this PERSONA.
         /// </summary>
         [Column("notes")]

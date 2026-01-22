@@ -18,6 +18,9 @@ It has many great ideas, though, that I have incorporated into my data model.
 * [Geneapro](https://github.com/briot/geneapro) - Genealogical software based on the GenTech data model - written in Python - last change in Jan-2023
     * There is some discussion in their [wiki](https://github.com/briot/geneapro/wiki), on the [Gentech page](https://github.com/briot/geneapro/wiki/Gentech)
     * It mentions a page that describes [citing sources](http://jytangledweb.org/genealogy/evidencestyle/)
+* [FamilyPack](http://thefamilypack.org/index.htm) - [github](https://github.com/nickmat/TheFamilyPack) - last change Feb-2023
+    * Based on the GenTech model, written in C++, uses SQLite
+    * They have a nice overview of their [database](http://thefamilypack.org/db/database.htm), including a [diagram](http://thefamilypack.org/db/dbdiagram.htm)
 * [GenTech Primer](https://genealogy.sourceforge.net/GENTECH_Primer.html) - a page on Sourceforge - I printed the page and saved it as a PDF in the [docs directory](docs/gentech-primer.pdf)
     * The page has some examples of encoding data in the model that are illustrative
 * [GDMXML](http://gdmxml.fugal.net/) - an XML implementation of the Genealogical Data Model.

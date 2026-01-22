@@ -3,6 +3,8 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 using AncestralVault.Common.Database;
 using AncestralVault.Common.Models.VaultDb;
 using AncestralVault.Common.Models.VaultJson;
@@ -17,6 +19,7 @@ namespace AncestralVault.Common.Loaders.Impl
         private readonly IMarriageLoader marriageLoader;
         private readonly ITombstoneLoader tombstoneLoader;
         private readonly ITypeLoaders typeLoaders;
+        private readonly ILoaderHelpers loaderHelpers;
         private readonly ILogger logger;
 
         public VaultJsonLoader(
@@ -24,17 +27,19 @@ namespace AncestralVault.Common.Loaders.Impl
             IMarriageLoader marriageLoader,
             ITombstoneLoader tombstoneLoader,
             ITypeLoaders typeLoaders,
+            ILoaderHelpers loaderHelpers,
             ILogger<VaultJsonLoader> logger)
         {
             this.censusLoader = censusLoader;
             this.marriageLoader = marriageLoader;
             this.tombstoneLoader = tombstoneLoader;
             this.typeLoaders = typeLoaders;
+            this.loaderHelpers = loaderHelpers;
             this.logger = logger;
         }
 
 
-        public void LoadEntities(AncestralVaultDbContext dbContext, DataFile dataFile, List<IVaultJsonEntity> entities)
+        public async Task LoadEntitiesAsync(AncestralVaultDbContext dbContext, DataFile dataFile, List<IVaultJsonEntity> entities, CancellationToken stoppingToken)
         {
             var loaderContext = new LoaderContext
             {
@@ -45,38 +50,18 @@ namespace AncestralVault.Common.Loaders.Impl
             foreach (var entity in entities)
             {
                 logger.LogDebug("Processing entity of type {EntityType}...", entity.GetType().Name);
-                LoadEntity(loaderContext, entity);
+                await LoadEntityAsync(loaderContext, entity, stoppingToken);
             }
         }
 
 
-        public void LoadEntity(AncestralVaultDbContext dbContext, DataFile dataFile, IVaultJsonEntity entity)
-        {
-            var loaderContext = new LoaderContext
-            {
-                DbContext = dbContext,
-                DataFile = dataFile
-            };
-
-            LoadEntity(loaderContext, entity);
-        }
-
-
-        private void LoadEntity(LoaderContext context, IVaultJsonEntity entity)
+        private async Task LoadEntityAsync(LoaderContext context, IVaultJsonEntity entity, CancellationToken stoppingToken)
         {
             if (entity is JsonPersona jsonPersona)
             {
                 logger.LogDebug("Loading persona '{PersonaId}', name {PersonaName}...", jsonPersona.PersonaId, jsonPersona.Name);
 
-                var dbPersona = new Persona
-                {
-                    PersonaId = jsonPersona.PersonaId,
-                    Name = jsonPersona.Name,
-                    Notes = jsonPersona.Notes,
-                    DataFile = context.DataFile
-                };
-
-                context.DbContext.Personas.Add(dbPersona);
+                loaderHelpers.AddPersona(context, null, jsonPersona.Name, jsonPersona.PersonaId);
             }
             else if (entity is JsonPlace jsonPlace)
             {
@@ -120,7 +105,7 @@ namespace AncestralVault.Common.Loaders.Impl
             }
             else if (entity is JsonPersonaAssertion personaAssertion)
             {
-                LoadPersonaAssertion(context, personaAssertion);
+                await LoadPersonaAssertionAsync(context, personaAssertion, stoppingToken);
             }
             else
             {
@@ -161,10 +146,15 @@ namespace AncestralVault.Common.Loaders.Impl
         }
 
 
-        private void LoadPersonaAssertion(LoaderContext context, JsonPersonaAssertion json)
+        private async Task LoadPersonaAssertionAsync(LoaderContext context, JsonPersonaAssertion json, CancellationToken stoppingToken)
         {
             logger.LogDebug("Loading persona assertion for {PersonaId} -> {CompositeId}...", json.PersonaId, json.CompositePersonaId);
 
+            // Verify the persona and composite persona exist
+            await loaderHelpers.VerifyPersonaExists(context, json.PersonaId, stoppingToken);
+            await loaderHelpers.VerifyCompositePersonaExists(context, json.CompositePersonaId, stoppingToken);
+
+            // Create the assertion, and add it to the DB
             var assertion = new PersonaAssertion
             {
                 CompositePersonaId = json.CompositePersonaId,

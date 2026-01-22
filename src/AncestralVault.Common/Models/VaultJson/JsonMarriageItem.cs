@@ -32,9 +32,11 @@ namespace AncestralVault.Common.Models.VaultJson
         [JsonPropertyName("officiant")]
         public string? Officiant { get; set; }
 
+        // TODO - change this to spouse1
         [JsonPropertyName("groom")]
         public required JsonPerson Groom { get; set; }
 
+        // TODO - change this to spouse2
         [JsonPropertyName("bride")]
         public required JsonPerson Bride { get; set; }
     }
