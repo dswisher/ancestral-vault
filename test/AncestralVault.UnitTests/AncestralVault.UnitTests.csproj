@@ -38,6 +38,7 @@
 
     <ItemGroup>
       <EmbeddedResource Include="TestHelpers\TestData\test-census-minimal.jsonc" />
+      <EmbeddedResource Include="TestHelpers\TestData\test-composite-minimal.jsonc" />
       <EmbeddedResource Include="TestHelpers\TestData\test-marriage-minimal.jsonc" />
       <EmbeddedResource Include="TestHelpers\TestData\test-tombstone.jsonc" />
     </ItemGroup>

@@ -5,12 +5,21 @@ using System.Threading;
 using System.Threading.Tasks;
 using AncestralVault.Common.Database;
 using AncestralVault.Common.Models.ViewModels.PersonaDetails;
+using AncestralVault.Common.Repositories.Minions;
 using Microsoft.EntityFrameworkCore;
 
 namespace AncestralVault.Common.Repositories
 {
     public class PersonaRepository : IPersonaRepository
     {
+        private readonly IPersonaMergeMinion mergeMinion;
+
+        public PersonaRepository(IPersonaMergeMinion mergeMinion)
+        {
+            this.mergeMinion = mergeMinion;
+        }
+
+
         public async Task<PersonaDetailsViewModel?> GetPersonaDetailsAsync(
             AncestralVaultDbContext dbContext,
             string personaId,

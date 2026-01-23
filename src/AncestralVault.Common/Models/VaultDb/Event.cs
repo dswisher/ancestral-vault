@@ -4,6 +4,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using AncestralVault.Common.Assistants.Dates;
 
 namespace AncestralVault.Common.Models.VaultDb
 {
@@ -33,8 +34,7 @@ namespace AncestralVault.Common.Models.VaultDb
         /// The date this event occurred, if known.
         /// </summary>
         [Column("event_date")]
-        [MaxLength(50)]
-        public string? EventDate { get; set; }      // TODO: switch this to a "genealogical date" or some such
+        public GenealogicalDate? EventDate { get; set; }
 
         /// <summary>
         /// The data file from which this EVENT was ingested.

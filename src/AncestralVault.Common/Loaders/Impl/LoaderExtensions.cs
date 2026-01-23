@@ -1,6 +1,7 @@
 // Copyright (c) Doug Swisher. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using AncestralVault.Common.Assistants.Dates;
 using AncestralVault.Common.Models.VaultDb;
 
 namespace AncestralVault.Common.Loaders.Impl
@@ -14,7 +15,7 @@ namespace AncestralVault.Common.Loaders.Impl
             var dbEvent = new Event
             {
                 EventTypeId = eventType,
-                EventDate = eventDate,
+                EventDate = GenealogicalDate.Parse(eventDate),
                 DataFile = context.DataFile
             };
 

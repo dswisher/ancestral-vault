@@ -1,0 +1,14 @@
+[
+  {
+    "composite-persona": {
+      "id": "walter-smith",
+      "name": "Walter Smith"
+    }
+  },
+  {
+    "persona-assertion": {
+      "composite-persona": "walter-smith",
+      "persona": "t1:walter"
+    }
+  }
+]

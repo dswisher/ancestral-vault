@@ -28,6 +28,10 @@ namespace AncestralVault.Common.Database
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Event>()
+                .Property(e => e.EventDate)
+                .HasConversion<GenealogicalDateConverter>()
+                .HasMaxLength(50);
         }
     }
 }

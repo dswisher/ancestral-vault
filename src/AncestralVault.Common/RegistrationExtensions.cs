@@ -7,6 +7,7 @@ using AncestralVault.Common.Loaders;
 using AncestralVault.Common.Loaders.Impl;
 using AncestralVault.Common.Parsers;
 using AncestralVault.Common.Repositories;
+using AncestralVault.Common.Repositories.Minions;
 using AncestralVault.Common.Utilities;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -50,6 +51,8 @@ namespace AncestralVault.Common
             services.AddSingleton<ICompositePersonaRepository, CompositePersonaRepository>();
             services.AddSingleton<IDbBrowserRepository, DbBrowserRepository>();
             services.AddSingleton<IPersonaRepository, PersonaRepository>();
+
+            services.AddSingleton<IPersonaMergeMinion, PersonaMergeMinion>();
         }
     }
 }

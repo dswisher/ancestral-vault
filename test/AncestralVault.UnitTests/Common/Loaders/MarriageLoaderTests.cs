@@ -33,9 +33,7 @@ namespace AncestralVault.UnitTests.Common.Loaders
             loader = container.GetRequiredService<IVaultJsonLoader>();
             dbContext = container.GetRequiredService<AncestralVaultDbContext>();
 
-            // Load some common admin-ish data and create a data file
-            DatabaseTestHelpers.SeedTypes(dbContext);
-
+            // Create a data file
             dataFile = DatabaseTestHelpers.AddDataFile(dbContext, "foo.jsonc");
 
             // Save it all

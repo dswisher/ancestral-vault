@@ -39,16 +39,13 @@ namespace AncestralVault.UnitTests.TestHelpers
         }
 
 
-        public static async Task PopulateDatabaseAsync(ServiceProvider container, string dataFileName, ILogger logger, CancellationToken stoppingToken)
+        public static async Task LoadTestDataFileAsync(ServiceProvider container, string dataFileName, CancellationToken stoppingToken)
         {
             // Load the entities from the test data file
             var entities = await LoadDataAsync(container, dataFileName, stoppingToken);
 
             // Grab the DB context
             var dbContext = container.GetRequiredService<AncestralVaultDbContext>();
-
-            // Load some common admin-ish data
-            SeedTypes(dbContext);
 
             // Create a datafile, as we need one for loading almost anything
             var newDataFile = new DataFile
@@ -81,23 +78,6 @@ namespace AncestralVault.UnitTests.TestHelpers
         }
 
 
-        public static void SeedTypes(AncestralVaultDbContext dbContext)
-        {
-            var newDataFile = AddDataFile(dbContext, "types.jsonc");
-
-            // Load some common admin-ish data
-            AddEventType(dbContext, newDataFile, "birth");
-            AddEventType(dbContext, newDataFile, "marriage");
-            AddEventType(dbContext, newDataFile, "death");
-            AddEventType(dbContext, newDataFile, "residence");
-            AddEventRoleType(dbContext, newDataFile, "newborn");
-            AddEventRoleType(dbContext, newDataFile, "decedent");
-            AddEventRoleType(dbContext, newDataFile, "spouse1");
-            AddEventRoleType(dbContext, newDataFile, "spouse2");
-            AddEventRoleType(dbContext, newDataFile, "resident");
-        }
-
-
         public static ServiceProvider CreateContainer(ITestOutputHelper testOutputHelper)
         {
             // Create the service collection
@@ -126,6 +106,10 @@ namespace AncestralVault.UnitTests.TestHelpers
             dbContext.Database.OpenConnection();
             dbContext.Database.EnsureCreated();
 
+            SeedTypes(dbContext);
+
+            dbContext.SaveChanges();
+
             services.AddSingleton(dbContext);
 
             // Register all the real bits
@@ -135,6 +119,23 @@ namespace AncestralVault.UnitTests.TestHelpers
 
             // Build and return the container
             return services.BuildServiceProvider(validateScopes: true);
+        }
+
+
+        private static void SeedTypes(AncestralVaultDbContext dbContext)
+        {
+            var newDataFile = AddDataFile(dbContext, "types.jsonc");
+
+            // Load some common admin-ish data
+            AddEventType(dbContext, newDataFile, "birth");
+            AddEventType(dbContext, newDataFile, "marriage");
+            AddEventType(dbContext, newDataFile, "death");
+            AddEventType(dbContext, newDataFile, "residence");
+            AddEventRoleType(dbContext, newDataFile, "newborn");
+            AddEventRoleType(dbContext, newDataFile, "decedent");
+            AddEventRoleType(dbContext, newDataFile, "spouse1");
+            AddEventRoleType(dbContext, newDataFile, "spouse2");
+            AddEventRoleType(dbContext, newDataFile, "resident");
         }
 
 
