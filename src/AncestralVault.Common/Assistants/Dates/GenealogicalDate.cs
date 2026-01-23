@@ -7,6 +7,16 @@ using System.Text.RegularExpressions;
 
 namespace AncestralVault.Common.Assistants.Dates
 {
+    public enum DateQualifier
+    {
+        Exact,
+        About,
+        Before,
+        After,
+        Between
+    }
+
+
     public class GenealogicalDate : IComparable<GenealogicalDate>
     {
         private static readonly Dictionary<string, int> MonthNames = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase)
@@ -26,10 +36,10 @@ namespace AncestralVault.Common.Assistants.Dates
         };
 
         private static readonly string[] MonthAbbreviations =
-        {
+        [
             string.Empty, "Jan", "Feb", "Mar", "Apr", "May", "Jun",
             "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
-        };
+        ];
 
         // Pattern: Year only (e.g., "1965")
         private static readonly Regex YearOnlyPattern = new Regex(
@@ -51,10 +61,34 @@ namespace AncestralVault.Common.Assistants.Dates
             @"^(\d{1,2})/(\d{1,2})/(\d{2})$",
             RegexOptions.Compiled);
 
+        // Pattern: "ABT 1956" or "CIRCA 1956" (About dates)
+        private static readonly Regex AboutPattern = new Regex(
+            @"^(ABT|CIRCA|EST|ABOUT)\s+(.*)$",
+            RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
-        public int Year { get; private set; }
-        public int? Month { get; private set; }
-        public int? Day { get; private set; }
+        // Pattern: "BEF 1956" or "BEFORE 1956" (Before dates)
+        private static readonly Regex BeforePattern = new Regex(
+            @"^(BEF|BEFORE)\s+(.*)$",
+            RegexOptions.Compiled | RegexOptions.IgnoreCase);
+
+        // Pattern: "AFT 1956" or "AFTER 1956" (After dates)
+        private static readonly Regex AfterPattern = new Regex(
+            @"^(AFT|AFTER)\s+(.*)$",
+            RegexOptions.Compiled | RegexOptions.IgnoreCase);
+
+        // Pattern: "BET 1950 AND 1955" (Between dates)
+        private static readonly Regex BetweenPattern = new Regex(
+            @"^(BET|BETWEEN)\s+(\d{4})\s+(AND|&)\s+(\d{4})$",
+            RegexOptions.Compiled | RegexOptions.IgnoreCase);
+
+
+        public int Year { get; private init; }
+        public int? Month { get; private init; }
+        public int? Day { get; private init; }
+        public DateQualifier Qualifier { get; private set; } = DateQualifier.Exact;
+        public int? ToYear { get; private init; }
+
+        public bool IsApproximate => Qualifier != DateQualifier.Exact;
 
 
         public static GenealogicalDate? Parse(string? dateString)
@@ -66,8 +100,103 @@ namespace AncestralVault.Common.Assistants.Dates
 
             dateString = dateString.Trim();
 
+            // Try "BET 1950 AND 1955" pattern first (most specific)
+            var match = BetweenPattern.Match(dateString);
+            if (match.Success)
+            {
+                var fromYear = int.Parse(match.Groups[2].Value);
+                var toYear = int.Parse(match.Groups[4].Value);
+
+                return new GenealogicalDate
+                {
+                    Year = fromYear,
+                    Qualifier = DateQualifier.Between,
+                    ToYear = toYear
+                };
+            }
+
+            // Try "ABT 1956" pattern
+            match = AboutPattern.Match(dateString);
+            if (match.Success)
+            {
+                var datePart = match.Groups[2].Value;
+                var baseDate = ParseDatePart(datePart);
+                baseDate.Qualifier = DateQualifier.About;
+                return baseDate;
+            }
+
+            // Try "BEF 1956" pattern
+            match = BeforePattern.Match(dateString);
+            if (match.Success)
+            {
+                var datePart = match.Groups[2].Value;
+                var baseDate = ParseDatePart(datePart);
+                baseDate.Qualifier = DateQualifier.Before;
+                return baseDate;
+            }
+
+            // Try "AFT 1956" pattern
+            match = AfterPattern.Match(dateString);
+            if (match.Success)
+            {
+                var datePart = match.Groups[2].Value;
+                var baseDate = ParseDatePart(datePart);
+                baseDate.Qualifier = DateQualifier.After;
+                return baseDate;
+            }
+
+            // Try exact date patterns
+            return ParseDatePart(dateString);
+        }
+
+
+        public override string ToString()
+        {
+            var baseDate = Month.HasValue && Day.HasValue
+                ? $"{Day}-{MonthAbbreviations[Month.Value]}-{Year}"
+                : Year.ToString();
+
+            return Qualifier switch
+            {
+                DateQualifier.Exact => baseDate,
+                DateQualifier.About => $"ABT {baseDate}",
+                DateQualifier.Before => $"BEF {baseDate}",
+                DateQualifier.After => $"AFT {baseDate}",
+                DateQualifier.Between => ToYear.HasValue ? $"BET {baseDate} AND {ToYear}" : baseDate,
+                _ => baseDate
+            };
+        }
+
+
+        public int CompareTo(GenealogicalDate? other)
+        {
+            if (other is null)
+            {
+                return 1;
+            }
+
+            // For sorting purposes, approximate dates should be sorted by their base date
+            // but with some consideration for their qualifier type
+            var yearComparison = Year.CompareTo(other.Year);
+            if (yearComparison != 0)
+            {
+                return yearComparison;
+            }
+
+            var monthComparison = Nullable.Compare(Month, other.Month);
+            if (monthComparison != 0)
+            {
+                return monthComparison;
+            }
+
+            return Nullable.Compare(Day, other.Day);
+        }
+
+
+        private static GenealogicalDate ParseDatePart(string datePart)
+        {
             // Try year-only pattern
-            var match = YearOnlyPattern.Match(dateString);
+            var match = YearOnlyPattern.Match(datePart);
             if (match.Success)
             {
                 return new GenealogicalDate
@@ -77,7 +206,7 @@ namespace AncestralVault.Common.Assistants.Dates
             }
 
             // Try "Oct 14, 1909" pattern
-            match = MonthDayYearPattern.Match(dateString);
+            match = MonthDayYearPattern.Match(datePart);
             if (match.Success)
             {
                 var monthName = match.Groups[1].Value;
@@ -95,7 +224,7 @@ namespace AncestralVault.Common.Assistants.Dates
             }
 
             // Try "7-Apr-1930" pattern
-            match = DayMonthYearPattern.Match(dateString);
+            match = DayMonthYearPattern.Match(datePart);
             if (match.Success)
             {
                 var monthName = match.Groups[2].Value;
@@ -113,7 +242,7 @@ namespace AncestralVault.Common.Assistants.Dates
             }
 
             // Try "10/14/09" pattern (MM/DD/YY)
-            match = NumericSlashPattern.Match(dateString);
+            match = NumericSlashPattern.Match(datePart);
             if (match.Success)
             {
                 var year = int.Parse(match.Groups[3].Value);
@@ -129,41 +258,7 @@ namespace AncestralVault.Common.Assistants.Dates
                 };
             }
 
-            throw new FormatException($"Unable to parse date: {dateString}");
-        }
-
-
-        public override string ToString()
-        {
-            if (Month.HasValue && Day.HasValue)
-            {
-                return $"{Day}-{MonthAbbreviations[Month.Value]}-{Year}";
-            }
-
-            return Year.ToString();
-        }
-
-
-        public int CompareTo(GenealogicalDate? other)
-        {
-            if (other is null)
-            {
-                return 1;
-            }
-
-            var yearComparison = Year.CompareTo(other.Year);
-            if (yearComparison != 0)
-            {
-                return yearComparison;
-            }
-
-            var monthComparison = Nullable.Compare(Month, other.Month);
-            if (monthComparison != 0)
-            {
-                return monthComparison;
-            }
-
-            return Nullable.Compare(Day, other.Day);
+            throw new FormatException($"Unable to parse date: {datePart}");
         }
     }
 }
