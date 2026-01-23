@@ -7,7 +7,7 @@ using System.Text.RegularExpressions;
 
 namespace AncestralVault.Common.Assistants.Dates
 {
-    public class GenealogicalDate
+    public class GenealogicalDate : IComparable<GenealogicalDate>
     {
         private static readonly Dictionary<string, int> MonthNames = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase)
         {
@@ -141,6 +141,29 @@ namespace AncestralVault.Common.Assistants.Dates
             }
 
             return Year.ToString();
+        }
+
+
+        public int CompareTo(GenealogicalDate? other)
+        {
+            if (other is null)
+            {
+                return 1;
+            }
+
+            var yearComparison = Year.CompareTo(other.Year);
+            if (yearComparison != 0)
+            {
+                return yearComparison;
+            }
+
+            var monthComparison = Nullable.Compare(Month, other.Month);
+            if (monthComparison != 0)
+            {
+                return monthComparison;
+            }
+
+            return Nullable.Compare(Day, other.Day);
         }
     }
 }

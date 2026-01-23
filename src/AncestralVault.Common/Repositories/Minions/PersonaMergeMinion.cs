@@ -64,6 +64,8 @@ namespace AncestralVault.Common.Repositories.Minions
                 switch (eventRoleTypeId)
                 {
                     case "resident":
+                    case "spouse1":
+                    case "spouse2":
                         MergeSingletonRole(viewModel, personaRole);
                         break;
 

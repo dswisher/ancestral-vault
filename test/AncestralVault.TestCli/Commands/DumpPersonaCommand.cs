@@ -3,6 +3,7 @@
 
 using System;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using AncestralVault.Common.Database;
@@ -90,7 +91,7 @@ namespace AncestralVault.TestCli.Commands
 
             WriteSmallBanner("EVENTS");
             var first = true;
-            foreach (var eventBox in viewModel.EventBoxItems)
+            foreach (var eventBox in viewModel.EventBoxItems.OrderBy(x => x.EventDate))
             {
                 if (first)
                 {
