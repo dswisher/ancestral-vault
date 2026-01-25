@@ -15,7 +15,7 @@ namespace AncestralVault.Common.Models.Loader
         public required string Color { get; set; }
         public required string Age { get; set; }
         public required string MaritalCondition { get; set; }
-        public required string BirthPlace { get; set; }
+        public string? BirthPlace { get; set; }
 
         // 1900 & 1930: Dwelling and Family numbering
         public int? DwellingNumber { get; set; }

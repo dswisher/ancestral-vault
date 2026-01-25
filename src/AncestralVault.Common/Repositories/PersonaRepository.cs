@@ -42,24 +42,8 @@ namespace AncestralVault.Common.Repositories
                 Name = dbPersona.Name,
             };
 
-            // Populate event box items based on persona events
-            foreach (var dbEventRole in dbPersona.EventRoles)
-            {
-                var dbEventRoleType = dbEventRole.EventRoleType;
-                var dbEvent = dbEventRole.Event;
-                var dbEventType = dbEvent.EventType;
-
-                var eventBoxItem = new PersonaDetailsEventBox
-                {
-                    EventTypeId = dbEventType.EventTypeId,
-                    EventTypeName = dbEventType.Name,
-                    EventDate = dbEvent.EventDate,
-                    EventRoleTypeId = dbEventRoleType.EventRoleTypeId,
-                    EventRoleTypeName = dbEventRoleType.Name,
-                };
-
-                personaDetails.EventBoxItems.Add(eventBoxItem);
-            }
+            // Merge the persona into the view model
+            await mergeMinion.MergePersonaAsync(dbContext, personaDetails, dbPersona, stoppingToken);
 
             // Return what we've built
             return personaDetails;

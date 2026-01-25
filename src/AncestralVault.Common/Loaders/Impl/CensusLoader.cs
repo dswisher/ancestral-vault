@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using AncestralVault.Common.Assistants.Dates;
 using AncestralVault.Common.Models.Loader;
 using AncestralVault.Common.Models.VaultDb;
 using Microsoft.Extensions.Logging;
@@ -61,8 +62,47 @@ namespace AncestralVault.Common.Loaders.Impl
                 context.AddEventRole(amendedRow.Persona.PersonaId, "resident", residenceEvent);
             }
 
-            // Go back through and create events for each persona
-            // TODO
+            // Create birth events, if we have the info to do so
+            foreach (var amendedRow in personas)
+            {
+                TryAddBirthEvent(context, census, amendedRow);
+            }
+        }
+
+
+        private static void TryAddBirthEvent(LoaderContext context, LoaderCensus census, AmendedRow amendedRow)
+        {
+            // Grab the birthplace
+            string? birthplace = amendedRow.Row.BirthPlace;
+
+            // Try to figure out the birthdate
+            string? birthdate = null;
+
+            if (!string.IsNullOrEmpty(amendedRow.Row.BirthYear) && !string.IsNullOrEmpty(amendedRow.Row.BirthMonth))
+            {
+                birthdate = $"{amendedRow.Row.BirthMonth}-{amendedRow.Row.BirthYear}";
+            }
+            else if (!string.IsNullOrEmpty(amendedRow.Row.BirthYear))
+            {
+                birthdate = amendedRow.Row.BirthYear;
+            }
+            else if (!string.IsNullOrEmpty(amendedRow.Row.Age))
+            {
+                var enumDate = GenealogicalDate.Parse(census.Header.EnumerationDate);
+                var genBirth = enumDate!.SubtractAge(amendedRow.Row.Age);
+                birthdate = genBirth.ToString();
+            }
+
+            if (birthdate != null || birthplace != null)
+            {
+                // Create the birth event
+                var birthEvent = context.AddEvent("birth", birthdate);
+
+                // TODO - need to set the birthplace on the event!
+
+                // Add the event role
+                context.AddEventRole(amendedRow.Persona.PersonaId, "newborn", birthEvent);
+            }
         }
 
 

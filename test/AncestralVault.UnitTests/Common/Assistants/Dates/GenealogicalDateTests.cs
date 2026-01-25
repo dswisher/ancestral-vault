@@ -15,6 +15,7 @@ namespace AncestralVault.UnitTests.Common.Assistants.Dates
         [InlineData("Oct 14, 1909", 1909, 10, 14, "14-Oct-1909")]
         [InlineData("7-Apr-1930", 1930, 4, 7, "7-Apr-1930")]
         [InlineData("10/14/09", 1909, 10, 14, "14-Oct-1909")]
+        [InlineData("Sep-1833", 1833, 9, null, "Sep-1833")]
         public void CanParseSimpleDates(string dateString, int expectedYear, int? expectedMonth, int? expectedDay, string expectedOutput)
         {
             // Arrange & Act
@@ -60,6 +61,27 @@ namespace AncestralVault.UnitTests.Common.Assistants.Dates
 
             output.Should().Be(expectedOutput);
         }
+
+
+        [Theory]
+        [InlineData("15-Dec-2025", "5", "ABT 2020")]
+        [InlineData("1-Jan-2025", "5", "ABT 2020")]
+        [InlineData("15-Dec-2025", "1 2/12", "Oct-2024")]
+        [InlineData("15-Dec-2025", "11/12", "Jan-2025")]
+        [InlineData("1-Jan-2025", "1/12", "Dec-2024")]
+        [InlineData("1-Jan-2025", "2/12", "Nov-2024")]
+        public void CanSubtractAge(string startDateString, string age, string expectedDateString)
+        {
+            // Arrange
+            var startDate = GenealogicalDate.Parse(startDateString);
+
+            // Act
+            var resultDate = startDate!.SubtractAge(age);
+
+            // Assert
+            resultDate.ToString().Should().Be(expectedDateString);
+        }
+
 
         [Fact]
         public void CanSortDatesUsingOrderBy()

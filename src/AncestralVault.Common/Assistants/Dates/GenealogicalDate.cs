@@ -56,6 +56,11 @@ namespace AncestralVault.Common.Assistants.Dates
             @"^(\d{1,2})-([A-Za-z]+)-(\d{4})$",
             RegexOptions.Compiled);
 
+        // Pattern: "Apr-1930" (Month-Year)
+        private static readonly Regex MonthYearPattern = new Regex(
+            @"^([A-Za-z]+)-(\d{4})$",
+            RegexOptions.Compiled);
+
         // Pattern: "10/14/09" (MM/DD/YY)
         private static readonly Regex NumericSlashPattern = new Regex(
             @"^(\d{1,2})/(\d{1,2})/(\d{2})$",
@@ -77,9 +82,13 @@ namespace AncestralVault.Common.Assistants.Dates
             RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         // Pattern: "BET 1950 AND 1955" (Between dates)
-        private static readonly Regex BetweenPattern = new Regex(
+        private static readonly Regex BetweenPattern = new(
             @"^(BET|BETWEEN)\s+(\d{4})\s+(AND|&)\s+(\d{4})$",
             RegexOptions.Compiled | RegexOptions.IgnoreCase);
+
+        private static readonly Regex AgeYearPattern = new(@"^(?<year>\d+)$", RegexOptions.Compiled);
+        private static readonly Regex AgeMonthsPattern = new(@"^(?<months>\d+)/12$", RegexOptions.Compiled);
+        private static readonly Regex AgeYearMonthsPattern = new(@"^(?<year>\d+) (?<months>\d+)/12$", RegexOptions.Compiled);
 
 
         public int Year { get; private init; }
@@ -152,9 +161,15 @@ namespace AncestralVault.Common.Assistants.Dates
 
         public override string ToString()
         {
-            var baseDate = Month.HasValue && Day.HasValue
-                ? $"{Day}-{MonthAbbreviations[Month.Value]}-{Year}"
-                : Year.ToString();
+            string baseDate = Year.ToString();
+            if (Day.HasValue && Month.HasValue)
+            {
+                baseDate = $"{Day}-{MonthAbbreviations[Month.Value]}-{Year}";
+            }
+            else if (Month.HasValue)
+            {
+                baseDate = $"{MonthAbbreviations[Month.Value]}-{Year}";
+            }
 
             return Qualifier switch
             {
@@ -190,6 +205,57 @@ namespace AncestralVault.Common.Assistants.Dates
             }
 
             return Nullable.Compare(Day, other.Day);
+        }
+
+
+        public GenealogicalDate SubtractAge(string rowAge)
+        {
+            int yearDelta = 0;
+            int? monthDelta = null;
+            var match = AgeYearMonthsPattern.Match(rowAge);
+            if (match.Success)
+            {
+                yearDelta = int.Parse(match.Groups["year"].Value);
+                monthDelta = int.Parse(match.Groups["months"].Value);
+            }
+            else
+            {
+                match = AgeYearPattern.Match(rowAge);
+                if (match.Success)
+                {
+                    yearDelta = int.Parse(match.Groups["year"].Value);
+                }
+                else
+                {
+                    match = AgeMonthsPattern.Match(rowAge);
+                    if (match.Success)
+                    {
+                        monthDelta = int.Parse(match.Groups["months"].Value);
+                    }
+                }
+            }
+
+            var year = Year - yearDelta;
+            int? month = null;
+            var qualifier = DateQualifier.About;
+
+            if (monthDelta.HasValue)
+            {
+                qualifier = DateQualifier.Exact;
+                month = Month - monthDelta;
+                if (month <= 0)
+                {
+                    year -= 1;
+                    month += 12;
+                }
+            }
+
+            return new GenealogicalDate
+            {
+                Year = year,
+                Month = month == 0 ? null : month,
+                Qualifier = qualifier
+            };
         }
 
 
@@ -238,6 +304,23 @@ namespace AncestralVault.Common.Assistants.Dates
                     Year = int.Parse(match.Groups[3].Value),
                     Month = month,
                     Day = int.Parse(match.Groups[1].Value)
+                };
+            }
+
+            // Try "Apr-1930" pattern
+            match = MonthYearPattern.Match(datePart);
+            if (match.Success)
+            {
+                var monthName = match.Groups[1].Value;
+                if (!MonthNames.TryGetValue(monthName, out var month))
+                {
+                    throw new FormatException($"Unknown month name: {monthName}");
+                }
+
+                return new GenealogicalDate
+                {
+                    Year = int.Parse(match.Groups[2].Value),
+                    Month = month
                 };
             }
 

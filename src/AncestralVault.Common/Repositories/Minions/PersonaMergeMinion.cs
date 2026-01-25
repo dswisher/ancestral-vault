@@ -66,7 +66,7 @@ namespace AncestralVault.Common.Repositories.Minions
                     case "resident":
                     case "spouse1":
                     case "spouse2":
-                        MergeSingletonRole(viewModel, personaRole);
+                        MergeRepeatableRole(viewModel, personaRole);
                         break;
 
                     case "newborn":
@@ -94,7 +94,7 @@ namespace AncestralVault.Common.Repositories.Minions
 
         private void MergeRepeatableRole(PersonaDetailsViewModel viewModel, EventRole personaRole)
         {
-            logger.LogWarning("...merging repeatable event role {EventRoleType} for persona {PersonaName} ({PersonaId})...",
+            logger.LogInformation("...merging repeatable event role {EventRoleType} for persona {PersonaName} ({PersonaId})...",
                 personaRole.EventRoleType.Name, personaRole.Persona.Name, personaRole.PersonaId);
 
             // Look to see if there is an event that matches this one, and if so, merge this new event with that one.
@@ -111,24 +111,50 @@ namespace AncestralVault.Common.Repositories.Minions
                 personaRole.EventRoleType.Name, personaRole.Persona.Name, personaRole.PersonaId);
 
             // Look to see if this role already exists, and if so, merge it
-            // TODO
+            var existingEvent = viewModel.EventBoxItems
+                .FirstOrDefault(ebi =>
+                    ebi.EventTypeId == personaRole.Event.EventTypeId);
 
-            // Create a new event box item
-            CreateNewRole(viewModel, personaRole);
+            // Add to an existing event or create a new one
+            if (existingEvent != null)
+            {
+                AddSource(existingEvent, personaRole);
+
+                // TODO - update the event date, if the new source is more reliable
+            }
+            else
+            {
+                CreateNewRole(viewModel, personaRole);
+            }
         }
 
 
-        private void CreateNewRole(PersonaDetailsViewModel viewModel, EventRole personaRole)
+        private static void AddSource(PersonaDetailsEventBox existingEvent, EventRole personaRole)
+        {
+            // TODO - figure out what we want to populate in a source
+            var source = new PersonaDetailsEventBoxSource
+            {
+                PersonaId = personaRole.PersonaId,
+                EventDate = personaRole.Event.EventDate
+            };
+
+            existingEvent.Sources.Add(source);
+        }
+
+
+        private static void CreateNewRole(PersonaDetailsViewModel viewModel, EventRole personaRole)
         {
             // Create a new event box item
             var eventBoxItem = new PersonaDetailsEventBox
             {
                 EventTypeId = personaRole.Event.EventType.EventTypeId,
                 EventTypeName = personaRole.Event.EventType.Name,
-                EventDate = personaRole.Event.EventDate,
+                BestEventDate = personaRole.Event.EventDate,
                 EventRoleTypeId = personaRole.EventRoleType.EventRoleTypeId,
                 EventRoleTypeName = personaRole.EventRoleType.Name,
             };
+
+            AddSource(eventBoxItem, personaRole);
 
             viewModel.EventBoxItems.Add(eventBoxItem);
         }

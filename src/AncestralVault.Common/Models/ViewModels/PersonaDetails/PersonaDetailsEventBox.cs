@@ -1,6 +1,7 @@
 // Copyright (c) Doug Swisher. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System.Collections.Generic;
 using AncestralVault.Common.Assistants.Dates;
 
 namespace AncestralVault.Common.Models.ViewModels.PersonaDetails
@@ -12,6 +13,8 @@ namespace AncestralVault.Common.Models.ViewModels.PersonaDetails
         public required string EventRoleTypeId { get; init; }
         public required string EventRoleTypeName { get; init; }
 
-        public GenealogicalDate? EventDate { get; init; }
+        public GenealogicalDate? BestEventDate { get; init; }
+
+        public List<PersonaDetailsEventBoxSource> Sources { get; } = [];
     }
 }

@@ -80,7 +80,7 @@ namespace AncestralVault.TestCli.Commands
             WriteDetails(viewModel);
 
             // Report!
-            logger.LogWarning("Done, in {Elapsed}.", timer.Elapsed);
+            logger.LogInformation("Done, in {Elapsed}.", timer.Elapsed);
         }
 
 
@@ -91,7 +91,7 @@ namespace AncestralVault.TestCli.Commands
 
             WriteSmallBanner("EVENTS");
             var first = true;
-            foreach (var eventBox in viewModel.EventBoxItems.OrderBy(x => x.EventDate))
+            foreach (var eventBox in viewModel.EventBoxItems.OrderBy(x => x.BestEventDate))
             {
                 if (first)
                 {
@@ -105,6 +105,9 @@ namespace AncestralVault.TestCli.Commands
                 WriteEventBox(eventBox);
             }
 
+            WriteSmallBanner("RELATIONSHIPS");
+            Console.WriteLine("(not implemented)");
+
             Console.WriteLine();
         }
 
@@ -117,9 +120,14 @@ namespace AncestralVault.TestCli.Commands
 
         private static void WriteEventBox(PersonaDetailsEventBox eventBox)
         {
-            Console.WriteLine("Event Date: {0}", eventBox.EventDate);
-            Console.WriteLine("Event Type: {0} ({1})", eventBox.EventTypeName, eventBox.EventTypeId);
-            Console.WriteLine("Event Role: {0} ({1})", eventBox.EventRoleTypeName, eventBox.EventRoleTypeId);
+            Console.WriteLine("{0} ({1}, {2})", eventBox.EventTypeName, eventBox.EventTypeId, eventBox.EventRoleTypeId);
+
+            // TODO - add event place
+            Console.WriteLine("   {0}", eventBox.BestEventDate);
+
+            // TODO - if there are other personas (like a spouse), list them here
+
+            Console.WriteLine("   {0} source(s)", eventBox.Sources.Count);
         }
 
 
