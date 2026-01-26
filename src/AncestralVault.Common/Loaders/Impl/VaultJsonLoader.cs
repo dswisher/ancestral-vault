@@ -18,7 +18,6 @@ namespace AncestralVault.Common.Loaders.Impl
         private readonly ICensusLoader censusLoader;
         private readonly IMarriageLoader marriageLoader;
         private readonly ITombstoneLoader tombstoneLoader;
-        private readonly ITypeLoaders typeLoaders;
         private readonly ILoaderHelpers loaderHelpers;
         private readonly ILogger logger;
 
@@ -26,14 +25,12 @@ namespace AncestralVault.Common.Loaders.Impl
             ICensusLoader censusLoader,
             IMarriageLoader marriageLoader,
             ITombstoneLoader tombstoneLoader,
-            ITypeLoaders typeLoaders,
             ILoaderHelpers loaderHelpers,
             ILogger<VaultJsonLoader> logger)
         {
             this.censusLoader = censusLoader;
             this.marriageLoader = marriageLoader;
             this.tombstoneLoader = tombstoneLoader;
-            this.typeLoaders = typeLoaders;
             this.loaderHelpers = loaderHelpers;
             this.logger = logger;
         }
@@ -66,18 +63,6 @@ namespace AncestralVault.Common.Loaders.Impl
             else if (entity is JsonPlace jsonPlace)
             {
                 LoadPlace(context, jsonPlace);
-            }
-            else if (entity is JsonPlaceType jsonPlaceType)
-            {
-                typeLoaders.LoadPlaceType(context, jsonPlaceType);
-            }
-            else if (entity is JsonEventRoleType jsonEventRoleType)
-            {
-                typeLoaders.LoadEventRoleType(context, jsonEventRoleType);
-            }
-            else if (entity is JsonEventType jsonEventType)
-            {
-                typeLoaders.LoadEventType(context, jsonEventType);
             }
             else if (entity is CensusUS1900 census1900)
             {

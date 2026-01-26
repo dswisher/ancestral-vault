@@ -27,17 +27,5 @@ namespace AncestralVault.Common.Models.VaultDb
         [Required]
         [MaxLength(50)]
         public required string Name { get; set; }
-
-        /// <summary>
-        /// The data file from which this PLACE-TYPE was ingested.
-        /// </summary>
-        [Column("data_file_key")]
-        [ForeignKey(nameof(DataFile))]
-        public long DataFileKey { get; set; }
-
-
-        // ----------------- Navigation Properties -----------------
-
-        public DataFile DataFile { get; set; } = null!;
     }
 }

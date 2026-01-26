@@ -4,6 +4,7 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using AncestralVault.Common.Constants;
 using AncestralVault.Common.Database;
 using AncestralVault.Common.Models.VaultDb;
 using AncestralVault.Common.Models.ViewModels.PersonaDetails;
@@ -63,14 +64,14 @@ namespace AncestralVault.Common.Repositories.Minions
 
                 switch (eventRoleTypeId)
                 {
-                    case "resident":
-                    case "spouse1":
-                    case "spouse2":
+                    case EventRoleTypes.Resident:
+                    case EventRoleTypes.Spouse1:
+                    case EventRoleTypes.Spouse2:
                         MergeRepeatableRole(viewModel, personaRole);
                         break;
 
-                    case "newborn":
-                    case "decedent":
+                    case EventRoleTypes.Newborn:
+                    case EventRoleTypes.Decedent:
                         MergeSingletonRole(viewModel, personaRole);
                         break;
 

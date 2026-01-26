@@ -1,6 +1,7 @@
 // Copyright (c) Doug Swisher. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using AncestralVault.Common.Constants;
 using AncestralVault.Common.Models.VaultJson;
 using Microsoft.Extensions.Logging;
 
@@ -31,10 +32,10 @@ namespace AncestralVault.Common.Loaders.Impl
             var spouse2 = loaderHelpers.AddPersona(context, json.Record.Id, json.Record.Bride.Name);
 
             // Create an event record for the marriage with roles for each spouse
-            var marriageEvent = context.AddEvent("marriage", json.Record.Date);
+            var marriageEvent = context.AddEvent(EventTypes.Marriage, json.Record.Date);
 
-            context.AddEventRole(spouse1.PersonaId, "spouse1", marriageEvent);
-            context.AddEventRole(spouse2.PersonaId, "spouse2", marriageEvent);
+            context.AddEventRole(spouse1.PersonaId, EventRoleTypes.Spouse1, marriageEvent);
+            context.AddEventRole(spouse2.PersonaId, EventRoleTypes.Spouse2, marriageEvent);
         }
     }
 }

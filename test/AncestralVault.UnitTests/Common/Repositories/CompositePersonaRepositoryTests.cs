@@ -3,6 +3,7 @@
 
 using System.Threading;
 using System.Threading.Tasks;
+using AncestralVault.Common.Constants;
 using AncestralVault.Common.Database;
 using AncestralVault.Common.Repositories;
 using AncestralVault.UnitTests.TestHelpers;
@@ -51,8 +52,8 @@ namespace AncestralVault.UnitTests.Common.Repositories
             viewModel.Should().NotBeNull();
             viewModel.Name.Should().Be("Walter Smith");
 
-            viewModel.EventBoxItems.Should().Contain(x => x.EventTypeId == "birth");
-            viewModel.EventBoxItems.Should().Contain(x => x.EventTypeId == "death");
+            viewModel.EventBoxItems.Should().Contain(x => x.EventTypeId == EventTypes.Birth);
+            viewModel.EventBoxItems.Should().Contain(x => x.EventTypeId == EventTypes.Death);
         }
     }
 }

@@ -19,6 +19,7 @@ namespace AncestralVault.Cli.Commands
     public class RebuildCommand
     {
         private readonly IVaultSeeker seeker;
+        private readonly ITypePopulator typePopulator;
         private readonly IVaultJsonParser parser;
         private readonly IVaultJsonLoader loader;
         private readonly IAncestralVaultDbContextFactory dbContextFactory;
@@ -26,12 +27,14 @@ namespace AncestralVault.Cli.Commands
 
         public RebuildCommand(
             IVaultSeeker seeker,
+            ITypePopulator typePopulator,
             IVaultJsonParser parser,
             IVaultJsonLoader loader,
             IAncestralVaultDbContextFactory dbContextFactory,
             ILogger<RebuildCommand> logger)
         {
             this.seeker = seeker;
+            this.typePopulator = typePopulator;
             this.parser = parser;
             this.loader = loader;
             this.dbContextFactory = dbContextFactory;
@@ -78,9 +81,11 @@ namespace AncestralVault.Cli.Commands
 
         private async Task LoadData(AncestralVaultDbContext context, RebuildOptions options, DirectoryInfo vaultDir, CancellationToken stoppingToken)
         {
-            // Load directories in the following order: admin, evidence, conclusions
-            // TODO - if there are other directories (other than images), load them too?
-            await LoadDirectoryData(context, options, vaultDir, "admin", stoppingToken);
+            // Populate all the types
+            typePopulator.PopulateAllTypes(context);
+
+            // Load directories in a specific order, so prerequisites are loaded before the things
+            // that depend on them.
             await LoadDirectoryData(context, options, vaultDir, "places", stoppingToken);
             await LoadDirectoryData(context, options, vaultDir, "evidence", stoppingToken);
             await LoadDirectoryData(context, options, vaultDir, "conclusions", stoppingToken);

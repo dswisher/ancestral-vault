@@ -40,7 +40,7 @@ namespace AncestralVault.Common
             services.AddSingleton<ILoaderHelpers, LoaderHelpers>();
             services.AddSingleton<IMarriageLoader, MarriageLoader>();
             services.AddSingleton<ITombstoneLoader, TombstoneLoader>();
-            services.AddSingleton<ITypeLoaders, TypeLoaders>();
+            services.AddSingleton<ITypePopulator, TypePopulator>();
             services.AddSingleton<IVaultJsonLoader, VaultJsonLoader>();
             services.AddSingleton<IVaultJsonParser, VaultJsonParser>();
         }

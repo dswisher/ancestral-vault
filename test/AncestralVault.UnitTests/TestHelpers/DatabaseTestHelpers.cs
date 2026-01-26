@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using AncestralVault.Common;
 using AncestralVault.Common.Database;
 using AncestralVault.Common.Loaders;
+using AncestralVault.Common.Loaders.Impl;
 using AncestralVault.Common.Models.VaultDb;
 using AncestralVault.Common.Models.VaultJson;
 using AncestralVault.Common.Parsers;
@@ -124,44 +125,9 @@ namespace AncestralVault.UnitTests.TestHelpers
 
         private static void SeedTypes(AncestralVaultDbContext dbContext)
         {
-            var newDataFile = AddDataFile(dbContext, "types.jsonc");
+            var populator = new TypePopulator();
 
-            // Load some common admin-ish data
-            AddEventType(dbContext, newDataFile, "birth");
-            AddEventType(dbContext, newDataFile, "marriage");
-            AddEventType(dbContext, newDataFile, "death");
-            AddEventType(dbContext, newDataFile, "residence");
-            AddEventRoleType(dbContext, newDataFile, "newborn");
-            AddEventRoleType(dbContext, newDataFile, "decedent");
-            AddEventRoleType(dbContext, newDataFile, "spouse1");
-            AddEventRoleType(dbContext, newDataFile, "spouse2");
-            AddEventRoleType(dbContext, newDataFile, "resident");
-        }
-
-
-        private static void AddEventType(AncestralVaultDbContext context, DataFile dataFile, string eventTypeId)
-        {
-            var eventType = new EventType
-            {
-                EventTypeId = eventTypeId,
-                Name = eventTypeId,
-                DataFile = dataFile
-            };
-
-            context.EventTypes.Add(eventType);
-        }
-
-
-        private static void AddEventRoleType(AncestralVaultDbContext context, DataFile dataFile, string eventRoleTypeId)
-        {
-            var eventRoleType = new EventRoleType
-            {
-                EventRoleTypeId = eventRoleTypeId,
-                Name = eventRoleTypeId,
-                DataFile = dataFile
-            };
-
-            context.EventRoleTypes.Add(eventRoleType);
+            populator.PopulateAllTypes(dbContext);
         }
     }
 }

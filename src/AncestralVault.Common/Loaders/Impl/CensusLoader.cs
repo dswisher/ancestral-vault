@@ -4,6 +4,7 @@
 using System;
 using System.Collections.Generic;
 using AncestralVault.Common.Assistants.Dates;
+using AncestralVault.Common.Constants;
 using AncestralVault.Common.Models.Loader;
 using AncestralVault.Common.Models.VaultDb;
 using Microsoft.Extensions.Logging;
@@ -56,10 +57,10 @@ namespace AncestralVault.Common.Loaders.Impl
             }
 
             // Create a residence event for everyone
-            var residenceEvent = context.AddEvent("residence", census.Header.EnumerationDate);
+            var residenceEvent = context.AddEvent(EventTypes.Residence, census.Header.EnumerationDate);
             foreach (var amendedRow in personas)
             {
-                context.AddEventRole(amendedRow.Persona.PersonaId, "resident", residenceEvent);
+                context.AddEventRole(amendedRow.Persona.PersonaId, EventRoleTypes.Resident, residenceEvent);
             }
 
             // Create birth events, if we have the info to do so
@@ -96,12 +97,12 @@ namespace AncestralVault.Common.Loaders.Impl
             if (birthdate != null || birthplace != null)
             {
                 // Create the birth event
-                var birthEvent = context.AddEvent("birth", birthdate);
+                var birthEvent = context.AddEvent(EventTypes.Birth, birthdate);
 
                 // TODO - need to set the birthplace on the event!
 
                 // Add the event role
-                context.AddEventRole(amendedRow.Persona.PersonaId, "newborn", birthEvent);
+                context.AddEventRole(amendedRow.Persona.PersonaId, EventRoleTypes.Newborn, birthEvent);
             }
         }
 

@@ -29,17 +29,8 @@ namespace AncestralVault.Common.Models.VaultDb
         [MaxLength(50)]
         public required string Name { get; set; }
 
-        /// <summary>
-        /// The data file from which this EVENT-TYPE was ingested.
-        /// </summary>
-        [Column("data_file_key")]
-        [ForeignKey(nameof(DataFile))]
-        public long DataFileKey { get; set; }
-
 
         // ----------------- Navigation Properties -----------------
-
-        public DataFile DataFile { get; set; } = null!;
 
         public ICollection<Event> Events { get; set; } = null!;
     }
