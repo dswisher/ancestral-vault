@@ -30,6 +30,7 @@ namespace AncestralVault.Common.Loaders.Impl
             AddPlaceType(context, "state");
             AddPlaceType(context, "county");
             AddPlaceType(context, "township");
+            AddPlaceType(context, "incorporated-place");
         }
 
 

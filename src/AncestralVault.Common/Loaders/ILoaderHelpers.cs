@@ -3,7 +3,7 @@
 
 using System.Threading;
 using System.Threading.Tasks;
-using AncestralVault.Common.Models.Assistants.PersonNames;
+using AncestralVault.Common.Models.Assistants.Persons;
 using AncestralVault.Common.Models.VaultDb;
 
 namespace AncestralVault.Common.Loaders

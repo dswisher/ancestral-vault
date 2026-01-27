@@ -1,0 +1,5 @@
+PlaceId,PlaceTypeId,Name,ParentPlaceId,Abbreviation
+usa,country,United States,,US|USA
+iowa,state,Iowa,usa,IA
+illinois,state,Illinois,usa,IL
+missouri,state,Missouri,usa,MO

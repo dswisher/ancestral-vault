@@ -2,15 +2,18 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System.Collections.Generic;
+using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using AncestralVault.Common;
+using AncestralVault.Common.Assistants.Places;
 using AncestralVault.Common.Database;
 using AncestralVault.Common.Loaders;
-using AncestralVault.Common.Loaders.Impl;
+using AncestralVault.Common.Models.Assistants.Places;
 using AncestralVault.Common.Models.VaultDb;
 using AncestralVault.Common.Models.VaultJson;
 using AncestralVault.Common.Parsers;
+using AncestralVault.UnitTests.Common.Assistants.Places;
 using AncestralVault.UnitTests.Common.Repositories;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
@@ -107,8 +110,6 @@ namespace AncestralVault.UnitTests.TestHelpers
             dbContext.Database.OpenConnection();
             dbContext.Database.EnsureCreated();
 
-            SeedTypes(dbContext);
-
             dbContext.SaveChanges();
 
             services.AddSingleton(dbContext);
@@ -119,15 +120,57 @@ namespace AncestralVault.UnitTests.TestHelpers
             services.RegisterRepositories();
 
             // Build and return the container
-            return services.BuildServiceProvider(validateScopes: true);
+            var container =  services.BuildServiceProvider(validateScopes: true);
+
+            SeedTypesAndPlaces(container, dbContext);
+
+            return container;
         }
 
 
-        private static void SeedTypes(AncestralVaultDbContext dbContext)
+        public static void LoadTestPlaces(IPlaceCache placeCache)
         {
-            var populator = new TypePopulator();
+            const string path = "AncestralVault.UnitTests.TestHelpers.TestData.places.csv";
+            using (var stream = typeof(PlaceNameParserTests).Assembly.GetManifestResourceStream(path))
+            using (var reader = new StreamReader(stream!))
+            {
+                var placeList = new List<PlaceCacheItem>();
+                string? line;
+                while ((line = reader.ReadLine()) != null)
+                {
+                    var parts = line.Split(',');
+                    var placeId = parts[0];
+                    var placeTypeId = parts[1];
+                    var placeName = parts[2];
+                    var parentPlaceId = parts.Length > 3 ? parts[3] : null;
+
+                    // TODO - load abbreviations, if present
+                    var abbreviations = parts.Length > 4 ? parts[4].Split('|') : [];
+
+                    var item = new PlaceCacheItem
+                    {
+                        PlaceId = placeId,
+                        PlaceTypeId = placeTypeId,
+                        Name = placeName,
+                        ParentPlaceId = parentPlaceId
+                    };
+
+                    placeList.Add(item);
+                }
+
+                placeCache.SeedCacheForTesting(placeList);
+            }
+        }
+
+
+        private static void SeedTypesAndPlaces(ServiceProvider container, AncestralVaultDbContext dbContext)
+        {
+            var populator = container.GetRequiredService<ITypePopulator>();
+            var placeCache = container.GetRequiredService<IPlaceCache>();
 
             populator.PopulateAllTypes(dbContext);
+
+            LoadTestPlaces(placeCache);
         }
     }
 }

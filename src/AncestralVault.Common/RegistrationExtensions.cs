@@ -1,7 +1,8 @@
 // Copyright (c) Doug Swisher. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using AncestralVault.Common.Assistants.PersonNames;
+using AncestralVault.Common.Assistants.Persons;
+using AncestralVault.Common.Assistants.Places;
 using AncestralVault.Common.Database;
 using AncestralVault.Common.Loaders;
 using AncestralVault.Common.Loaders.Impl;
@@ -31,6 +32,8 @@ namespace AncestralVault.Common
         public static void RegisterAssistants(this IServiceCollection services)
         {
             services.AddSingleton<IPersonNameParser, PersonNameParser>();
+            services.AddSingleton<IPlaceCache, PlaceCache>();
+            services.AddSingleton<IPlaceNameParser, PlaceNameParser>();
         }
 
 

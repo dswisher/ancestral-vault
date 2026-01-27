@@ -1,6 +1,7 @@
 // Copyright (c) Doug Swisher. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using AncestralVault.Common.Assistants.Places;
 using AncestralVault.Common.Constants;
 using AncestralVault.Common.Models.VaultJson;
 using Microsoft.Extensions.Logging;
@@ -10,13 +11,16 @@ namespace AncestralVault.Common.Loaders.Impl
     public class MarriageLoader : IMarriageLoader
     {
         private readonly ILoaderHelpers loaderHelpers;
+        private readonly IPlaceNameParser placeParser;
         private readonly ILogger logger;
 
         public MarriageLoader(
             ILoaderHelpers loaderHelpers,
+            IPlaceNameParser placeParser,
             ILogger<MarriageLoader> logger)
         {
             this.loaderHelpers = loaderHelpers;
+            this.placeParser = placeParser;
             this.logger = logger;
         }
 
@@ -36,6 +40,14 @@ namespace AncestralVault.Common.Loaders.Impl
 
             context.AddEventRole(spouse1.PersonaId, EventRoleTypes.Spouse1, marriageEvent);
             context.AddEventRole(spouse2.PersonaId, EventRoleTypes.Spouse2, marriageEvent);
+
+            // Set the location onto the event
+            if (!string.IsNullOrEmpty(json.Record.Location))
+            {
+                var place = placeParser.Parse(json.Record.Location);
+
+                // TODO - set the location onto the event
+            }
         }
     }
 }

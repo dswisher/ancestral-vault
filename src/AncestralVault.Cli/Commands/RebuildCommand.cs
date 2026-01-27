@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using AncestralVault.Cli.Options;
+using AncestralVault.Common.Assistants.Places;
 using AncestralVault.Common.Database;
 using AncestralVault.Common.Loaders;
 using AncestralVault.Common.Models.VaultDb;
@@ -23,6 +24,7 @@ namespace AncestralVault.Cli.Commands
         private readonly IVaultJsonParser parser;
         private readonly IVaultJsonLoader loader;
         private readonly IAncestralVaultDbContextFactory dbContextFactory;
+        private readonly IPlaceCache placeCache;
         private readonly ILogger<RebuildCommand> logger;
 
         public RebuildCommand(
@@ -31,6 +33,7 @@ namespace AncestralVault.Cli.Commands
             IVaultJsonParser parser,
             IVaultJsonLoader loader,
             IAncestralVaultDbContextFactory dbContextFactory,
+            IPlaceCache placeCache,
             ILogger<RebuildCommand> logger)
         {
             this.seeker = seeker;
@@ -38,6 +41,7 @@ namespace AncestralVault.Cli.Commands
             this.parser = parser;
             this.loader = loader;
             this.dbContextFactory = dbContextFactory;
+            this.placeCache = placeCache;
             this.logger = logger;
         }
 
@@ -85,8 +89,11 @@ namespace AncestralVault.Cli.Commands
             typePopulator.PopulateAllTypes(context);
 
             // Load directories in a specific order, so prerequisites are loaded before the things
-            // that depend on them.
+            // that depend on them. After places are loaded, populate the place cache.
             await LoadDirectoryData(context, options, vaultDir, "places", stoppingToken);
+
+            await placeCache.RefreshCacheIfNeededAsync(context, stoppingToken);
+
             await LoadDirectoryData(context, options, vaultDir, "evidence", stoppingToken);
             await LoadDirectoryData(context, options, vaultDir, "conclusions", stoppingToken);
         }

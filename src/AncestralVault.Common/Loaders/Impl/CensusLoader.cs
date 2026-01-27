@@ -4,6 +4,7 @@
 using System;
 using System.Collections.Generic;
 using AncestralVault.Common.Assistants.Dates;
+using AncestralVault.Common.Assistants.Places;
 using AncestralVault.Common.Constants;
 using AncestralVault.Common.Models.Loader;
 using AncestralVault.Common.Models.VaultDb;
@@ -14,19 +15,25 @@ namespace AncestralVault.Common.Loaders.Impl
     public class CensusLoader : ICensusLoader
     {
         private readonly ILoaderHelpers loaderHelpers;
+        private readonly IPlaceNameParser placeParser;
         private readonly ILogger<CensusLoader> logger;
 
         public CensusLoader(
             ILoaderHelpers loaderHelpers,
+            IPlaceNameParser placeParser,
             ILogger<CensusLoader> logger)
         {
             this.loaderHelpers = loaderHelpers;
+            this.placeParser = placeParser;
             this.logger = logger;
         }
 
 
         public void LoadCensus(LoaderContext context, LoaderCensus census)
         {
+            // Build a place name from the header, and parse it
+            // TODO - parse census place
+
             // Go through all the rows and create a persona for each one, keep track of them, so we
             // can go back and add events later.
             var personas = new List<AmendedRow>();
@@ -67,6 +74,22 @@ namespace AncestralVault.Common.Loaders.Impl
             foreach (var amendedRow in personas)
             {
                 TryAddBirthEvent(context, census, amendedRow);
+            }
+
+            // Do something with the parent birthplace(s)
+            foreach (var amendedRow in personas)
+            {
+                if (!string.IsNullOrEmpty(amendedRow.Row.FatherBirthPlace))
+                {
+                    // TODO - what to do with father's birthplace?
+                    var placeId = placeParser.Parse(amendedRow.Row.FatherBirthPlace);
+                }
+
+                if (!string.IsNullOrEmpty(amendedRow.Row.MotherBirthPlace))
+                {
+                    // TODO - what to do with mother's birthplace?
+                    var placeId = placeParser.Parse(amendedRow.Row.MotherBirthPlace);
+                }
             }
         }
 

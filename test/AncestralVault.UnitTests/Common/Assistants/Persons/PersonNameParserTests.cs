@@ -1,11 +1,11 @@
 // Copyright (c) Doug Swisher. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using AncestralVault.Common.Assistants.PersonNames;
+using AncestralVault.Common.Assistants.Persons;
 using FluentAssertions;
 using Xunit;
 
-namespace AncestralVault.UnitTests.Common.Assistants.PersonNames
+namespace AncestralVault.UnitTests.Common.Assistants.Persons
 {
     public class PersonNameParserTests
     {

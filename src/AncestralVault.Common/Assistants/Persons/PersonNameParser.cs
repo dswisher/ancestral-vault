@@ -2,9 +2,9 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System.Linq;
-using AncestralVault.Common.Models.Assistants.PersonNames;
+using AncestralVault.Common.Models.Assistants.Persons;
 
-namespace AncestralVault.Common.Assistants.PersonNames
+namespace AncestralVault.Common.Assistants.Persons
 {
     public class PersonNameParser : IPersonNameParser
     {

@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using AncestralVault.Cli.Options;
+using AncestralVault.Common.Assistants.Places;
 using AncestralVault.Common.Database;
 using AncestralVault.Common.Loaders;
 using AncestralVault.Common.Models.VaultDb;
@@ -23,6 +24,7 @@ namespace AncestralVault.Cli.Commands
         private readonly IVaultJsonParser parser;
         private readonly IVaultJsonLoader loader;
         private readonly IAncestralVaultDbContextFactory dbContextFactory;
+        private readonly IPlaceCache placeCache;
         private readonly ILogger<LoadFileCommand> logger;
 
         public LoadFileCommand(
@@ -30,12 +32,14 @@ namespace AncestralVault.Cli.Commands
             IVaultJsonParser parser,
             IVaultJsonLoader loader,
             IAncestralVaultDbContextFactory dbContextFactory,
+            IPlaceCache placeCache,
             ILogger<LoadFileCommand> logger)
         {
             this.seeker = seeker;
             this.parser = parser;
             this.loader = loader;
             this.dbContextFactory = dbContextFactory;
+            this.placeCache = placeCache;
             this.logger = logger;
         }
 
@@ -85,6 +89,9 @@ namespace AncestralVault.Cli.Commands
 
             await using (var dbContext = dbContextFactory.CreateDbContext())
             {
+                // Populate the place cache
+                await placeCache.RefreshCacheIfNeededAsync(dbContext, stoppingToken);
+
                 // Look up existing DataFile record
                 var existingDataFile = await dbContext.DataFiles
                     .FirstOrDefaultAsync(df => df.RelativePath == relativePath, stoppingToken);

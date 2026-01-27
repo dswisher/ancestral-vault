@@ -5,8 +5,8 @@ using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using AncestralVault.Common.Assistants.PersonNames;
-using AncestralVault.Common.Models.Assistants.PersonNames;
+using AncestralVault.Common.Assistants.Persons;
+using AncestralVault.Common.Models.Assistants.Persons;
 using AncestralVault.Common.Models.VaultDb;
 using Microsoft.EntityFrameworkCore;
 
