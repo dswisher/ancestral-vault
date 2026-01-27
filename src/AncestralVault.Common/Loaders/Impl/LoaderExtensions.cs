@@ -10,12 +10,13 @@ namespace AncestralVault.Common.Loaders.Impl
     {
         // TODO - move these methods over to LoaderHelpers
 
-        public static Event AddEvent(this LoaderContext context, string eventType, string? eventDate)
+        public static Event AddEvent(this LoaderContext context, string eventType, string? eventDate, string? eventPlaceId = null)
         {
             var dbEvent = new Event
             {
                 EventTypeId = eventType,
                 EventDate = GenealogicalDate.Parse(eventDate),
+                EventPlaceId = eventPlaceId,
                 DataFile = context.DataFile
             };
 

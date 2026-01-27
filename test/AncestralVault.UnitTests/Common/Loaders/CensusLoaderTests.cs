@@ -28,7 +28,7 @@ namespace AncestralVault.UnitTests.Common.Loaders
         public CensusLoaderTests(ITestOutputHelper testOutputHelper)
         {
             // Set up the mini-container and pull out required services
-            container = DatabaseTestHelpers.CreateContainer(testOutputHelper);
+            container = DatabaseTestHelpers.CreateContainerAsync(testOutputHelper, token).GetAwaiter().GetResult();
 
             loader = container.GetRequiredService<IVaultJsonLoader>();
             dbContext = container.GetRequiredService<AncestralVaultDbContext>();

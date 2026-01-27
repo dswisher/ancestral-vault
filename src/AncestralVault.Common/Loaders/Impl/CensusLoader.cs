@@ -33,6 +33,7 @@ namespace AncestralVault.Common.Loaders.Impl
         {
             // Build a place name from the header, and parse it
             // TODO - parse census place
+            var enumerationPlaceId = GetEnumerationPlaceId(census.Header);
 
             // Go through all the rows and create a persona for each one, keep track of them, so we
             // can go back and add events later.
@@ -64,7 +65,7 @@ namespace AncestralVault.Common.Loaders.Impl
             }
 
             // Create a residence event for everyone
-            var residenceEvent = context.AddEvent(EventTypes.Residence, census.Header.EnumerationDate);
+            var residenceEvent = context.AddEvent(EventTypes.Residence, census.Header.EnumerationDate, enumerationPlaceId);
             foreach (var amendedRow in personas)
             {
                 context.AddEventRole(amendedRow.Persona.PersonaId, EventRoleTypes.Resident, residenceEvent);
@@ -93,11 +94,44 @@ namespace AncestralVault.Common.Loaders.Impl
             }
         }
 
+        private string GetEnumerationPlaceId(LoaderCensusHeader header)
+        {
+            var placeParts = new List<string>();
 
-        private static void TryAddBirthEvent(LoaderContext context, LoaderCensus census, AmendedRow amendedRow)
+            if (!string.IsNullOrEmpty(header.IncorporatedPlace))
+            {
+                placeParts.Add(header.IncorporatedPlace);
+            }
+
+            if (!string.IsNullOrEmpty(header.Township))
+            {
+                placeParts.Add(header.Township);
+            }
+
+            if (!string.IsNullOrEmpty(header.County))
+            {
+                placeParts.Add(header.County);
+            }
+
+            if (!string.IsNullOrEmpty(header.State))
+            {
+                placeParts.Add(header.State);
+            }
+
+            var placeName = string.Join(", ", placeParts);
+
+            return placeParser.Parse(placeName);
+        }
+
+
+        private void TryAddBirthEvent(LoaderContext context, LoaderCensus census, AmendedRow amendedRow)
         {
             // Grab the birthplace
-            string? birthplace = amendedRow.Row.BirthPlace;
+            string? birthplaceId = null;
+            if (!string.IsNullOrEmpty(amendedRow.Row.BirthPlace))
+            {
+                birthplaceId = placeParser.Parse(amendedRow.Row.BirthPlace);
+            }
 
             // Try to figure out the birthdate
             string? birthdate = null;
@@ -117,10 +151,10 @@ namespace AncestralVault.Common.Loaders.Impl
                 birthdate = genBirth.ToString();
             }
 
-            if (birthdate != null || birthplace != null)
+            if (birthdate != null || birthplaceId != null)
             {
                 // Create the birth event
-                var birthEvent = context.AddEvent(EventTypes.Birth, birthdate);
+                var birthEvent = context.AddEvent(EventTypes.Birth, birthdate, birthplaceId);
 
                 // TODO - need to set the birthplace on the event!
 

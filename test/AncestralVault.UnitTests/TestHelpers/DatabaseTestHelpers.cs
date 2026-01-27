@@ -3,13 +3,13 @@
 
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using AncestralVault.Common;
 using AncestralVault.Common.Assistants.Places;
 using AncestralVault.Common.Database;
 using AncestralVault.Common.Loaders;
-using AncestralVault.Common.Models.Assistants.Places;
 using AncestralVault.Common.Models.VaultDb;
 using AncestralVault.Common.Models.VaultJson;
 using AncestralVault.Common.Parsers;
@@ -82,7 +82,7 @@ namespace AncestralVault.UnitTests.TestHelpers
         }
 
 
-        public static ServiceProvider CreateContainer(ITestOutputHelper testOutputHelper)
+        public static async Task<ServiceProvider> CreateContainerAsync(ITestOutputHelper testOutputHelper, CancellationToken stoppingToken)
         {
             // Create the service collection
             var services = new ServiceCollection();
@@ -107,10 +107,10 @@ namespace AncestralVault.UnitTests.TestHelpers
 
             var dbContext = new AncestralVaultDbContext(options);
 
-            dbContext.Database.OpenConnection();
-            dbContext.Database.EnsureCreated();
+            await dbContext.Database.OpenConnectionAsync(stoppingToken);
+            await dbContext.Database.EnsureCreatedAsync(stoppingToken);
 
-            dbContext.SaveChanges();
+            await dbContext.SaveChangesAsync(stoppingToken);
 
             services.AddSingleton(dbContext);
 
@@ -122,23 +122,85 @@ namespace AncestralVault.UnitTests.TestHelpers
             // Build and return the container
             var container =  services.BuildServiceProvider(validateScopes: true);
 
-            SeedTypesAndPlaces(container, dbContext);
+            await SeedTypesAndPlacesAsync(container, dbContext, stoppingToken);
 
             return container;
         }
 
 
-        public static void LoadTestPlaces(IPlaceCache placeCache)
+        public static async Task DisableForeignKeysAsync(AncestralVaultDbContext dbContext, CancellationToken stoppingToken)
         {
+            await using (var command = dbContext.Database.GetDbConnection().CreateCommand())
+            {
+                command.CommandText = "PRAGMA foreign_keys = false;";
+                await command.ExecuteNonQueryAsync(stoppingToken);
+            }
+        }
+
+
+        public static async Task EnableForeignKeysAsync(AncestralVaultDbContext dbContext, CancellationToken stoppingToken)
+        {
+            await using (var command = dbContext.Database.GetDbConnection().CreateCommand())
+            {
+                command.CommandText = "PRAGMA foreign_keys = true;";
+                await command.ExecuteNonQueryAsync(stoppingToken);
+            }
+        }
+
+
+        public static async Task VerifyForeignKeysAsync(AncestralVaultDbContext dbContext, CancellationToken stoppingToken)
+        {
+            var builder = new StringBuilder();
+
+            await using (var command = dbContext.Database.GetDbConnection().CreateCommand())
+            {
+                command.CommandText = "PRAGMA foreign_key_check;";
+
+                await using (var reader = await command.ExecuteReaderAsync(stoppingToken))
+                {
+                    while (await reader.ReadAsync(stoppingToken))
+                    {
+                        var table = reader.GetString(0);
+                        var rowId = reader.GetInt32(1);
+                        var fkIndex = reader.GetInt32(2);
+                        var fkValue = reader.GetValue(3);
+
+                        builder.AppendLine($"FK Violation in table '{table}', row ID {rowId}, FK index {fkIndex}, FK value '{fkValue}'");
+                    }
+                }
+            }
+
+            builder.ToString().Should().BeEmpty();
+        }
+
+
+        private static void LoadTestPlaces(AncestralVaultDbContext dbContext)
+        {
+            var newDataFile = new DataFile
+            {
+                RelativePath = "places.csv"
+            };
+
+            dbContext.DataFiles.Add(newDataFile);
+
             const string path = "AncestralVault.UnitTests.TestHelpers.TestData.places.csv";
             using (var stream = typeof(PlaceNameParserTests).Assembly.GetManifestResourceStream(path))
             using (var reader = new StreamReader(stream!))
             {
-                var placeList = new List<PlaceCacheItem>();
+                var row = 0;
                 string? line;
                 while ((line = reader.ReadLine()) != null)
                 {
+                    row += 1;
+                    if (row == 1)
+                    {
+                        // Skip header line
+                        continue;
+                    }
+
+                    // Parse the line and create the place
                     var parts = line.Split(',');
+
                     var placeId = parts[0];
                     var placeTypeId = parts[1];
                     var placeName = parts[2];
@@ -147,30 +209,44 @@ namespace AncestralVault.UnitTests.TestHelpers
                     // TODO - load abbreviations, if present
                     var abbreviations = parts.Length > 4 ? parts[4].Split('|') : [];
 
-                    var item = new PlaceCacheItem
+                    var place = new Place
                     {
                         PlaceId = placeId,
                         PlaceTypeId = placeTypeId,
                         Name = placeName,
-                        ParentPlaceId = parentPlaceId
+                        DataFile = newDataFile
                     };
 
-                    placeList.Add(item);
-                }
+                    if (!string.IsNullOrEmpty(parentPlaceId))
+                    {
+                        place.ParentPlaceId = parentPlaceId;
+                    }
 
-                placeCache.SeedCacheForTesting(placeList);
+                    // Add the place to the DB context
+                    dbContext.Places.Add(place);
+                }
             }
         }
 
 
-        private static void SeedTypesAndPlaces(ServiceProvider container, AncestralVaultDbContext dbContext)
+        private static async Task SeedTypesAndPlacesAsync(ServiceProvider container, AncestralVaultDbContext dbContext, CancellationToken stoppingToken)
         {
             var populator = container.GetRequiredService<ITypePopulator>();
             var placeCache = container.GetRequiredService<IPlaceCache>();
 
             populator.PopulateAllTypes(dbContext);
 
-            LoadTestPlaces(placeCache);
+            // await dbContext.SaveChangesAsync(stoppingToken);
+            // await DisableForeignKeysAsync(dbContext, stoppingToken);
+
+            LoadTestPlaces(dbContext);
+
+            await dbContext.SaveChangesAsync(stoppingToken);
+
+            // await VerifyForeignKeysAsync(dbContext, stoppingToken);
+            // await EnableForeignKeysAsync(dbContext, stoppingToken);
+
+            await placeCache.RefreshCacheIfNeededAsync(dbContext, stoppingToken);
         }
     }
 }

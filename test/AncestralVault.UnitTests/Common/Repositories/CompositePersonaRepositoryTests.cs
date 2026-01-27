@@ -27,7 +27,7 @@ namespace AncestralVault.UnitTests.Common.Repositories
         public CompositePersonaRepositoryTests(ITestOutputHelper testOutputHelper)
         {
             // Set up the mini-container
-            container = DatabaseTestHelpers.CreateContainer(testOutputHelper);
+            container = DatabaseTestHelpers.CreateContainerAsync(testOutputHelper, token).GetAwaiter().GetResult();
 
             personaRepo = container.GetRequiredService<ICompositePersonaRepository>();
             dbContext = container.GetRequiredService<AncestralVaultDbContext>();

@@ -37,6 +37,14 @@ namespace AncestralVault.Common.Models.VaultDb
         public GenealogicalDate? EventDate { get; set; }
 
         /// <summary>
+        /// The ID that identifies the PLACE where the EVENT occurred, if known.
+        /// </summary>
+        [Column("event_place_id")]
+        [MaxLength(50)]
+        [ForeignKey(nameof(Place))]
+        public string? EventPlaceId { get; set; }
+
+        /// <summary>
         /// The data file from which this EVENT was ingested.
         /// </summary>
         [Column("data_file_key")]
@@ -48,6 +56,7 @@ namespace AncestralVault.Common.Models.VaultDb
 
         public DataFile DataFile { get; set; } = null!;
         public EventType EventType { get; set; } = null!;
+        public Place Place { get; set; } = null!;
 
         public ICollection<EventRole> EventRoles { get; set; } = null!;
     }
