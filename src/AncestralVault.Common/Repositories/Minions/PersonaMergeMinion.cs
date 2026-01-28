@@ -151,6 +151,7 @@ namespace AncestralVault.Common.Repositories.Minions
                 EventTypeId = personaRole.Event.EventType.EventTypeId,
                 EventTypeName = personaRole.Event.EventType.Name,
                 BestEventDate = personaRole.Event.EventDate,
+                BestEventPlaceId = personaRole.Event.EventPlaceId,
                 EventRoleTypeId = personaRole.EventRoleType.EventRoleTypeId,
                 EventRoleTypeName = personaRole.EventRoleType.Name,
             };

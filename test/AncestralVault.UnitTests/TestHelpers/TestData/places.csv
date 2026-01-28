@@ -3,6 +3,7 @@ usa,country,United States,,US|USA
 iowa,state,Iowa,usa,IA
 mahaska,county,Mahaska,iowa
 prairie,township,Prairie,mahaska
+richland,township,Richland,mahaska
 illinois,state,Illinois,usa,IL
 missouri,state,Missouri,usa,MO
 new-sharon,incorporated-place,New Sharon,prairie

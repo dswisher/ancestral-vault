@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using AncestralVault.Common.Assistants.Places;
 using AncestralVault.Common.Database;
 using AncestralVault.Common.Models.ViewModels.PersonaDetails;
 using AncestralVault.Common.Repositories;
@@ -21,6 +22,8 @@ namespace AncestralVault.TestCli.Commands
         private readonly IPersonaRepository personaRepo;
         private readonly ICompositePersonaRepository compositePersonaRepo;
         private readonly IAncestralVaultDbContextFactory dbContextFactory;
+        private readonly IPlaceCache placeCache;
+        private readonly IPlaceNameFormatter placeNameFormatter;
         private readonly ILogger<DumpPersonaCommand> logger;
 
         public DumpPersonaCommand(
@@ -28,12 +31,16 @@ namespace AncestralVault.TestCli.Commands
             IPersonaRepository personaRepo,
             ICompositePersonaRepository compositePersonaRepo,
             IAncestralVaultDbContextFactory dbContextFactory,
+            IPlaceCache placeCache,
+            IPlaceNameFormatter placeNameFormatter,
             ILogger<DumpPersonaCommand> logger)
         {
             this.seeker = seeker;
             this.personaRepo = personaRepo;
             this.compositePersonaRepo = compositePersonaRepo;
             this.dbContextFactory = dbContextFactory;
+            this.placeCache = placeCache;
+            this.placeNameFormatter = placeNameFormatter;
             this.logger = logger;
         }
 
@@ -59,6 +66,9 @@ namespace AncestralVault.TestCli.Commands
             // Connect to the database
             await using (var context = dbContextFactory.CreateDbContext())
             {
+                // Populate the caches
+                await placeCache.RefreshCacheIfNeededAsync(context, stoppingToken);
+
                 // Fetch the details
                 if (!string.IsNullOrEmpty(options.PersonaId))
                 {
@@ -84,7 +94,24 @@ namespace AncestralVault.TestCli.Commands
         }
 
 
-        private static void WriteDetails(PersonaDetailsViewModel viewModel)
+        private static void WriteHeader(PersonaDetailsViewModel viewModel)
+        {
+            Console.WriteLine("Name: {0}", viewModel.Name);
+        }
+
+
+        private static void WriteSmallBanner(string title)
+        {
+            const int totalWidth = 80;
+
+            var dashes = new string('-', (totalWidth - title.Length - 2) / 2);
+
+            Console.WriteLine();
+            Console.WriteLine("{0} {1} {0}", dashes, title);
+        }
+
+
+        private void WriteDetails(PersonaDetailsViewModel viewModel)
         {
             WriteSmallBanner("HEADER");
             WriteHeader(viewModel);
@@ -112,33 +139,35 @@ namespace AncestralVault.TestCli.Commands
         }
 
 
-        private static void WriteHeader(PersonaDetailsViewModel viewModel)
-        {
-            Console.WriteLine("Name: {0}", viewModel.Name);
-        }
-
-
-        private static void WriteEventBox(PersonaDetailsEventBox eventBox)
+        private void WriteEventBox(PersonaDetailsEventBox eventBox)
         {
             Console.WriteLine("{0} ({1}, {2})", eventBox.EventTypeName, eventBox.EventTypeId, eventBox.EventRoleTypeId);
 
-            // TODO - add event place
-            Console.WriteLine("   {0}", eventBox.BestEventDate);
+            if (eventBox.BestEventDate != null || !string.IsNullOrEmpty(eventBox.BestEventPlaceId))
+            {
+                Console.Write("   ");
+
+                if (eventBox.BestEventDate != null)
+                {
+                    Console.Write(eventBox.BestEventDate);
+                }
+
+                if (eventBox.BestEventDate != null && !string.IsNullOrEmpty(eventBox.BestEventPlaceId))
+                {
+                    Console.Write(" • ");
+                }
+
+                if (!string.IsNullOrEmpty(eventBox.BestEventPlaceId))
+                {
+                    Console.Write(placeNameFormatter.FormatName(eventBox.BestEventPlaceId));
+                }
+
+                Console.WriteLine();
+            }
 
             // TODO - if there are other personas (like a spouse), list them here
 
             Console.WriteLine("   {0} source(s)", eventBox.Sources.Count);
-        }
-
-
-        private static void WriteSmallBanner(string title)
-        {
-            const int totalWidth = 80;
-
-            var dashes = new string('-', (totalWidth - title.Length - 2) / 2);
-
-            Console.WriteLine();
-            Console.WriteLine("{0} {1} {0}", dashes, title);
         }
     }
 }

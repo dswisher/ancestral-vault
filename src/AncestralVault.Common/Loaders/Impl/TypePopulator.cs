@@ -26,11 +26,11 @@ namespace AncestralVault.Common.Loaders.Impl
             AddEventRoleType(context, EventRoleTypes.Spouse2);
 
             // Place types
-            AddPlaceType(context, "country");
-            AddPlaceType(context, "state");
-            AddPlaceType(context, "county");
-            AddPlaceType(context, "township");
-            AddPlaceType(context, "incorporated-place");
+            AddPlaceType(context, PlacePartTypes.Country);
+            AddPlaceType(context, PlacePartTypes.State);
+            AddPlaceType(context, PlacePartTypes.County);
+            AddPlaceType(context, PlacePartTypes.Township);
+            AddPlaceType(context, PlacePartTypes.IncorporatedPlace);
         }
 
 

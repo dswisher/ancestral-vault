@@ -50,6 +50,18 @@ namespace AncestralVault.Common.Assistants.Places
         }
 
 
+        public PlaceCacheItem GetItemById(string placeId)
+        {
+            if (places == null)
+            {
+                throw new PlaceCacheException("Place cache has not been initialized.");
+            }
+
+            // TODO - do we want to cache this in a dictionary for faster lookup?
+            return places.Single(x => x.PlaceId == placeId);
+        }
+
+
         public void SeedCacheForTesting(List<PlaceCacheItem> items)
         {
             // Copy in the places

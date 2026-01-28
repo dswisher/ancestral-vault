@@ -10,6 +10,7 @@ using AncestralVault.Common;
 using AncestralVault.Common.Assistants.Places;
 using AncestralVault.Common.Database;
 using AncestralVault.Common.Loaders;
+using AncestralVault.Common.Models.Assistants.Places;
 using AncestralVault.Common.Models.VaultDb;
 using AncestralVault.Common.Models.VaultJson;
 using AncestralVault.Common.Parsers;
@@ -174,14 +175,9 @@ namespace AncestralVault.UnitTests.TestHelpers
         }
 
 
-        private static void LoadTestPlaces(AncestralVaultDbContext dbContext)
+        public static List<PlaceCacheItem> LoadPlacesFromEmbeddedCsv()
         {
-            var newDataFile = new DataFile
-            {
-                RelativePath = "places.csv"
-            };
-
-            dbContext.DataFiles.Add(newDataFile);
+            var placeList = new List<PlaceCacheItem>();
 
             const string path = "AncestralVault.UnitTests.TestHelpers.TestData.places.csv";
             using (var stream = typeof(PlaceNameParserTests).Assembly.GetManifestResourceStream(path))
@@ -198,7 +194,6 @@ namespace AncestralVault.UnitTests.TestHelpers
                         continue;
                     }
 
-                    // Parse the line and create the place
                     var parts = line.Split(',');
 
                     var placeId = parts[0];
@@ -209,22 +204,50 @@ namespace AncestralVault.UnitTests.TestHelpers
                     // TODO - load abbreviations, if present
                     var abbreviations = parts.Length > 4 ? parts[4].Split('|') : [];
 
-                    var place = new Place
+                    var item = new PlaceCacheItem
                     {
                         PlaceId = placeId,
                         PlaceTypeId = placeTypeId,
                         Name = placeName,
-                        DataFile = newDataFile
+                        ParentPlaceId = parentPlaceId
                     };
 
-                    if (!string.IsNullOrEmpty(parentPlaceId))
-                    {
-                        place.ParentPlaceId = parentPlaceId;
-                    }
-
-                    // Add the place to the DB context
-                    dbContext.Places.Add(place);
+                    placeList.Add(item);
                 }
+            }
+
+            return placeList;
+        }
+
+
+        private static void LoadTestPlaces(AncestralVaultDbContext dbContext)
+        {
+            var newDataFile = new DataFile
+            {
+                RelativePath = "places.csv"
+            };
+
+            dbContext.DataFiles.Add(newDataFile);
+
+            var placeList = LoadPlacesFromEmbeddedCsv();
+
+            foreach (var item in placeList)
+            {
+                var place = new Place
+                {
+                    PlaceId = item.PlaceId,
+                    PlaceTypeId = item.PlaceTypeId,
+                    Name = item.Name,
+                    DataFile = newDataFile
+                };
+
+                if (!string.IsNullOrEmpty(item.ParentPlaceId))
+                {
+                    place.ParentPlaceId = item.ParentPlaceId;
+                }
+
+                // Add the place to the DB context
+                dbContext.Places.Add(place);
             }
         }
 

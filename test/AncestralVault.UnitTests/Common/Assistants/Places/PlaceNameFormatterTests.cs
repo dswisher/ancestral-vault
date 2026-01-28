@@ -8,33 +8,34 @@ using Xunit;
 
 namespace AncestralVault.UnitTests.Common.Assistants.Places
 {
-    public class PlaceNameParserTests
+    public class PlaceNameFormatterTests
     {
-        private readonly PlaceNameParser parser;
+        private readonly PlaceNameFormatter formatter;
 
 
-        public PlaceNameParserTests()
+        public PlaceNameFormatterTests()
         {
             var cache = new PlaceCache();
             var placeList = DatabaseTestHelpers.LoadPlacesFromEmbeddedCsv();
 
             cache.SeedCacheForTesting(placeList);
 
-            parser = new PlaceNameParser(cache);
+            formatter = new PlaceNameFormatter(cache);
         }
 
 
         [Theory]
-        [InlineData("Iowa", "iowa")]
-        [InlineData("New Sharon", "new-sharon")]
-        [InlineData("Richland", "richland")]
-        public void CanParsePlaceName(string rawPlaceName, string expectedPlaceId)
+        [InlineData("iowa", "Iowa")]
+        [InlineData("mahaska", "Mahaska County, Iowa")]
+        [InlineData("richland", "Richland, Mahaska County, Iowa")]
+        [InlineData("new-sharon", "New Sharon, Mahaska County, Iowa")]
+        public void CanFormatPlaceName(string placeId, string expectedName)
         {
             // Act
-            var placeId = parser.Parse(rawPlaceName);
+            var name = formatter.FormatName(placeId);
 
             // Assert
-            placeId.Should().Be(expectedPlaceId);
+            name.Should().Be(expectedName);
         }
     }
 }

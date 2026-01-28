@@ -33,6 +33,7 @@ namespace AncestralVault.Common
         {
             services.AddSingleton<IPersonNameParser, PersonNameParser>();
             services.AddSingleton<IPlaceCache, PlaceCache>();
+            services.AddSingleton<IPlaceNameFormatter, PlaceNameFormatter>();
             services.AddSingleton<IPlaceNameParser, PlaceNameParser>();
         }
 

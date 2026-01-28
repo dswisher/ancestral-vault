@@ -15,6 +15,6 @@ namespace AncestralVault.Common.Assistants.Places
 
         List<PlaceCacheItem> GetPlacesByName(string name);
 
-        void SeedCacheForTesting(List<PlaceCacheItem> items);
+        PlaceCacheItem GetItemById(string placeId);
     }
 }

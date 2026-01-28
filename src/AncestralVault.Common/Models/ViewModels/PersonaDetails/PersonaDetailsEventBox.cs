@@ -14,6 +14,7 @@ namespace AncestralVault.Common.Models.ViewModels.PersonaDetails
         public required string EventRoleTypeName { get; init; }
 
         public GenealogicalDate? BestEventDate { get; init; }
+        public string? BestEventPlaceId { get; set; }
 
         public List<PersonaDetailsEventBoxSource> Sources { get; } = [];
     }
