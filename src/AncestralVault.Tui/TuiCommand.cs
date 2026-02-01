@@ -1,8 +1,7 @@
-﻿// Copyright (c) Doug Swisher. All Rights Reserved.
+// Copyright (c) Doug Swisher. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System;
-using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using AncestralVault.Tui.UI.Screens;
@@ -13,9 +12,12 @@ namespace AncestralVault.Tui
 {
     public class TuiCommand
     {
-        private readonly Dictionary<Type, ScreenBase> screens = new();
-        private Window? window;
-        private ScreenBase? currentScreen;
+        private readonly ScreenNavigator navigator;
+
+        public TuiCommand(ScreenNavigator navigator)
+        {
+            this.navigator = navigator;
+        }
 
         public async Task ExecuteAsync(TuiOptions options, CancellationToken stoppingToken)
         {
@@ -27,14 +29,12 @@ namespace AncestralVault.Tui
                 {
                     app.Init();
 
-                    using (window = new Window())
+                    using (var window = new Window())
                     {
                         window.Title = "Ancestral Vault (Esc to quit)";
 
-                        RegisterScreen(new ScreenA());
-                        RegisterScreen(new ScreenB());
-
-                        NavigateTo(typeof(ScreenA));
+                        navigator.SetWindow(window);
+                        navigator.NavigateTo<ScreenA>();
 
                         app.Run(window);
                     }
@@ -45,29 +45,6 @@ namespace AncestralVault.Tui
                 // Workaround for Terminal.Gui alpha bug: restore cursor visibility
                 Console.CursorVisible = true;
             }
-        }
-
-        private void RegisterScreen(ScreenBase screen)
-        {
-            screens[screen.GetType()] = screen;
-            screen.NavigateRequested += NavigateTo;
-        }
-
-        private void NavigateTo(Type screenType)
-        {
-            if (window == null || !screens.TryGetValue(screenType, out var newScreen))
-            {
-                return;
-            }
-
-            if (currentScreen != null)
-            {
-                window.Remove(currentScreen);
-            }
-
-            currentScreen = newScreen;
-            window.Add(currentScreen);
-            currentScreen.SetFocus();
         }
     }
 }

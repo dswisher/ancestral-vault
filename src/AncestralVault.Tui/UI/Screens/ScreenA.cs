@@ -7,10 +7,14 @@ using Terminal.Gui.Views;
 
 namespace AncestralVault.Tui.UI.Screens
 {
-    public class ScreenA : ScreenBase
+    public class ScreenA : View
     {
-        public ScreenA()
+        private readonly ScreenNavigator navigator;
+
+        public ScreenA(ScreenNavigator navigator)
         {
+            this.navigator = navigator;
+
             Width = Dim.Fill();
             Height = Dim.Fill();
             CanFocus = true;
@@ -36,7 +40,7 @@ namespace AncestralVault.Tui.UI.Screens
         {
             if (key.NoAlt.NoCtrl.NoShift == Key.B)
             {
-                NavigateTo<ScreenB>();
+                navigator.NavigateTo<ScreenB>();
                 return true;
             }
 
