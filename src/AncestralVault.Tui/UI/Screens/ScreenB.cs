@@ -40,7 +40,7 @@ namespace AncestralVault.Tui.UI.Screens
         {
             if (key.NoAlt.NoCtrl.NoShift == Key.A)
             {
-                navigator.NavigateTo<ScreenA>();
+                navigator.SetView<ScreenA>();
                 return true;
             }
 

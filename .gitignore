@@ -4,6 +4,7 @@ obj
 
 .idea
 .DS_Store
+.claude
 
 sample-vault/.db
 
