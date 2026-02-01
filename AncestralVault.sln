@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AncestralVault.Web", "src\A
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AncestralVault.TestCli", "test\AncestralVault.TestCli\AncestralVault.TestCli.csproj", "{0634690B-84C6-45C6-9405-0530E307824B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AncestralVault.Tui", "src\AncestralVault.Tui\AncestralVault.Tui.csproj", "{9A8EA1BA-FFDC-4001-B51C-9CCEDBDB6AF8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -87,6 +89,18 @@ Global
 		{0634690B-84C6-45C6-9405-0530E307824B}.Release|x64.Build.0 = Release|Any CPU
 		{0634690B-84C6-45C6-9405-0530E307824B}.Release|x86.ActiveCfg = Release|Any CPU
 		{0634690B-84C6-45C6-9405-0530E307824B}.Release|x86.Build.0 = Release|Any CPU
+		{9A8EA1BA-FFDC-4001-B51C-9CCEDBDB6AF8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9A8EA1BA-FFDC-4001-B51C-9CCEDBDB6AF8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9A8EA1BA-FFDC-4001-B51C-9CCEDBDB6AF8}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{9A8EA1BA-FFDC-4001-B51C-9CCEDBDB6AF8}.Debug|x64.Build.0 = Debug|Any CPU
+		{9A8EA1BA-FFDC-4001-B51C-9CCEDBDB6AF8}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{9A8EA1BA-FFDC-4001-B51C-9CCEDBDB6AF8}.Debug|x86.Build.0 = Debug|Any CPU
+		{9A8EA1BA-FFDC-4001-B51C-9CCEDBDB6AF8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9A8EA1BA-FFDC-4001-B51C-9CCEDBDB6AF8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9A8EA1BA-FFDC-4001-B51C-9CCEDBDB6AF8}.Release|x64.ActiveCfg = Release|Any CPU
+		{9A8EA1BA-FFDC-4001-B51C-9CCEDBDB6AF8}.Release|x64.Build.0 = Release|Any CPU
+		{9A8EA1BA-FFDC-4001-B51C-9CCEDBDB6AF8}.Release|x86.ActiveCfg = Release|Any CPU
+		{9A8EA1BA-FFDC-4001-B51C-9CCEDBDB6AF8}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -97,5 +111,6 @@ Global
 		{4A25F5FD-A46D-4343-A5A3-C3146CA6707A} = {827E0CD3-B72D-47B6-A68D-7590B98EB39B}
 		{7C188B7D-53EF-413D-8CBB-EF18515BA50B} = {827E0CD3-B72D-47B6-A68D-7590B98EB39B}
 		{0634690B-84C6-45C6-9405-0530E307824B} = {0C88DD14-F956-CE84-757C-A364CCF449FC}
+		{9A8EA1BA-FFDC-4001-B51C-9CCEDBDB6AF8} = {827E0CD3-B72D-47B6-A68D-7590B98EB39B}
 	EndGlobalSection
 EndGlobal
