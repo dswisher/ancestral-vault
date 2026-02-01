@@ -4,9 +4,9 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using AncestralVault.Tui.UI;
 using AncestralVault.Tui.UI.Screens;
 using Terminal.Gui.App;
-using Terminal.Gui.Views;
 
 namespace AncestralVault.Tui
 {
@@ -29,10 +29,8 @@ namespace AncestralVault.Tui
                 {
                     app.Init();
 
-                    using (var window = new Window())
+                    using (var window = new MainWindow())
                     {
-                        window.Title = "Ancestral Vault (Esc to quit)";
-
                         navigator.SetWindow(window);
                         navigator.NavigateTo<ScreenA>();
 
